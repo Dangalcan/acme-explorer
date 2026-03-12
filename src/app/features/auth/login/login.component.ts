@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,6 +16,14 @@ export class LoginComponent {
   email = signal('');
   password = signal('');
   errorMessage = signal('');
+
+  constructor() {
+    effect(() => {
+      if (this.authService.currentUser()) {
+        this.router.navigateByUrl('/');
+      }
+    });
+  }
 
   async login() {
     this.errorMessage.set('');
