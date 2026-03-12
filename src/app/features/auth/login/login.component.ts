@@ -36,4 +36,8 @@ export class LoginComponent {
       this.errorMessage.set('Invalid email or password');
     }
   }
+
+  goBack() {
+    this.router.navigateByUrl('/');
+  }
 }

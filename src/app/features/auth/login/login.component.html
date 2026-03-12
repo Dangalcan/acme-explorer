@@ -22,8 +22,11 @@
   </div>
 
   @if (errorMessage()) {
-    <p>{{ errorMessage() }}</p>
+    <p class="error-message">{{ errorMessage() }}</p>
   }
 
-  <button (click)="login()">Login</button>
+  <div class="button-group">
+    <button type="button" class="back-button" (click)="goBack()">Back</button>
+    <button type="button" class="login-button" (click)="login()">Login</button>
+  </div>
 </div>

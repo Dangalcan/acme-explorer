@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { AuthPanelComponent } from './shared/auth-panel/auth-panel.component';
 
 @Component({
@@ -10,4 +10,5 @@ import { AuthPanelComponent } from './shared/auth-panel/auth-panel.component';
 })
 export class App {
   protected readonly title = signal('acme-explorer');
+  protected router = inject(Router);
 }
