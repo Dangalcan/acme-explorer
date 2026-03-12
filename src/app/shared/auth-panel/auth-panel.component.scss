@@ -1,0 +1,55 @@
+.auth-panel {
+  max-width: 700px;
+  margin: 1.5rem auto 1rem auto;
+  padding: 1rem 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.auth-logo {
+  width: 32px;
+  height: 32px;
+}
+
+.auth-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #b21c2b;
+}
+
+.auth-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.auth-message {
+  margin: 0;
+  font-size: 1rem;
+  color: #2c3e50;
+}
+
+.auth-button {
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  background: #b21c2b;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.auth-button:hover {
+  background: #8e1723;
+}
