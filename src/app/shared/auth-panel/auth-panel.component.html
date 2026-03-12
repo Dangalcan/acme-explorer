@@ -1,8 +1,14 @@
 <div class="auth-panel">
-  @if (currentUser()) {
-    <p class="auth-message">Logged in as {{ currentUser()?.email }}</p>
-    <button class="auth-button" type="button" (click)="logout()">Logout</button>
-  } @else {
-    <button class="auth-button" type="button" (click)="goToLogin()">Login</button>
-  }
+  <div class="auth-brand">
+    <img src="/favicon.ico" alt="Angular logo" class="auth-logo" />
+    <span class="auth-title">AcmeExplorer</span>
+  </div>
+  <div class="auth-actions">
+    @if (currentUser()) {
+      <p class="auth-message">Logged in as {{ currentUser()?.email }}</p>
+      <button class="auth-button" type="button" (click)="logout()">Logout</button>
+    } @else {
+      <button class="auth-button" type="button" (click)="goToLogin()">Login</button>
+    }
+  </div>
 </div>

@@ -11,6 +11,29 @@
   align-items: center;
 }
 
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.auth-logo {
+  width: 32px;
+  height: 32px;
+}
+
+.auth-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #b21c2b;
+}
+
+.auth-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .auth-message {
   margin: 0;
   font-size: 1rem;
