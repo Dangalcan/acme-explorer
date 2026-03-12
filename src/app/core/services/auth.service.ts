@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut, User, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../infrastructure/firebase.config';
 
 @Injectable({
@@ -8,13 +8,17 @@ import { auth } from '../../infrastructure/firebase.config';
 export class AuthService {
   currentUser = signal<User | null>(null);
 
+  constructor() {
+    onAuthStateChanged(auth, (user) => {
+      this.currentUser.set(user);
+    });
+  }
+
   async login(email: string, password: string) {
-    const cred = await signInWithEmailAndPassword(auth, email, password);
-    this.currentUser.set(cred.user);
+    await signInWithEmailAndPassword(auth, email, password);
   }
 
   async logout() {
     await signOut(auth);
-    this.currentUser.set(null);
   }
 }
