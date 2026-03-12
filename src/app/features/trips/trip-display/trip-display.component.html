@@ -1,23 +1,26 @@
 <div class="page-container">
-    <div class="item-card">
+  <div class="trips-grid">
+    @for (trip of trips; track trip.id) {
+      <div class="item-card">
+        @if (trip.pictures && trip.pictures.length > 0) {
+          <img class="card-image" [src]="trip.pictures[0]" [alt]="trip.title" />
+        }
         <div class="card-body">
-            <h2 class="item-title"> {{ trip.title }} </h2>
-            <p class="item-sku"> {{ trip.description }}</p>
-            <p class="item-description"> Ticker: {{ trip.ticker }}</p>
-            <p class="item-price">
-                <strong>Price:</strong> {{ trip.price }} EUR
-            </p>
-            <p class="item-description"> Difficulty: {{ trip.difficulty }}</p>
-            <p class="item-description"> Max participants: {{ trip.maxParticipants }}</p>
-            <div class="comments-section">
-                <h4>Duration</h4>
-                <ul>
-                    <strong>From:</strong> {{ trip.startDate }} to {{trip.endDate}}
-                      ( {{ duration }} hours )
-                    
-                </ul>
-            </div>
+          <h2 class="item-title">{{ trip.title }}</h2>
+          <p class="item-sku">{{ trip.description }}</p>
+          <p class="item-description">Ticker: {{ trip.ticker }}</p>
+          <p class="item-description">📍 {{ trip.location.city }}, {{ trip.location.country }}</p>
+          <p class="item-price">
+            <strong>Price:</strong> {{ trip.price }} EUR
+          </p>
+          <p class="item-description">Difficulty: {{ trip.difficulty }}</p>
+          <p class="item-description">Max participants: {{ trip.maxParticipants }}</p>
+          <div class="comments-section">
+            <p class="duration-label">Dates: {{ trip.startDate | date:'d MMM yyyy' }} → {{ trip.endDate | date:'d MMM yyyy' }}</p>
+            <p class="duration-days">{{ getDuration(trip) }} days</p>
+          </div>
         </div>
-    </div>
-
+      </div>
+    }
+  </div>
 </div>
