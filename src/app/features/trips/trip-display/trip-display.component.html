@@ -1,23 +1,23 @@
-<div class="welcome-container">
-
-<div class="welcome-card">
-
-<h1 class="title">Welcome to our Angular App 🚀</h1>
-
-
-<p class="subtitle">
-
-We're glad you're here. That means you've successfully created your components.
-
-</p>
-
-
-<button class="start-button">
-
-Get Started
-
-</button>
-
-</div>
+<div class="page-container">
+    <div class="item-card">
+        <div class="card-body">
+            <h2 class="item-title"> {{ trip.title }} </h2>
+            <p class="item-sku"> {{ trip.description }}</p>
+            <p class="item-description"> Ticker: {{ trip.ticker }}</p>
+            <p class="item-price">
+                <strong>Price:</strong> {{ trip.price }} EUR
+            </p>
+            <p class="item-description"> Difficulty: {{ trip.difficulty }}</p>
+            <p class="item-description"> Max participants: {{ trip.maxParticipants }}</p>
+            <div class="comments-section">
+                <h4>Duration</h4>
+                <ul>
+                    <strong>From:</strong> {{ trip.startDate }} to {{trip.endDate}}
+                      ( {{ duration }} hours )
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
 
 </div>

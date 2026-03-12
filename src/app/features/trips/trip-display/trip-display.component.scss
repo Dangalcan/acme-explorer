@@ -1,47 +1,78 @@
-.welcome-container {
-    height: 100vh;
+.page-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 2rem;
+    background-color: #f4f6f9;
+    min-height: 100vh;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.welcome-card {
+.item-card {
     background: white;
-    padding: 3rem;
-    border-radius: 14px;
-    text-align: center;
-    max-width: 500px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    width: 100%;
+    overflow: hidden;
 }
 
-.title {
-    font-size: 2.2rem;
-    margin-bottom: 1rem;
-    color: #333;
+.card-body {
+    padding: 2rem;
 }
 
-.subtitle {
-    font-size: 1.1rem;
-    color: #666;
-    margin-bottom: 2rem;
+.item-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.item-sku {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 0.75rem;
+}
+
+.item-description {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.5rem;
     line-height: 1.6;
 }
 
-.start-button {
-    background: #667eea;
-    color: white;
-    border: none;
-    padding: 0.9rem 1.8rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.25s ease;
+.item-price {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin: 1rem 0;
+
+    strong {
+        color: #667eea;
+    }
 }
 
-.start-button:hover {
-    background: #5568d9;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+.comments-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+
+    h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #444;
+        margin-bottom: 0.5rem;
+    }
+
+    strong {
+        color: #667eea;
+    }
+
+    ul {
+        margin-top: 0.5rem;
+        padding-left: 1.2rem;
+        color: #555;
+
+        li {
+            margin-bottom: 0.25rem;
+        }
+    }
 }
