@@ -1,1 +1,10 @@
-<p>auth-panel works!</p>
+<div class="auth-panel">
+  @if (currentUser()) {
+    <span class="auth-message">
+      Logged in as {{ currentUser()?.email }}
+    </span>
+    <button type="button" (click)="logout()">Logout</button>
+  } @else {
+    <button type="button" (click)="goToLogin()">Login</button>
+  }
+</div>
