@@ -2,10 +2,18 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/login/login.component';
 import { TripDisplayComponent } from './features/trips/trip-display/trip-display.component';
 import { NotFoundComponent } from './core/not-found/not-found.component';
+import { ApplicationsComponent } from './features/applications/applications.component';
+import { FinderComponent } from './features/finder/finder.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { SettingsComponent } from './features/settings/settings.component';
 
 export const routes: Routes = [
   { path: 'trips', component: TripDisplayComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'applications', component: ApplicationsComponent },
+  { path: 'finder', component: FinderComponent },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'settings', component: SettingsComponent },
   { path: '', redirectTo: '/trips', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
 ];
