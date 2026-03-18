@@ -1,5 +1,7 @@
-@if (router.url !== '/login') {
-  <app-auth-panel></app-auth-panel>
-}
+<app-header></app-header>
 
-<router-outlet />
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<app-footer></app-footer>
