@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   imports: [FormsModule, RouterLink],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  templateUrl: './register.component.html',
 })
-export class LoginComponent {
+export class RegisterComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
   email = signal('');
   password = signal('');
+  confirmPassword = signal('');
   errorMessage = signal('');
   isShaking = signal(false);
   isLoading = signal(false);
@@ -27,24 +27,35 @@ export class LoginComponent {
     });
   }
 
-  async login() {
+  async register() {
     this.errorMessage.set('');
-    this.isLoading.set(true);
 
+    if (this.password() !== this.confirmPassword()) {
+      this.errorMessage.set('Passwords do not match');
+      this.triggerShake();
+      return;
+    }
+
+    if (this.password().length < 6) {
+      this.errorMessage.set('Password must be at least 6 characters');
+      this.triggerShake();
+      return;
+    }
+
+    this.isLoading.set(true);
     try {
-      await this.authService.login(this.email(), this.password());
+      await this.authService.register(this.email(), this.password());
       await this.router.navigateByUrl('/');
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      this.errorMessage.set('Invalid email or password');
+      const msg = err?.code === 'auth/email-already-in-use'
+        ? 'This email is already registered'
+        : 'Registration failed. Please try again.';
+      this.errorMessage.set(msg);
       this.triggerShake();
     } finally {
       this.isLoading.set(false);
     }
-  }
-
-  goBack() {
-    this.router.navigateByUrl('/');
   }
 
   private triggerShake() {

@@ -40,4 +40,31 @@ body {
   margin: 0;
   height: 100%;
 }
-/* You can add global styles to this file, and also import other style files */
+/* Custom keyframe animations */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+@layer utilities {
+  .animate-slide-up {
+    animation: slideUp 500ms cubic-bezier(0.35, 0, 0.25, 1) both;
+  }
+  .animate-fade-in {
+    animation: fadeIn 300ms 200ms ease-out both;
+  }
+  .animate-shake {
+    animation: shake 500ms ease-in-out;
+  }
+}
