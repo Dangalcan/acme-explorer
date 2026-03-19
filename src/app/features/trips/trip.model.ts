@@ -12,11 +12,20 @@ export interface TripCancellation {
     cancelledAt: Date;
 }
 
-export interface Trip extends Entity {
-    ticker: string;
+export interface Stage {
     title: string;
     description: string;
     price: number;
+}
+
+export interface Trip extends Entity {
+    /** Automatically generated */
+    ticker: string;
+    title: string;
+    description: string;
+    /** Automatically computed as the sum of stages prices */
+    price: number;
+    stages: Stage[];
     location: TripLocation;
     difficulty: DifficultyLevel;
     maxParticipants: number;
@@ -24,4 +33,5 @@ export interface Trip extends Entity {
     endDate: Date;
     pictures?: string[];
     cancellation?: TripCancellation;
+    managerId: string;
 }
