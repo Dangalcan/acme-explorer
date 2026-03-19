@@ -1,0 +1,24 @@
+<mat-toolbar color="primary" class="px-8 flex justify-between shadow-md">
+  <div class="flex items-center gap-3">
+    <img src="/favicon.ico" alt="Acme Explorer logo" class="w-8 h-8" />
+    <a mat-button routerLink="/trips" class="text-base font-semibold hover:opacity-90">
+      Acme Explorer
+    </a>
+  </div>
+
+  <div class="flex items-center gap-4 text-base font-medium">
+    <a mat-button routerLink="/trips">Trips</a>
+    <a mat-button routerLink="/applications">Applications</a>
+    <a mat-button routerLink="/finder">Finder</a>
+    <a mat-button routerLink="/dashboard">Dashboard</a>
+    <a mat-button routerLink="/settings">Settings</a>
+  </div>
+
+  <div class="flex items-center gap-4 text-sm font-medium">
+    @if (currentUser()) {
+      <button mat-button type="button" (click)="logout()">Logout</button>
+    } @else if (router.url !== '/login') {
+      <button mat-button type="button" (click)="goToLogin()">Login</button>
+    }
+  </div>
+</mat-toolbar>
