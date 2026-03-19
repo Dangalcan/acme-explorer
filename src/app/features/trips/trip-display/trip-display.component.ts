@@ -69,10 +69,15 @@ export class TripDisplayComponent {
     },
   ];
 
+  readonly difficultyConfig = {
+    easy:   { label: 'Easy',   classes: 'bg-green-100 text-green-700' },
+    medium: { label: 'Medium', classes: 'bg-yellow-100 text-yellow-700' },
+    hard:   { label: 'Hard',   classes: 'bg-red-100 text-red-700' },
+  };
+
   getDuration(trip: Trip): number {
     const start = new Date(trip.startDate);
     const end = new Date(trip.endDate);
     return (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
   }
-
 }
