@@ -16,7 +16,7 @@ export interface Finder {
     priceRange?: PriceRange;
     dateRange?: DateRange;
     difficulty?: DifficultyLevel;
-    maxNumberOfResults?: Number;
+    maxResults?: Number;
     cachedTripIds?: string[];
-    cacheExpiresAt?: Date;
+    cacheTimeHours?: Number;
 }
