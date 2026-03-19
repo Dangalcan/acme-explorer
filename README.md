@@ -2,6 +2,20 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
 
+## User credentials
+
+In order to login, at this current moment we offer the following user credentials (in the future there will be more):
+
+user:
+```text
+john-doe@mail.com
+```
+
+password:
+```text
+john-doe
+```
+
 ## Development server
 
 To start a local development server, run:
