@@ -100,6 +100,8 @@ Acme Explorer, Inc. is a company that organises adventurous trips around the wor
 
 Contact your lecturers to propose an A+ task that your group wish to develop. They should be related to other technologies that are not learnt during the course of the subject and must be related to the deliverable being devised. It is required to include a document explaining your choice and how the task was carried out.
 
+### D01
+
 1. Integrate a modern CSS framework into the project (e.g., Tailwind, Material Design, or Bulma). If this is the choice, it must be kept for every single deliverable.
 
 2. Implement UI animations for the login, register, or master page interactions using Angular’s animation module.
