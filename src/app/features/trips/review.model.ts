@@ -9,7 +9,7 @@ export const REVIEW_VALIDATION = {
 export interface Review extends Entity {
     tripId: string;
     explorerId: string;
-    rating: Number;
+    rating: number;
     comment?: string;
     createdAt: Date;
 }

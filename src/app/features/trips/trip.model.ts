@@ -7,6 +7,7 @@ export const TRIP_VALIDATION = {
     title:           { maxLength: 100 },
     description:     { maxLength: 1000 },
     maxParticipants: { min: 1 },
+    stages:          { minLength: 1 },
 } as const;
 
 export const STAGE_VALIDATION = {
