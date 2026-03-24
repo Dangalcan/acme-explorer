@@ -10,6 +10,8 @@ import { Trip } from '../trip.model';
 })
 export class TripCardComponent {
   @Input({ required: true }) trip!: Trip;
+  @Input() mode: 'list' | 'details' = 'list';
+  @Input() reviews: any[] = [];
   @Output() cancel = new EventEmitter<Trip>();
   @Output() apply = new EventEmitter<Trip>();
   @Output() view = new EventEmitter<Trip>();
@@ -30,6 +32,7 @@ export class TripCardComponent {
   getDuration(trip: Trip): number {
     const start = new Date(trip.startDate);
     const end = new Date(trip.endDate);
-    return (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
+    return Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
   }
 }
+
