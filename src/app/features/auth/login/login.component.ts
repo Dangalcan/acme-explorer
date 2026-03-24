@@ -7,7 +7,7 @@ import { Router, RouterLink } from '@angular/router';
   selector: 'app-login',
   imports: [FormsModule, RouterLink],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  // styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   private authService = inject(AuthService);

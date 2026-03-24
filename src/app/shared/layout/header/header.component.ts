@@ -9,7 +9,7 @@ import { AuthService } from '../../../core/services/auth.service';
   standalone: true,
   imports: [RouterModule, MatToolbarModule, MatButtonModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+  // styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   private authService = inject(AuthService);

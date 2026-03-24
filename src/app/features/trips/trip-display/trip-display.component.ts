@@ -6,7 +6,7 @@ import { type Trip } from '../trip.model';
   selector: 'app-trip-display',
   imports: [DatePipe],
   templateUrl: './trip-display.component.html',
-  styleUrl: './trip-display.component.scss',
+  // styleUrl: './trip-display.component.scss',
 })
 export class TripDisplayComponent {
 
