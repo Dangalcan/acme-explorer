@@ -1,0 +1,27 @@
+<div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 py-10 px-4">
+
+  <div class="max-w-6xl mx-auto">
+
+    <!-- Page header -->
+    <div class="mb-10 text-center animate-slide-up">
+      <h1 class="text-4xl font-bold text-slate-800 tracking-tight">Explore Trips</h1>
+      <p class="text-slate-500 mt-2 text-base">Find your next adventure around the world</p>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+      @for (trip of availableTrips(); track trip.id; let i = $index) {
+        <app-trip-card
+          class="animate-slide-up"
+          [trip]="trip"
+          [style.animation-delay]="i * 100 + 'ms'"
+          (cancel)="cancelTrip($event)"
+          (apply)="applyTrip($event)"
+          (view)="viewTrip($event)"
+        />
+      }
+
+    </div>
+  </div>
+</div>

@@ -1,18 +1,26 @@
 import { Injectable, signal } from '@angular/core';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, User, onAuthStateChanged } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../../infrastructure/firebase.config';
-import { Explorer } from '../../shared/actor.model';
+import { AnyActor, Explorer } from '../../shared/actor.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   currentUser = signal<User | null>(null);
+  currentRole = signal<AnyActor['role'] | null>(null);
 
   constructor() {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       this.currentUser.set(user);
+      if (user) {
+        const snap = await getDoc(doc(db, 'actors', user.uid));
+        const data = snap.data() as Partial<AnyActor> | undefined;
+        this.currentRole.set(data?.role ?? null);
+      } else {
+        this.currentRole.set(null);
+      }
     });
   }
 
