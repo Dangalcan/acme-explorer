@@ -2,13 +2,12 @@ import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { TripService } from '../trip.service';
-import { DifficultyClassPipe } from '../../../shared/pipes/difficulty-class.pipe';
 
 @Component({
   selector: 'app-trip-display',
-  imports: [DatePipe, CurrencyPipe, DifficultyClassPipe, RouterLink],
+  imports: [DatePipe, RouterLink],
   templateUrl: './trip-display.component.html',
 })
 export class TripDisplayComponent {
@@ -32,6 +31,12 @@ export class TripDisplayComponent {
     const end = new Date(t.endDate);
     return (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
   }
+
+  readonly difficultyConfig = {
+    EASY:   { label: 'Easy',   classes: 'bg-green-100 text-green-700' },
+    MEDIUM: { label: 'Medium', classes: 'bg-yellow-100 text-yellow-700' },
+    HARD:   { label: 'Hard',   classes: 'bg-red-100 text-red-700' },
+  };
 
   // Sample reviews — will come from ReviewService once the backend is wired
   readonly sampleReviews = [
