@@ -6,7 +6,6 @@ import { AuthService } from '../../core/services/auth.service';
   selector: 'app-auth-panel',
   imports: [],
   templateUrl: './auth-panel.component.html',
-  styleUrl: './auth-panel.component.scss',
 })
 export class AuthPanelComponent {
   private authService = inject(AuthService);

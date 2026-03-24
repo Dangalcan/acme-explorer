@@ -7,7 +7,6 @@ import { FooterComponent } from './shared/layout/footer/footer.component';
   selector: 'app-root',
   imports: [RouterOutlet, HeaderComponent, FooterComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
 })
 export class App {
   protected readonly title = signal('acme-explorer');
