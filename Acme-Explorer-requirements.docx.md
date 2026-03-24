@@ -1,22 +1,22 @@
 # Acme Explorer
 
-Acme Explorer, Inc. is a company that organises adventurous trips around the world. The goal of this project is to develop a web information system that Acme Explorer, Inc. can use to run their business.  This document provides an informal requirement specification. Ask your lecturers for clarifications and details, if necessary. 
+Acme Explorer, Inc. is a company that organises adventurous trips around the world. The goal of this project is to develop a web information system that Acme Explorer, Inc. can use to run their business.  This document provides an informal requirement specification. Ask your lecturers for clarifications and details, if necessary.
 
 # **C-level requirements**
 
 ## **Information requirements**
 
-1. The actors of the system are administrators, managers, and explorers.  For every actor, the system must store a name, a surname, an email, an optional phone number, and an optional address.   
-2. Managers organise trips.  For every trip, the system must store a ticker, a title, a description, a price, a location (city and country), a difficulty level (easy, medium, hard), a maximum number of participants, the dates when the trip starts and ends, and an optional collection of pictures. Some trips may be cancelled **as long as it is done at least one week in advance of its starting date**, in which case the system must store the reason why.   
-3. Trips are composed of stages.  The system must store the following data for each stage: a title, a description, and a price.  The price of a trip is automatically computed building on the price of the individual stages.  
-4. Explorers apply for trips. For every application, the system must store the moment when it’s made, a status, and some optional comments by the applicant. When an application is made, the initial status is “PENDING”; later, the corresponding manager can change it to “REJECTED”, which means that the applicant is denied enrolling the trip, in which case the system must record the reason why, or “DUE”, which means that it is awaiting payment. An application with status “DUE” changes automatically to status “ACCEPTED” whenever the corresponding applicant pays the trip.    
-5. Tickers are generated automatically, must be unique, and cannot be modified by any actor.  They must adhere to the following pattern: “YYMMDD-WWWW”, where “YYMMDD” refers to the current year, month, and day, whereas “WWWW” are four uppercase random letters.
+1. ~~The actors of the system are administrators, managers, and explorers.  For every actor, the system must store a name, a surname, an email, an optional phone number, and an optional address.~~ ***DONE***
+2. ~~Managers organise trips.  For every trip, the system must store a ticker, a title, a description, a price, a location (city and country), a difficulty level (easy, medium, hard), a maximum number of participants, the dates when the trip starts and ends, and an optional collection of pictures. Some trips may be cancelled **as long as it is done at least one week in advance of its starting date**, in which case the system must store the reason why.~~ ***DONE***
+3. ~~Trips are composed of stages.  The system must store the following data for each stage: a title, a description, and a price.  The price of a trip is automatically computed building on the price of the individual stages.~~ ***DONE***
+4. ~~Explorers apply for trips. For every application, the system must store the moment when it’s made, a status, and some optional comments by the applicant. When an application is made, the initial status is “PENDING”; later, the corresponding manager can change it to “REJECTED”, which means that the applicant is denied enrolling the trip, in which case the system must record the reason why, or “DUE”, which means that it is awaiting payment. An application with status “DUE” changes automatically to status “ACCEPTED” whenever the corresponding applicant pays the trip.~~ ***DONE***
+5. ~~Tickers are generated automatically, must be unique, and cannot be modified by any actor.  They must adhere to the following pattern: “YYMMDD-WWWW”, where “YYMMDD” refers to the current year, month, and day, whereas “WWWW” are four uppercase random letters.~~ ***DONE***
 
 ## **Functional requirements**
 
 6. An actor who is not authenticated must be able to:  
-   1. Register to the system as an explorer.  
-   2. Browse the list of trips and display them.  
+   1. ~~Register to the system as an explorer.~~ ***DONE***
+   2. ~~Browse the list of trips and display them.~~ ***DONE***
    3. Search for trips using a single key word that must be contained either in their tickers, titles, or descriptions.  
 7. An actor who is authenticated must be able to:  
 1. Do the same as an actor who is not authenticated, except registering to the system.  
@@ -50,7 +50,7 @@ Acme Explorer, Inc. is a company that organises adventurous trips around the wor
 
 ## **Information requirements**
 
-14. Explorers have a finder in which they can specify some search criteria, namely: a single key word, a price range, a date range to search for trips, and/or level of difficulty.  The key word must be contained in the ticker, the title, or the description of the trips returned; the price of the trip should not exceed the price range, if any, must be organised within the date range specified, if any, and according to the level of difficulty indicated, if any. Initially, every search criterion must be null, which means that every trip must be returned.
+14. ~~Explorers have a finder in which they can specify some search criteria, namely: a single key word, a price range, a date range to search for trips, and/or level of difficulty.  The key word must be contained in the ticker, the title, or the description of the trips returned; the price of the trip should not exceed the price range, if any, must be organised within the date range specified, if any, and according to the level of difficulty indicated, if any. Initially, every search criterion must be null, which means that every trip must be returned.~~ ***DONE***
 
 ## **Functional requirements**
 
@@ -73,8 +73,8 @@ Acme Explorer, Inc. is a company that organises adventurous trips around the wor
 
 ## **Information requirements**
 
-21. The system must allow explorer to create reviews for trips they have participated in. Each review includes a rating between 1 and 5, and an optional textual comment.  
-22. Explorers rely on favourite lists to keep track of the trips that are more interesting to them. Each favourite list has a name and an optional list of links to their favourite trips. 
+21. ~~The system must allow explorer to create reviews for trips they have participated in. Each review includes a rating between 1 and 5, and an optional textual comment.~~  ***DONE***
+22. ~~Explorers rely on favourite lists to keep track of the trips that are more interesting to them. Each favourite list has a name and an optional list of links to their favourite trips.~~ ***DONE***
 
 ## **Functional requirements**
 
@@ -102,8 +102,8 @@ Contact your lecturers to propose an A+ task that your group wish to develop. Th
 
 ### D01
 
-1. Integrate a modern CSS framework into the project (e.g., Tailwind, Material Design, or Bulma). If this is the choice, it must be kept for every single deliverable.
+1. ~~Integrate a modern CSS framework into the project (e.g., Tailwind, Material Design, or Bulma). If this is the choice, it must be kept for every single deliverable.~~ ***DONE***
 
-2. Implement UI animations for the login, register, or master page interactions using Angular’s animation module.
+2. ~~Implement UI animations for the login, register, or master page interactions using Angular’s animation module.~~ ***DONE***
 
 3. Use Angular DevTools or similar tools to analyse component structure, change detection, and routing behaviour, documenting the findings.
