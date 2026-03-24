@@ -1,22 +1,28 @@
+import { Entity } from "../../shared/entity.model";
 import { DifficultyLevel } from "../trips/trip.model";
 
-export interface PriceRange {
-    min?: number;
-    max?: number;
-}
+export const FINDER_DEFAULTS = {
+    cacheTimeHours: 1,
+    maxResults:     10,
+} as const;
 
-export interface DateRange {
-    from?: Date;
-    to?: Date;
-}
+export const FINDER_VALIDATION = {
+    keyword:        { maxLength: 32 },
+    minPrice:       { min: 0 },
+    maxPrice:       { min: 0 },
+    cacheTimeHours: { min: 1, max: 24 },
+    maxResults:     { min: 1, max: 50 },
+} as const;
 
-export interface Finder {
+export interface Finder extends Entity {
     explorerId: string;
     keyword?: string;
-    priceRange?: PriceRange;
-    dateRange?: DateRange;
+    minPrice?: number;
+    maxPrice?: number;
+    startDate?: Date;
+    endDate?: Date;
     difficulty?: DifficultyLevel;
-    maxResults?: Number;
-    cachedTripIds?: string[];
-    cacheTimeHours?: Number;
+    cacheTimeHours: number;
+    cachedAt?: Date;
+    maxResults: number;
 }

@@ -1,11 +1,15 @@
 import { Entity } from "../../shared/entity.model";
 
-export type Rating = 1 | 2 | 3 | 4 | 5;
+
+export const REVIEW_VALIDATION = {
+    rating:  { min: 1, max: 5 },
+    comment: { maxLength: 1000 },
+} as const;
 
 export interface Review extends Entity {
     tripId: string;
     explorerId: string;
-    rating: Rating;
+    rating: Number;
     comment?: string;
     createdAt: Date;
 }
