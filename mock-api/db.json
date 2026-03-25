@@ -1,0 +1,336 @@
+{
+  "actors": [
+    {
+      "id": "admin-1",
+      "version": 0,
+      "role": "administrator",
+      "name": "Alice",
+      "surname": "Admin",
+      "email": "alice.admin@acme.com",
+      "password": "Admin1@secure",
+      "phoneNumber": "+34600000001",
+      "address": "123 Admin Street, Madrid, Spain"
+    },
+    {
+      "id": "manager-1",
+      "version": 0,
+      "role": "manager",
+      "name": "Michael",
+      "surname": "Alps",
+      "email": "michael.alps@acme.com",
+      "password": "Manager1@secure",
+      "phoneNumber": "+41791234567",
+      "address": "1 Bahnhofstrasse, Zurich, Switzerland"
+    },
+    {
+      "id": "manager-2",
+      "version": 0,
+      "role": "manager",
+      "name": "Sara",
+      "surname": "Desert",
+      "email": "sara.desert@acme.com",
+      "password": "Manager2@secure",
+      "phoneNumber": "+212600112233",
+      "address": "5 Jemaa el-Fna, Marrakech, Morocco"
+    },
+    {
+      "id": "manager-3",
+      "version": 0,
+      "role": "manager",
+      "name": "Carlos",
+      "surname": "Jungle",
+      "email": "carlos.jungle@acme.com",
+      "password": "Manager3@secure",
+      "phoneNumber": "+5592999887766",
+      "address": "Av. Eduardo Ribeiro 100, Manaus, Brazil"
+    },
+    {
+      "id": "explorer-1",
+      "version": 0,
+      "role": "explorer",
+      "name": "Emma",
+      "surname": "Traveller",
+      "email": "emma.traveller@mail.com",
+      "password": "Explorer1@secure",
+      "phoneNumber": "+447700900001",
+      "address": "10 Downing St, London, UK"
+    },
+    {
+      "id": "explorer-2",
+      "version": 0,
+      "role": "explorer",
+      "name": "Luca",
+      "surname": "Wanderer",
+      "email": "luca.wanderer@mail.com",
+      "password": "Explorer2@secure",
+      "phoneNumber": "+393331234567",
+      "address": "Via Roma 42, Rome, Italy"
+    },
+    {
+      "id": "explorer-3",
+      "version": 0,
+      "role": "explorer",
+      "name": "Yuki",
+      "surname": "Nomad",
+      "email": "yuki.nomad@mail.com",
+      "password": "Explorer3@secure",
+      "phoneNumber": "+819012345678",
+      "address": "2 Chome Shinjuku, Tokyo, Japan"
+    }
+  ],
+  "trips": [
+    {
+      "id": "1",
+      "version": 0,
+      "ticker": "260601-ALPS",
+      "title": "Adventure in the Alps",
+      "description": "A breathtaking journey through the Swiss Alps, featuring glaciers, mountain huts, and traditional Swiss culture. Suitable for intermediate hikers looking for a multi-day alpine experience.",
+      "managerId": "manager-1",
+      "stages": [
+        { "id": "s1", "version": 0, "title": "Arrival in Zurich", "description": "Check-in and city tour along the Limmat river.", "price": 200 },
+        { "id": "s2", "version": 0, "title": "Grindelwald Hike", "description": "Full-day hike with panoramic views of the Eiger north face.", "price": 500 },
+        { "id": "s3", "version": 0, "title": "Jungfraujoch Summit", "description": "Visit the top of Europe at 3,454 m by cogwheel railway.", "price": 500 }
+      ],
+      "location": { "city": "Zurich", "country": "Switzerland" },
+      "difficultyLevel": "MEDIUM",
+      "maxParticipants": 20,
+      "startDate": "2026-06-01",
+      "endDate": "2026-06-10",
+      "pictures": [
+        { "url": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" }
+      ]
+    },
+    {
+      "id": "2",
+      "version": 0,
+      "ticker": "260715-SAHRA",
+      "title": "Sahara Desert Trek",
+      "description": "Cross the golden dunes of the Moroccan Sahara on camelback, sleeping under a canopy of stars in a traditional Berber camp. A truly life-changing desert experience.",
+      "managerId": "manager-2",
+      "stages": [
+        { "id": "s4", "version": 0, "title": "Arrival in Marrakech", "description": "Welcome dinner and orientation at a riad in the medina.", "price": 150 },
+        { "id": "s5", "version": 0, "title": "Camel Trek to Erg Chebbi", "description": "Two-day camel ride through the high dunes of Erg Chebbi.", "price": 500 },
+        { "id": "s6", "version": 0, "title": "Desert Camp Night", "description": "Overnight luxury camp under the stars with traditional music.", "price": 300 }
+      ],
+      "location": { "city": "Merzouga", "country": "Morocco" },
+      "difficultyLevel": "HARD",
+      "maxParticipants": 12,
+      "startDate": "2026-07-15",
+      "endDate": "2026-07-22",
+      "pictures": [
+        { "url": "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&q=80" }
+      ]
+    },
+    {
+      "id": "3",
+      "version": 0,
+      "ticker": "260328-KYOT",
+      "title": "Kyoto Cherry Blossom",
+      "description": "Discover ancient temples, bamboo groves and imperial gardens during sakura season. Walk through thousands of torii gates at Fushimi Inari and witness the geisha tradition in Gion.",
+      "managerId": "manager-1",
+      "stages": [
+        { "id": "s7", "version": 0, "title": "Arrival in Osaka", "description": "Transfer to Kyoto and check-in at a traditional ryokan.", "price": 300 },
+        { "id": "s8", "version": 0, "title": "Fushimi Inari & Arashiyama", "description": "Full-day temple and bamboo grove tour with a tea ceremony.", "price": 600 },
+        { "id": "s9", "version": 0, "title": "Nishiki Market & Gion", "description": "Street food tasting and guided geisha district walk at dusk.", "price": 400 },
+        { "id": "s10", "version": 0, "title": "Nara Day Trip", "description": "Visit deer park and Todai-ji temple housing the giant Buddha.", "price": 500 }
+      ],
+      "location": { "city": "Kyoto", "country": "Japan" },
+      "difficultyLevel": "EASY",
+      "maxParticipants": 25,
+      "startDate": "2026-03-28",
+      "endDate": "2026-04-05",
+      "pictures": [
+        { "url": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" }
+      ]
+    },
+    {
+      "id": "4",
+      "version": 0,
+      "ticker": "260901-AMZN",
+      "title": "Amazon Rainforest Expedition",
+      "description": "Explore the unparalleled biodiversity of the Amazon basin with expert naturalist guides. Navigate black-water rivers, learn jungle survival skills, and observe nocturnal wildlife in their natural habitat.",
+      "managerId": "manager-3",
+      "stages": [
+        { "id": "s11", "version": 0, "title": "Arrival in Manaus", "description": "Briefing session and gear preparation at base camp.", "price": 300 },
+        { "id": "s12", "version": 0, "title": "River Navigation", "description": "Multi-day boat trip through Amazon tributaries spotting pink dolphins.", "price": 700 },
+        { "id": "s13", "version": 0, "title": "Jungle Survival Skills", "description": "Guided deep-jungle experience: shelter building and foraging.", "price": 800 },
+        { "id": "s14", "version": 0, "title": "Wildlife Night Walk", "description": "Nocturnal fauna observation with headlamps and expert guide.", "price": 300 }
+      ],
+      "location": { "city": "Manaus", "country": "Brazil" },
+      "difficultyLevel": "HARD",
+      "maxParticipants": 10,
+      "startDate": "2026-09-01",
+      "endDate": "2026-09-14",
+      "pictures": [
+        { "url": "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80" }
+      ]
+    }
+  ],
+  "applications": [
+    {
+      "id": "app-1",
+      "version": 0,
+      "tripId": "1",
+      "explorerId": "explorer-1",
+      "createdAt": "2026-01-10T09:00:00.000Z",
+      "status": "ACCEPTED",
+      "comments": "Very excited about the Alps trip!"
+    },
+    {
+      "id": "app-2",
+      "version": 0,
+      "tripId": "3",
+      "explorerId": "explorer-1",
+      "createdAt": "2026-01-15T11:30:00.000Z",
+      "status": "PENDING",
+      "comments": "Huge fan of Japanese culture."
+    },
+    {
+      "id": "app-3",
+      "version": 0,
+      "tripId": "2",
+      "explorerId": "explorer-2",
+      "createdAt": "2026-02-01T08:00:00.000Z",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "app-4",
+      "version": 0,
+      "tripId": "4",
+      "explorerId": "explorer-2",
+      "createdAt": "2026-02-20T14:00:00.000Z",
+      "status": "REJECTED",
+      "comments": "Interested in Amazon wildlife.",
+      "rejectionReason": "Trip is fully booked."
+    },
+    {
+      "id": "app-5",
+      "version": 0,
+      "tripId": "3",
+      "explorerId": "explorer-3",
+      "createdAt": "2026-01-20T10:00:00.000Z",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "app-6",
+      "version": 0,
+      "tripId": "4",
+      "explorerId": "explorer-3",
+      "createdAt": "2026-03-01T09:30:00.000Z",
+      "status": "PENDING",
+      "comments": "I have jungle survival training."
+    },
+    {
+      "id": "app-7",
+      "version": 0,
+      "tripId": "1",
+      "explorerId": "explorer-2",
+      "createdAt": "2026-01-25T16:00:00.000Z",
+      "status": "CANCELLED",
+      "comments": "Schedule conflict, unfortunately."
+    }
+  ],
+  "reviews": [
+    {
+      "id": "rev-1",
+      "version": 0,
+      "tripId": "1",
+      "explorerId": "explorer-1",
+      "rating": 5,
+      "comment": "Absolutely stunning scenery. The Jungfraujoch was the highlight of the trip!",
+      "createdAt": "2026-06-12T18:00:00.000Z"
+    },
+    {
+      "id": "rev-2",
+      "version": 0,
+      "tripId": "3",
+      "explorerId": "explorer-3",
+      "rating": 4,
+      "comment": "Cherry blossoms were magical. Wish we had more free time in Gion.",
+      "createdAt": "2026-04-07T10:00:00.000Z"
+    },
+    {
+      "id": "rev-3",
+      "version": 0,
+      "tripId": "2",
+      "explorerId": "explorer-2",
+      "rating": 5,
+      "comment": "Sleeping under the Sahara stars was unforgettable. Highly recommend!",
+      "createdAt": "2026-07-24T09:00:00.000Z"
+    },
+    {
+      "id": "rev-4",
+      "version": 0,
+      "tripId": "1",
+      "explorerId": "explorer-2",
+      "rating": 4,
+      "comment": "Great experience, well-organised. A bit expensive but worth every penny.",
+      "createdAt": "2026-06-13T12:00:00.000Z"
+    }
+  ],
+  "favouriteLists": [
+    {
+      "id": "fav-1",
+      "version": 0,
+      "explorerId": "explorer-1",
+      "name": "Dream Adventures",
+      "tripIds": ["1", "4"]
+    },
+    {
+      "id": "fav-2",
+      "version": 0,
+      "explorerId": "explorer-1",
+      "name": "Asia Bucket List",
+      "tripIds": ["3"]
+    },
+    {
+      "id": "fav-3",
+      "version": 0,
+      "explorerId": "explorer-2",
+      "name": "Extreme Trips",
+      "tripIds": ["2", "4"]
+    },
+    {
+      "id": "fav-4",
+      "version": 0,
+      "explorerId": "explorer-3",
+      "name": "My Wishlist",
+      "tripIds": ["1", "2", "3"]
+    }
+  ],
+  "finders": [
+    {
+      "id": "finder-1",
+      "version": 0,
+      "explorerId": "explorer-1",
+      "keyword": "Alps",
+      "minPrice": 500,
+      "maxPrice": 2000,
+      "startDate": "2026-06-01",
+      "endDate": "2026-12-31",
+      "difficulty": "MEDIUM",
+      "cacheTimeHours": 1,
+      "maxResults": 10,
+      "cachedAt": "2026-03-24T08:00:00.000Z"
+    },
+    {
+      "id": "finder-2",
+      "version": 0,
+      "explorerId": "explorer-2",
+      "keyword": "Desert",
+      "difficulty": "HARD",
+      "cacheTimeHours": 2,
+      "maxResults": 5
+    },
+    {
+      "id": "finder-3",
+      "version": 0,
+      "explorerId": "explorer-3",
+      "keyword": "Japan",
+      "maxPrice": 2000,
+      "difficulty": "EASY",
+      "cacheTimeHours": 1,
+      "maxResults": 10
+    }
+  ]
+}

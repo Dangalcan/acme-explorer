@@ -2,12 +2,12 @@ import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { DatePipe } from '@angular/common';
 import { TripService } from '../trip.service';
+import { TripCardComponent } from '../trip-card/trip-card.component';
 
 @Component({
   selector: 'app-trip-display',
-  imports: [DatePipe, RouterLink],
+  imports: [RouterLink, TripCardComponent],
   templateUrl: './trip-display.component.html',
 })
 export class TripDisplayComponent {
@@ -18,26 +18,6 @@ export class TripDisplayComponent {
 
   trip = computed(() => this.tripService.getById(this.id() ?? ''));
 
-  getTotalPrice(): number {
-    const t = this.trip();
-    if (!t) return 0;
-    return t.totalPrice ?? t.stages.reduce((sum, s) => sum + s.price, 0);
-  }
-
-  getDuration(): number {
-    const t = this.trip();
-    if (!t) return 0;
-    const start = new Date(t.startDate);
-    const end = new Date(t.endDate);
-    return (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
-  }
-
-  readonly difficultyConfig = {
-    EASY:   { label: 'Easy',   classes: 'bg-green-100 text-green-700' },
-    MEDIUM: { label: 'Medium', classes: 'bg-yellow-100 text-yellow-700' },
-    HARD:   { label: 'Hard',   classes: 'bg-red-100 text-red-700' },
-  };
-
   // Sample reviews — will come from ReviewService once the backend is wired
   readonly sampleReviews = [
     { id: 'r1', explorerId: 'Alice', rating: 5, comment: 'Absolutely incredible experience. The guides were professional and the scenery was breathtaking.', createdAt: new Date('2025-09-12') },
@@ -45,3 +25,4 @@ export class TripDisplayComponent {
     { id: 'r3', explorerId: 'Carol', rating: 5, comment: 'Best trip of my life. Would book again without hesitation.', createdAt: new Date('2025-11-20') },
   ];
 }
+

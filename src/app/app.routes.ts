@@ -4,6 +4,7 @@ import { RegisterComponent } from './features/auth/register/register.component';
 import { TripListComponent } from './features/trips/trip-list/trip-list.component';
 import { TripDisplayComponent } from './features/trips/trip-display/trip-display.component';
 import { NotFoundComponent } from './core/not-found/not-found.component';
+import { ForbiddenComponent } from './core/forbidden/forbidden.component';
 import { ApplicationsComponent } from './features/applications/applications.component';
 import { FinderComponent } from './features/finder/finder.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
@@ -18,6 +19,7 @@ export const routes: Routes = [
   { path: 'finder', component: FinderComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'settings', component: SettingsComponent },
+  { path: 'forbidden', component: ForbiddenComponent },
   { path: '', redirectTo: '/trips', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
 ];
