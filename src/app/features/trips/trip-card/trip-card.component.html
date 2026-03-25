@@ -13,7 +13,7 @@
 
     <!-- Cancelled banner -->
     @if (trip.cancellation) {
-      <div class="bg-red-50 border-b border-red-100 px-5 py-2 flex items-center gap-1.5 text-xs font-semibold text-red-600">
+      <div class="bg-red-50 border-b border-red-100 px-5 py-2 flex items-center gap-1.5 text-xs font-semibold text-red-600" i18n>
         <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
         </svg>
@@ -48,7 +48,7 @@
             {{ trip.location.city }}, {{ trip.location.country }}
           </p>
         }
-        <p class="flex items-center gap-1">
+        <p class="flex items-center gap-1" i18n>
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/>
@@ -61,7 +61,7 @@
       <div class="border-t border-slate-100 mt-auto pt-3 flex items-center justify-between">
         <div>
           <p class="text-xs text-slate-400">{{ trip.startDate | fechas:'d MMM' }} → {{ trip.endDate | fechas:'d MMM yyyy' }}</p>
-          <p class="text-xs font-semibold text-indigo-500 mt-0.5">{{ getDuration(trip) }} days</p>
+          <p class="text-xs font-semibold text-indigo-500 mt-0.5" i18n>{{ getDuration(trip) }} days</p>
           <p class="text-xs font-semibold text-amber-600 mt-0.5">{{ trip.availablePlaces | soldOut:trip.maxParticipants }}</p>
         </div>
         <p class="text-lg font-bold text-slate-800">{{ getTotalPrice(trip) | appCurrency }}</p>
@@ -75,7 +75,7 @@
             <button type="button"
                     (click)="cancel.emit(trip); $event.stopPropagation()"
                     class="flex-1 py-2 rounded-lg bg-red-50 hover:bg-red-100 active:scale-95
-                           text-[#b21c2b] text-sm font-semibold border border-red-200 transition-all duration-150">
+                           text-[#b21c2b] text-sm font-semibold border border-red-200 transition-all duration-150" i18n>
               Cancel trip
             </button>
           }
@@ -84,7 +84,7 @@
             <button type="button"
                     (click)="apply.emit(trip); $event.stopPropagation()"
                     class="flex-1 py-2 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723] active:scale-95
-                           text-white text-sm font-semibold transition-all duration-150">
+                           text-white text-sm font-semibold transition-all duration-150" i18n>
               Apply
             </button>
           }
@@ -119,7 +119,7 @@
 
       <!-- Cancelled banner -->
       @if (trip.cancellation) {
-        <div class="bg-red-50 border border-red-100 rounded-lg px-4 py-2.5 flex items-center gap-2 text-sm font-semibold text-red-600 mb-3">
+        <div class="bg-red-50 border border-red-100 rounded-lg px-4 py-2.5 flex items-center gap-2 text-sm font-semibold text-red-600 mb-3" i18n>
           <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
           </svg>
@@ -132,33 +132,33 @@
       <!-- Key facts grid -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
         <div>
-          <p class="text-xs text-slate-400 mb-0.5">Start date</p>
+          <p class="text-xs text-slate-400 mb-0.5" i18n>Start date</p>
           <p class="font-semibold text-slate-700">{{ trip.startDate | fechas:'d MMM yyyy' }}</p>
         </div>
         <div>
-          <p class="text-xs text-slate-400 mb-0.5">End date</p>
+          <p class="text-xs text-slate-400 mb-0.5" i18n>End date</p>
           <p class="font-semibold text-slate-700">{{ trip.endDate | fechas:'d MMM yyyy' }}</p>
         </div>
         <div>
-          <p class="text-xs text-slate-400 mb-0.5">Duration</p>
+          <p class="text-xs text-slate-400 mb-0.5" i18n>Duration</p>
           <p class="font-semibold text-slate-700">{{ getDuration(trip) }} days</p>
         </div>
         <div>
-          <p class="text-xs text-slate-400 mb-0.5">Max participants</p>
+          <p class="text-xs text-slate-400 mb-0.5" i18n>Max participants</p>
           <p class="font-semibold text-slate-700">{{ trip.maxParticipants }}</p>
         </div>
         @if (trip.location) {
           <div>
-            <p class="text-xs text-slate-400 mb-0.5">Location</p>
+            <p class="text-xs text-slate-400 mb-0.5" i18n>Location</p>
             <p class="font-semibold text-slate-700">{{ trip.location.city }}, {{ trip.location.country }}</p>
           </div>
         }
         <div>
-          <p class="text-xs text-slate-400 mb-0.5">Total price</p>
+          <p class="text-xs text-slate-400 mb-0.5" i18n>Total price</p>
           <p class="font-bold text-indigo-600">{{ getTotalPrice(trip) | appCurrency }}</p>
         </div>
         <div>
-          <p class="text-xs text-slate-400 mb-0.5">Availability</p>
+          <p class="text-xs text-slate-400 mb-0.5" i18n>Availability</p>
           <p class="font-semibold text-slate-700">{{ trip.availablePlaces | soldOut:trip.maxParticipants }}</p>
         </div>
       </div>
@@ -166,7 +166,7 @@
 
     <!-- Stages -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-4">
-      <h2 class="text-lg font-bold text-slate-800 mb-4">Stages</h2>
+      <h2 class="text-lg font-bold text-slate-800 mb-4" i18n>Stages</h2>
       <ol class="space-y-4">
         @for (stage of trip.stages; track stage.id; let i = $index) {
           <li class="flex gap-4">
@@ -195,7 +195,7 @@
     <!-- All pictures -->
     @if (trip.pictures && trip.pictures.length > 1) {
       <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-4">
-        <h2 class="text-lg font-bold text-slate-800 mb-4">Photos</h2>
+        <h2 class="text-lg font-bold text-slate-800 mb-4" i18n>Photos</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
           @for (pic of trip.pictures; track pic.url) {
             <div class="rounded-xl overflow-hidden h-36">
@@ -208,10 +208,10 @@
 
     <!-- Reviews -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-      <h2 class="text-lg font-bold text-slate-800 mb-4">Reviews</h2>
+      <h2 class="text-lg font-bold text-slate-800 mb-4" i18n>Reviews</h2>
 
       @if (reviews.length === 0) {
-        <p class="text-sm text-slate-400">No reviews yet.</p>
+        <p class="text-sm text-slate-400" i18n>No reviews yet.</p>
       } @else {
         <ul class="space-y-4">
           @for (review of reviews; track review.id) {

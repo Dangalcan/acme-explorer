@@ -2,6 +2,27 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en-US" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="497066190783049043" datatype="html">
+        <source> Access Forbidden </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/forbidden/forbidden.component.html</context>
+          <context context-type="linenumber">15,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1935923808987355294" datatype="html">
+        <source> Sorry, you don&apos;t have permission to access this page. Please contact your administrator if you believe this is an error. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/forbidden/forbidden.component.html</context>
+          <context context-type="linenumber">19,20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1267391936361303948" datatype="html">
+        <source> Go Back Home </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/forbidden/forbidden.component.html</context>
+          <context context-type="linenumber">23,24</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="2505113049105568326" datatype="html">
         <source> Page not found </source>
         <context-group purpose="location">
@@ -295,6 +316,162 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
           <context context-type="linenumber">117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2611935569891206231" datatype="html">
+        <source><x id="START_TAG__SVG_SVG" ctype="x-_svg_svg" equiv-text="&lt;svg class=&quot;w-3.5 h-3.5 shrink-0&quot; fill=&quot;currentColor&quot; viewBox=&quot;0 0 20 20&quot;&gt;"/><x id="START_TAG__SVG_PATH" ctype="x-_svg_path" equiv-text="&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z&quot; clip-rule=&quot;evenodd&quot;/&gt;"/><x id="CLOSE_TAG__SVG_PATH" ctype="x-_svg_path" equiv-text="&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z&quot; clip-rule=&quot;evenodd&quot;/&gt;"/><x id="CLOSE_TAG__SVG_SVG" ctype="x-_svg_svg" equiv-text="&lt;/svg&gt;"/> Cancelled </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">17,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6480076070714920662" datatype="html">
+        <source><x id="START_TAG__SVG_SVG" ctype="x-_svg_svg" equiv-text="&lt;svg class=&quot;w-3.5 h-3.5&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;"/><x id="START_TAG__SVG_PATH" ctype="x-_svg_path" equiv-text="&lt;path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot;
+                  d=&quot;M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0&quot;/&gt;"/><x id="CLOSE_TAG__SVG_PATH" ctype="x-_svg_path" equiv-text="&lt;path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot;
+                  d=&quot;M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0&quot;/&gt;"/><x id="CLOSE_TAG__SVG_SVG" ctype="x-_svg_svg" equiv-text="&lt;/svg&gt;"/> Max <x id="INTERPOLATION" equiv-text="{{ trip.maxParticipants }}"/> participants </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">52,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7494361412465596264" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ getDuration(trip) }}"/> days</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">64,65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7031172141153884872" datatype="html">
+        <source> Cancel trip </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4517691647545108767" datatype="html">
+        <source> Apply </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2437769738930237879" datatype="html">
+        <source><x id="START_TAG__SVG_SVG" ctype="x-_svg_svg" equiv-text="&lt;svg class=&quot;w-4 h-4 shrink-0&quot; fill=&quot;currentColor&quot; viewBox=&quot;0 0 20 20&quot;&gt;"/><x id="START_TAG__SVG_PATH" ctype="x-_svg_path" equiv-text="&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z&quot; clip-rule=&quot;evenodd&quot;/&gt;"/><x id="CLOSE_TAG__SVG_PATH" ctype="x-_svg_path" equiv-text="&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z&quot; clip-rule=&quot;evenodd&quot;/&gt;"/><x id="CLOSE_TAG__SVG_SVG" ctype="x-_svg_svg" equiv-text="&lt;/svg&gt;"/> Cancelled on <x id="INTERPOLATION" equiv-text="{{ trip.cancellation.cancelledAt | fechas:&apos;d MMM yyyy&apos; }}"/> — <x id="INTERPOLATION_1" equiv-text="{{ trip.cancellation.reason }}"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">123,128</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="888341446683346521" datatype="html">
+        <source>Start date</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">135,136</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="126074860850048964" datatype="html">
+        <source>End date</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">139,140</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7410432243549869948" datatype="html">
+        <source>Duration</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">143,144</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1386775410485261177" datatype="html">
+        <source>Max participants</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">147,148</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="471816275243265264" datatype="html">
+        <source>Location</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">152,153</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3521411922357728471" datatype="html">
+        <source>Total price</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">157,158</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4565187676446384628" datatype="html">
+        <source>Availability</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">161,162</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4352650933675222022" datatype="html">
+        <source>Stages</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">169,170</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8405309693308875139" datatype="html">
+        <source>Photos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">198,199</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9029286143304711365" datatype="html">
+        <source>Reviews</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">211,213</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6310435347641989686" datatype="html">
+        <source>No reviews yet.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-card/trip-card.component.html</context>
+          <context context-type="linenumber">214,215</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6376584079947045043" datatype="html">
+        <source><x id="START_TAG__SVG_SVG" ctype="x-_svg_svg" equiv-text="&lt;svg class=&quot;w-4 h-4&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;&gt;"/><x id="START_TAG__SVG_PATH" ctype="x-_svg_path" equiv-text="&lt;path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot; d=&quot;M15 19l-7-7 7-7&quot; /&gt;"/><x id="CLOSE_TAG__SVG_PATH" ctype="x-_svg_path" equiv-text="&lt;path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot; d=&quot;M15 19l-7-7 7-7&quot; /&gt;"/><x id="CLOSE_TAG__SVG_SVG" ctype="x-_svg_svg" equiv-text="&lt;/svg&gt;"/> Back to trips </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.html</context>
+          <context context-type="linenumber">7,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8467015708761287455" datatype="html">
+        <source>Trip not found.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.html</context>
+          <context context-type="linenumber">17,18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2325005148867998492" datatype="html">
+        <source>Browse all trips</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.html</context>
+          <context context-type="linenumber">18,19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="591594125118052917" datatype="html">
+        <source>Explore Trips</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-list/trip-list.component.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8264892737113747182" datatype="html">
+        <source>Find your next adventure around the world</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-list/trip-list.component.html</context>
+          <context context-type="linenumber">8,9</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1691261770947793611" datatype="html">

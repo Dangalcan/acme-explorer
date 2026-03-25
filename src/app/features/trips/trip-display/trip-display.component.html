@@ -3,7 +3,7 @@
 
     <!-- Back link -->
     <a routerLink="/trips"
-      class="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 mb-6 transition-colors">
+      class="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 mb-6 transition-colors" i18n>
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
       </svg>
@@ -14,8 +14,8 @@
     <app-trip-card [trip]="t" mode="details" [reviews]="sampleReviews" />
     } @else {
     <div class="text-center py-20 text-slate-400">
-      <p class="text-lg font-semibold">Trip not found.</p>
-      <a routerLink="/trips" class="text-sm text-indigo-500 hover:underline mt-2 inline-block">Browse all trips</a>
+      <p class="text-lg font-semibold" i18n>Trip not found.</p>
+      <a routerLink="/trips" class="text-sm text-indigo-500 hover:underline mt-2 inline-block" i18n>Browse all trips</a>
     </div>
     }
 
