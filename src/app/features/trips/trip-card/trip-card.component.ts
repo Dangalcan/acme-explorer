@@ -1,11 +1,15 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { AuthService } from '../../../core/services/auth.service';
 import { Trip } from '../trip.model';
+import { FechasPipe } from '../../../shared/pipes/fechas.pipe';
+import { AppCurrencyPipe } from '../../../shared/pipes/currency.pipe';
+import { DescriptionPipe } from '../../../shared/pipes/description.pipe';
+import { DificultadPipe } from '../../../shared/pipes/dificultad.pipe';
+import { SoldOutPipe } from '../../../shared/pipes/sold-out.pipe';
 
 @Component({
   selector: 'app-trip-card',
-  imports: [DatePipe],
+  imports: [FechasPipe, AppCurrencyPipe, DescriptionPipe, DificultadPipe, SoldOutPipe],
   templateUrl: './trip-card.component.html',
 })
 export class TripCardComponent {
@@ -20,9 +24,9 @@ export class TripCardComponent {
   currentRole = this.authService.currentRole;
 
   readonly difficultyConfig = {
-    EASY:   { label: 'Easy',   classes: 'bg-green-100 text-green-700' },
-    MEDIUM: { label: 'Medium', classes: 'bg-yellow-100 text-yellow-700' },
-    HARD:   { label: 'Hard',   classes: 'bg-red-100 text-red-700' },
+    EASY: 'bg-green-100 text-green-700',
+    MEDIUM: 'bg-yellow-100 text-yellow-700',
+    HARD: 'bg-red-100 text-red-700',
   };
 
   getTotalPrice(trip: Trip): number {
