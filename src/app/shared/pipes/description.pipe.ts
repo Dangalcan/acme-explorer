@@ -15,6 +15,23 @@ export class DescriptionPipe implements PipeTransform {
       return text;
     }
 
-    return `${text.slice(0, maxLength).trimEnd()}...`;
+    const words = text.split(/\s+/);
+    let result = '';
+
+    for (const word of words) {
+      const next = result ? `${result} ${word}` : word;
+
+      if (next.length > maxLength) {
+        break;
+      }
+
+      result = next;
+    }
+
+    if (!result) {
+      return `${text.slice(0, maxLength).trimEnd()}...`;
+    }
+
+    return `${result}...`;
   }
 }
