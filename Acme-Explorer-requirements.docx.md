@@ -1,6 +1,6 @@
 # Acme Explorer
 
-Acme Explorer, Inc. is a company that organises adventurous trips around the world. The goal of this project is to develop a web information system that Acme Explorer, Inc. can use to run their business.  This document provides an informal requirement specification. Ask your lecturers for clarifications and details, if necessary.
+Acme Explorer, Inc. is a company that organises adventurous trips around the world. The goal of this project is to develop a web information system that Acme Explorer, Inc. can use to run their business. This document provides an informal requirement specification. Ask your lecturers for clarifications and details, if necessary. 
 
 # **C-level requirements**
 
@@ -43,7 +43,7 @@ Acme Explorer, Inc. is a company that organises adventurous trips around the wor
 ## **Non-functional requirements**
 
 11. The system must be available in English and Spanish.  (The data themselves are not required to be available in several languages, only the messages that the system displays.)  
-12. The list of applications should be rendered in an accordion layout, and they must be somehow differentiated by their status.   
+12. The list of applications should be rendered in a datatable for managers or in an accordion layout for explorers, and they must be somehow differentiated by their status.
 13. Every time the system displays a trip, it should show the number of available places for it. This value is computed as the difference between the maximum number of participants and the number of accepted applications.
 
 # **B-level requirements**
@@ -55,8 +55,8 @@ Acme Explorer, Inc. is a company that organises adventurous trips around the wor
 ## **Functional requirements**
 
 15. An actor who is authenticated as an explorer must be able to:  
-1. Manage his or her finder, which includes modifying it and consulting its results, that is, the trips that meet the search criteria.  
-2. Customise the appearance of Acme Explorer to suit their likings, in order to achieve a better UX. Explorers should be able to customize the CSS style (choosing from at least two different styles, light and dark), and default language used to display the app in their devices. These configurations should be stored in their browsing devices.   
+1. Manage his or her finder, which includes modifying it and consulting its results, that is, the trips that meet the search criteria. The finder can be persisted in the browser’s local storage.  
+2. Customise the appearance of Acme Explorer to suit their likings, in order to achieve a better UX. Explorers should be able to customize the CSS style (choosing from at least two different styles, light and dark).
 16. An actor who is authenticated as an administrator must be able to:  
 1. Display a dashboard with the following information:  
    * The average price range that explorers indicate in their finders.  
@@ -82,7 +82,6 @@ Acme Explorer, Inc. is a company that organises adventurous trips around the wor
     1. Manage their favourite list, which includes create, list, update or delete them.   
     2. Submit a review for a trip, provided that he or she has an accepted application for that trip and the trip has already finished (only one review per explorer is accepted).  
     3. Filter their favourite lists according to a keyword, so that the system should only display lists that include the keyword in its name.  
-    4. Synchronise their favourite lists with an online server, so that these lists can be accessible from other devices. Consult requirement 28 to learn more about this.  
 24. An actor who is authenticated as an administrator must be able to:  
     1. Display a dashboard with the following information:  
        1. The top 5 trips with the highest average rating.  
@@ -94,8 +93,7 @@ Acme Explorer, Inc. is a company that organises adventurous trips around the wor
 
 25. The system must compute and display the average rating of each trip whenever the trip details are shown.  
 26. Whenever an explorer displays his or her favourite lists, the trips that are not available anymore either because they have been expired or cancelled, should been displayed as disabled. If the trip is about to take place, they must be somehow highlighted.  
-27. Favourite lists synchronisation (requirement 25.1) is a prospective feature in Acme Explorer, but it is not clear if it will be finally deployed. Thus, this requirement should be implemented using JSON-server as a mockup back-end server for the time being. This change will not be propagated to the actual back-end until Acme Explorer has tested and approved this feature.  
-
+27. Favourite lists is a prospective feature in Acme Explorer, but it is not clear if it will be finally deployed. Thus, this requirement should be implemented using JSON-server as a mockup back-end server for the time being. This change will not be propagated to the actual back-end until Acme Explorer has tested and the feature approved.
 ## **A+ Tasks**
 
 Contact your lecturers to propose an A+ task that your group wish to develop. They should be related to other technologies that are not learnt during the course of the subject and must be related to the deliverable being devised. It is required to include a document explaining your choice and how the task was carried out.
