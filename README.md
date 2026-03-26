@@ -6,14 +6,40 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 In order to login, at this current moment we offer the following user credentials (in the future there will be more):
 
+### Admin
+
 user:
 ```text
-john-doe@mail.com
+admin@acme-explorer.com
 ```
 
 password:
 ```text
-john-doe
+changeMe1@
+```
+
+### Explorer
+
+user:
+```text
+explorer@acme-explorer.com
+```
+
+password:
+```text
+changeMe1@
+```
+
+### Manager
+
+user:
+```text
+manager@acme-explorer.com
+```
+
+password:
+```text
+changeMe1@
 ```
 
 ## Development server
