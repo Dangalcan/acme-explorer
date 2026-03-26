@@ -12,14 +12,15 @@ import { SettingsComponent } from './features/settings/settings.component';
 import { CreateManagerComponent } from './features/admin/create-manager/create-manager.component';
 import { UsersListComponent } from './features/admin/users-list/users-list.component';
 import { adminGuard } from './core/guards/admin-guard';
+import { explorerGuard } from './core/guards/explorer-guard';
 
 export const routes: Routes = [
   { path: 'trips', component: TripListComponent },
   { path: 'trips/:id', component: TripDisplayComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'applications', component: ApplicationsComponent },
-  { path: 'finder', component: FinderComponent },
+  { path: 'applications', component: ApplicationsComponent, canActivate: [explorerGuard] },
+  { path: 'finder', component: FinderComponent , canActivate: [explorerGuard]  },
   { path: 'admin/dashboard', component: DashboardComponent, canActivate: [adminGuard] },
   { path: 'settings', component: SettingsComponent },
   { path: 'admin/create-manager', component: CreateManagerComponent, canActivate: [adminGuard] },

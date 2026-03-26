@@ -8,8 +8,10 @@
 
   <div class="flex items-center gap-4 text-base font-medium">
     <a mat-button routerLink="/trips" i18n>Trips</a>
-    <a mat-button routerLink="/applications" i18n>Applications</a>
-    <a mat-button routerLink="/finder" i18n>Finder</a>
+    @if (currentRole() === 'explorer'){
+      <a mat-button routerLink="/applications" i18n>Applications</a>
+      <a mat-button routerLink="/finder" i18n>Finder</a>
+    }
     <a mat-button routerLink="/settings" i18n>Settings</a>
     @if (currentRole() === 'administrator') {
       <button mat-button [matMenuTriggerFor]="adminMenu" i18n>Admin</button>
