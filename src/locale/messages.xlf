@@ -530,6 +530,314 @@
           <context context-type="linenumber">25,26</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="3587471416609560950" datatype="html">
+        <source>Users</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users-list/users-list.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1823049701527030869" datatype="html">
+        <source>All registered actors in Firebase</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users-list/users-list.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5049398765432198760" datatype="html">
+        <source>New Manager</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users-list/users-list.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2918374650198237461" datatype="html">
+        <source>No users found.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users-list/users-list.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6734891023456712309" datatype="html">
+        <source>Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users-list/users-list.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4768749765465246664" datatype="html">
+        <source>Email</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users-list/users-list.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8120934756123098745" datatype="html">
+        <source>Role</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users-list/users-list.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3456781209834561237" datatype="html">
+        <source>Phone</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users-list/users-list.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7890123456789012348" datatype="html">
+        <source>Firebase UID</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users-list/users-list.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2345678901234567894" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {1 user total} other {<x id="INTERPOLATION" equiv-text="{{actors().length}}"/> users total}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users-list/users-list.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9012345678901234565" datatype="html">
+        <source>Failed to load users. Check Firestore permissions.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/users-list/users-list.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1234567890123456781" datatype="html">
+        <source>Create Manager Account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6789012345678901232" datatype="html">
+        <source>Add a new manager to Acme Explorer</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3210987654321098763" datatype="html">
+        <source> Name <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-[#b21c2b]&quot;&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">26,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8765432109876543214" datatype="html">
+        <source>John</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4321098765432109875" datatype="html">
+        <source> Surname <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-[#b21c2b]&quot;&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">40,42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9876543210987654326" datatype="html">
+        <source>Doe</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5432109876543210987" datatype="html">
+        <source> Email <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-[#b21c2b]&quot;&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">55,57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1098765432109876548" datatype="html">
+        <source>manager@acme.com</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6543210987654321099" datatype="html">
+        <source> Phone number <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-slate-400 font-normal&quot;&gt;"/>(optional)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">68,70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2109876543210987650" datatype="html">
+        <source> Address <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-slate-400 font-normal&quot;&gt;"/>(optional)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">80,82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4536819007056494686" datatype="html">
+        <source>123 Main St, City</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7654321098765432101" datatype="html">
+        <source> Password <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-[#b21c2b]&quot;&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">93,95</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7822889343394571353" datatype="html">
+        <source>Min 8 chars, upper, lower, number &amp; symbol</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">98</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3210876543210987652" datatype="html">
+        <source> Confirm Password <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-[#b21c2b]&quot;&gt;"/>*<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">106,108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8765109876543210983" datatype="html">
+        <source>Repeat the password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8132424293432274889" datatype="html">
+        <source> Back </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">131</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1041104936823929398" datatype="html">
+        <source>Creating…</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">141</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5678901234567890124" datatype="html">
+        <source>Create Manager</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.html</context>
+          <context context-type="linenumber">144</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3456789012345678905" datatype="html">
+        <source>Name is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7890123456789012346" datatype="html">
+        <source>Name must be at most <x id="INTERPOLATION" equiv-text="${this.validation.name.maxLength}"/> characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2345678901234567897" datatype="html">
+        <source>Surname is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6789012345678901238" datatype="html">
+        <source>Surname must be at most <x id="INTERPOLATION" equiv-text="${this.validation.surname.maxLength}"/> characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1234567890123456789" datatype="html">
+        <source>Email is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5678901234567890120" datatype="html">
+        <source>Invalid phone number format</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9012345678901234561" datatype="html">
+        <source>Address must be at most <x id="INTERPOLATION" equiv-text="${this.validation.address.maxLength}"/> characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3456789012345678902" datatype="html">
+        <source>Password must be at least 8 characters and include uppercase, lowercase, number, and special character (@$!%*?&amp;)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7890123456789012343" datatype="html">
+        <source>Passwords do not match</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2345678901234567894" datatype="html">
+        <source>Manager account created successfully for <x id="INTERPOLATION" equiv-text="${this.email().trim()}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">99</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6789012345678901235" datatype="html">
+        <source>This email is already registered</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1234567890123456786" datatype="html">
+        <source>Invalid email address</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">112</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5678901234567890127" datatype="html">
+        <source>Password is too weak</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">114</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9012345678901234568" datatype="html">
+        <source>Email/password registration is not enabled</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3456789012345678909" datatype="html">
+        <source>Account creation failed. Please try again.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/admin/create-manager/create-manager.component.ts</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -2,8 +2,8 @@
 
   <div class="flex items-center justify-between mb-8">
     <div>
-      <h1 class="text-2xl font-bold text-[#2c3e50]">Users</h1>
-      <p class="text-slate-500 text-sm mt-1">All registered actors in Firebase</p>
+      <h1 class="text-2xl font-bold text-[#2c3e50]" i18n>Users</h1>
+      <p class="text-slate-500 text-sm mt-1" i18n>All registered actors in Firebase</p>
     </div>
     <a routerLink="/admin/create-manager"
        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723]
@@ -11,7 +11,7 @@
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
       </svg>
-      New Manager
+      <ng-container i18n>New Manager</ng-container>
     </a>
   </div>
 
@@ -27,17 +27,17 @@
       {{ errorMessage() }}
     </div>
   } @else if (actors().length === 0) {
-    <p class="text-slate-500 text-center py-20">No users found.</p>
+    <p class="text-slate-500 text-center py-20" i18n>No users found.</p>
   } @else {
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
       <table class="w-full text-sm">
         <thead class="bg-slate-50 border-b border-slate-200">
           <tr>
-            <th class="px-5 py-3 text-left font-semibold text-slate-600">Name</th>
-            <th class="px-5 py-3 text-left font-semibold text-slate-600">Email</th>
-            <th class="px-5 py-3 text-left font-semibold text-slate-600">Role</th>
-            <th class="px-5 py-3 text-left font-semibold text-slate-600">Phone</th>
-            <th class="px-5 py-3 text-left font-semibold text-slate-600 hidden md:table-cell">Firebase UID</th>
+            <th class="px-5 py-3 text-left font-semibold text-slate-600" i18n>Name</th>
+            <th class="px-5 py-3 text-left font-semibold text-slate-600" i18n>Email</th>
+            <th class="px-5 py-3 text-left font-semibold text-slate-600" i18n>Role</th>
+            <th class="px-5 py-3 text-left font-semibold text-slate-600" i18n>Phone</th>
+            <th class="px-5 py-3 text-left font-semibold text-slate-600 hidden md:table-cell" i18n>Firebase UID</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100">
@@ -57,8 +57,8 @@
           }
         </tbody>
       </table>
-      <div class="px-5 py-3 bg-slate-50 border-t border-slate-200 text-xs text-slate-400">
-        {{ actors().length }} user{{ actors().length === 1 ? '' : 's' }} total
+      <div class="px-5 py-3 bg-slate-50 border-t border-slate-200 text-xs text-slate-400" i18n>
+        {actors().length, plural, =1 {1 user total} other {{{actors().length}} users total}}
       </div>
     </div>
   }

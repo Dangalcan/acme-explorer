@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '../../../infrastructure/firebase.config';
@@ -43,7 +43,7 @@ export class UsersListComponent implements OnInit {
       this.actors.set(rows);
     } catch (err) {
       console.error(err);
-      this.errorMessage.set('Failed to load users. Check Firestore permissions.');
+      this.errorMessage.set($localize`Failed to load users. Check Firestore permissions.`);
     } finally {
       this.isLoading.set(false);
     }
