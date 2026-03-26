@@ -7,8 +7,11 @@ import { NotFoundComponent } from './core/not-found/not-found.component';
 import { ForbiddenComponent } from './core/forbidden/forbidden.component';
 import { ApplicationsComponent } from './features/applications/applications.component';
 import { FinderComponent } from './features/finder/finder.component';
-import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { DashboardComponent } from './features/admin/dashboard/dashboard.component';
 import { SettingsComponent } from './features/settings/settings.component';
+import { CreateManagerComponent } from './features/admin/create-manager/create-manager.component';
+import { UsersListComponent } from './features/admin/users-list/users-list.component';
+import { adminGuard } from './core/guards/admin-guard';
 
 export const routes: Routes = [
   { path: 'trips', component: TripListComponent },
@@ -17,8 +20,10 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'applications', component: ApplicationsComponent },
   { path: 'finder', component: FinderComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'admin/dashboard', component: DashboardComponent, canActivate: [adminGuard] },
   { path: 'settings', component: SettingsComponent },
+  { path: 'admin/create-manager', component: CreateManagerComponent, canActivate: [adminGuard] },
+  { path: 'admin/users', component: UsersListComponent, canActivate: [adminGuard] },
   { path: 'forbidden', component: ForbiddenComponent },
   { path: '', redirectTo: '/trips', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
