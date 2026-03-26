@@ -10,8 +10,15 @@
     <a mat-button routerLink="/trips" i18n>Trips</a>
     <a mat-button routerLink="/applications" i18n>Applications</a>
     <a mat-button routerLink="/finder" i18n>Finder</a>
-    <a mat-button routerLink="/dashboard" i18n>Dashboard</a>
     <a mat-button routerLink="/settings" i18n>Settings</a>
+    @if (currentRole() === 'administrator') {
+      <button mat-button [matMenuTriggerFor]="adminMenu" i18n>Admin</button>
+      <mat-menu #adminMenu="matMenu">
+        <a mat-menu-item routerLink="/admin/dashboard" i18n>Dashboard</a>
+        <a mat-menu-item routerLink="/admin/users" i18n>Users list</a>
+        <a mat-menu-item routerLink="/admin/create-manager" i18n>Create manager</a>
+      </mat-menu>
+    }
   </div>
 
   <div class="flex items-center gap-4 text-sm font-medium">
