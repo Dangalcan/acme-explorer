@@ -88,8 +88,22 @@ export class ApplicationsComponent {
 
   readonly explorerApplications = computed(() => {
     const explorerId = this.currentExplorerId();
+    const applications = this.mockApplications();
 
-    return this.mockApplications()
+    const matchingByCurrentUser = applications.filter((app) => app.explorerId === explorerId);
+
+    if (matchingByCurrentUser.length > 0) {
+      return matchingByCurrentUser.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    }
+
+    // Keep explorer demo data visible even if Firebase UID differs from mock IDs.
+    if (this.currentRole() === 'explorer') {
+      return applications
+        .filter((app) => app.explorerId === this.fallbackExplorerId)
+        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    }
+
+    return applications
       .filter((app) => app.explorerId === explorerId)
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   });
