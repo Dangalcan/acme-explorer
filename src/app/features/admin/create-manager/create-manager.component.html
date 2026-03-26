@@ -1,0 +1,172 @@
+<div class="min-h-screen bg-slate-100 flex items-center justify-center px-4 py-10">
+
+  <div class="animate-slide-up w-full max-w-md bg-white rounded-2xl shadow-xl p-8"
+       [class.animate-shake]="isShaking()"
+       (animationend)="isShaking.set(false)">
+
+    <!-- Title -->
+    <div class="animate-fade-in text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-50 border border-red-100 mb-4">
+        <svg class="w-8 h-8 text-[#b21c2b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-bold text-[#2c3e50]">Create Manager Account</h1>
+      <p class="text-slate-500 text-sm mt-1">Add a new manager to Acme Explorer</p>
+    </div>
+
+    <!-- Form -->
+    <div class="space-y-5">
+
+      <!-- Name + Surname row -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+            Name <span class="text-[#b21c2b]">*</span>
+          </label>
+          <input
+            type="text"
+            [ngModel]="name()"
+            (ngModelChange)="name.set($event)"
+            placeholder="John"
+            [maxlength]="validation.name.maxLength"
+            class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
+                   focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+            Surname <span class="text-[#b21c2b]">*</span>
+          </label>
+          <input
+            type="text"
+            [ngModel]="surname()"
+            (ngModelChange)="surname.set($event)"
+            placeholder="Doe"
+            [maxlength]="validation.surname.maxLength"
+            class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
+                   focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          Email <span class="text-[#b21c2b]">*</span>
+        </label>
+        <input
+          type="email"
+          [ngModel]="email()"
+          (ngModelChange)="email.set($event)"
+          placeholder="manager@acme.com"
+          class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
+                 focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">Phone number
+          <span class="text-slate-400 font-normal">(optional)</span>
+        </label>
+        <input
+          type="tel"
+          [ngModel]="phoneNumber()"
+          (ngModelChange)="phoneNumber.set($event)"
+          placeholder="+1234567890"
+          class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
+                 focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">Address
+          <span class="text-slate-400 font-normal">(optional)</span>
+        </label>
+        <input
+          type="text"
+          [ngModel]="address()"
+          (ngModelChange)="address.set($event)"
+          placeholder="123 Main St, City"
+          [maxlength]="validation.address.maxLength"
+          class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
+                 focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          Password <span class="text-[#b21c2b]">*</span>
+        </label>
+        <input
+          type="password"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+          placeholder="Min 8 chars, upper, lower, number & symbol"
+          class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
+                 focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          Confirm Password <span class="text-[#b21c2b]">*</span>
+        </label>
+        <input
+          type="password"
+          [ngModel]="confirmPassword()"
+          (ngModelChange)="confirmPassword.set($event)"
+          placeholder="Repeat the password"
+          class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
+                 focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
+        />
+      </div>
+
+      @if (errorMessage()) {
+        <p class="animate-fade-in text-[#b21c2b] text-sm flex items-center gap-1.5">
+          <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          {{ errorMessage() }}
+        </p>
+      }
+
+      @if (successMessage()) {
+        <p class="animate-fade-in text-green-600 text-sm flex items-center gap-1.5">
+          <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          {{ successMessage() }}
+        </p>
+      }
+
+      <!-- Buttons -->
+      <div class="flex gap-3 pt-1">
+        <a routerLink="/dashboard"
+           class="flex-1 py-2.5 rounded-lg bg-[#6c757d] hover:bg-[#5a6268] active:scale-95
+                  text-white font-bold text-center transition-all duration-150 cursor-pointer">
+          Back
+        </a>
+        <button
+          type="button"
+          (click)="createManager()"
+          [disabled]="isLoading()"
+          class="flex-1 py-2.5 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723] active:scale-95
+                 text-white font-bold transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed">
+          @if (isLoading()) {
+            <span class="inline-flex items-center gap-2 justify-center">
+              <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+              </svg>
+              Creating…
+            </span>
+          } @else {
+            Create Manager
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

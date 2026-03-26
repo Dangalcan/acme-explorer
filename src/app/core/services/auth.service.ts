@@ -1,8 +1,9 @@
 import { Injectable, signal } from '@angular/core';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, User, onAuthStateChanged } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, User, onAuthStateChanged, getAuth } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../../infrastructure/firebase.config';
-import { AnyActor, Explorer } from '../../shared/actor.model';
+import { initializeApp, deleteApp } from 'firebase/app';
+import { auth, db, firebaseConfig } from '../../infrastructure/firebase.config';
+import { AnyActor, Explorer, Manager } from '../../shared/actor.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +11,18 @@ import { AnyActor, Explorer } from '../../shared/actor.model';
 export class AuthService {
   currentUser = signal<User | null>(null);
   currentRole = signal<AnyActor['role'] | null>(null);
+  isAuthLoading = signal(true);
+
+  readonly ready: Promise<void>;
+  private readyResolve!: () => void;
 
   constructor() {
+    this.ready = new Promise<void>(resolve => {
+      this.readyResolve = resolve;
+    });
+
     onAuthStateChanged(auth, async (user) => {
+      this.isAuthLoading.set(true);
       this.currentUser.set(user);
       if (user) {
         const snap = await getDoc(doc(db, 'actors', user.uid));
@@ -21,6 +31,8 @@ export class AuthService {
       } else {
         this.currentRole.set(null);
       }
+      this.isAuthLoading.set(false);
+      this.readyResolve();
     });
   }
 
@@ -35,6 +47,21 @@ export class AuthService {
       Object.entries({ ...rest, version: 0 }).filter(([, v]) => v !== undefined)
     );
     await setDoc(doc(db, 'actors', credential.user.uid), actorDoc);
+  }
+
+  async createManager(actor: Omit<Manager, 'id' | 'version'>) {
+    const secondaryApp = initializeApp(firebaseConfig, `manager-creation-${Date.now()}`);
+    const secondaryAuth = getAuth(secondaryApp);
+    try {
+      const credential = await createUserWithEmailAndPassword(secondaryAuth, actor.email, actor.password);
+      const { password, ...rest } = actor;
+      const actorDoc = Object.fromEntries(
+        Object.entries({ ...rest, version: 0 }).filter(([, v]) => v !== undefined)
+      );
+      await setDoc(doc(db, 'actors', credential.user.uid), actorDoc);
+    } finally {
+      await deleteApp(secondaryApp);
+    }
   }
 
   async logout() {
