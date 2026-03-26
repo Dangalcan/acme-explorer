@@ -19,26 +19,26 @@ Acme Explorer, Inc. is a company that organises adventurous trips around the wor
    2. ~~Browse the list of trips and display them.~~ ***DONE***
    3. Search for trips using a single key word that must be contained either in their tickers, titles, or descriptions.  
 7. An actor who is authenticated must be able to:  
-1. Do the same as an actor who is not authenticated, except registering to the system.  
-2. Edit his or her personal data.  
+   1. Do the same as an actor who is not authenticated, except registering to the system.  
+   2. Edit his or her personal data.  
 8. An actor who is authenticated as a manager must be able to:  
-1. Manage an arbitrary number of trips, which includes creating and listing them, and modifying or deleting them **as long as it is at least 5 days before the starting date, and it does not have any paid applications**.  
-2. Manage the applications for the trips that they manage, which includes listing them and changing their status from “PENDING” to “REJECTED” or “DUE”.  
-3. Cancel any trip as long as there is one week left before its starting date. A manager should not be able to cancel a trip if it there is at least one paid application for that trip.  
+   1. Manage an arbitrary number of trips, which includes creating and listing them, and modifying or deleting them **as long as it is at least 5 days before the starting date, and it does not have any paid applications**.  
+   2. Manage the applications for the trips that they manage, which includes listing them and changing their status from “PENDING” to “REJECTED” or “DUE”.  
+   3. Cancel any trip as long as there is one week left before its starting date. A manager should not be able to cancel a trip if it there is at least one paid application for that trip.  
 9. An actor who is authenticated as an explorer must be able to:  
-1. Apply for a trip as long as it has not started yet.  
-2. List the applications that he or she’s made, grouped by status.  
-3. Pay a trip with status “DUE”  
-4. Cancel an application with status “PENDING” or “DUE”. Note that it is not possible to cancel an application that has already been paid.  
+   1. Apply for a trip as long as it has not started yet.  
+   2. List the applications that he or she’s made, grouped by status.  
+   3. Pay a trip with status “DUE”  
+   4. Cancel an application with status “PENDING” or “DUE”. Note that it is not possible to cancel an application that has already been paid.  
 10. An actor who is authenticated as an administrator must be able to:  
-1. Create accounts for new managers.  
-2. Display a dashboard with the following information:  
-   * The average, the minimum, the maximum, and the standard deviation of the number of trips managed per manager.  
-     * The average, the minimum, the maximum, and the standard deviation of the number of applications per trip.  
-     * The ratio of applications grouped by status.  
-     * The number of available seats of the trips that will take place within the current month but have not started yet.  
-     * The number of available seats of the trips that will take place within the current month but have not started yet.  
-     * The total revenue generated per month in the current year.
+   1. ~~Create accounts for new managers.~~ ***DONE***
+   2. Display a dashboard with the following information:  
+      * The average, the minimum, the maximum, and the standard deviation of the number of trips managed per manager.  
+      * The average, the minimum, the maximum, and the standard deviation of the number of applications per trip.  
+      * The ratio of applications grouped by status.  
+      * The number of available seats of the trips that will take place within the current month but have not started yet.  
+      * The number of available seats of the trips that will take place within the current month but have not started yet.  
+      * The total revenue generated per month in the current year.
 
 ## **Non-functional requirements**
 
@@ -107,3 +107,24 @@ Contact your lecturers to propose an A+ task that your group wish to develop. Th
 2. ~~Implement UI animations for the login, register, or master page interactions using Angular’s animation module.~~ ***DONE***
 
 3. Use Angular DevTools or similar tools to analyse component structure, change detection, and routing behaviour, documenting the findings.
+
+### DO2
+
+1. Integrate a third-party API providing weather information, so that when a forthcoming
+trip is displayed, the application shows the weather forecast for the corresponding
+location and date.
+
+2. Integrate a third-party API for currency conversion to adapt trip prices according to the
+user’s locale.
+
+3. Use the browser’s Geolocation API to obtain the user’s current location and display
+nearby trips.
+
+4. Practice debugging and troubleshooting: learn how to identify and resolve issues in an
+Angular application using developer tools, Angular CLI commands (e.g., ng serve, ng
+build, ng test), and other diagnostic tools.
+
+5. Implement lazy loading to improve application performance by loading modules only
+when they are required.
+
+6. Use a library to support dynamic language switching at runtime.
