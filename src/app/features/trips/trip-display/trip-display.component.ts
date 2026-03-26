@@ -6,31 +6,7 @@ import { map } from 'rxjs';
 import { TripService } from '../trip.service';
 import { TripCardComponent } from '../trip-card/trip-card.component';
 import { AuthService } from '../../../core/services/auth.service';
-import { ApplicationsDataService } from '../../applications/applications-data.service';
-import { AppStatus } from '../../applications/application.model';
-
-interface ApplicationWithTrip {
-  id: string;
-  version: number;
-  tripId: string;
-  explorerId: string;
-  createdAt: Date;
-  status: AppStatus;
-  comments?: string;
-  rejectionReason?: string;
-  tripTitle?: string;
-}
-
-interface Actor {
-  id: string;
-  version: number;
-  role: 'explorer' | 'manager' | 'administrator';
-  name: string;
-  surname: string;
-  email: string;
-  phoneNumber: string;
-  address: string;
-}
+import { Application, AppStatus } from '../../applications/application.model';
 
 @Component({
   selector: 'app-trip-display',
@@ -42,42 +18,77 @@ export class TripDisplayComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private tripService = inject(TripService);
   private authService = inject(AuthService);
-  private applicationsDataService = inject(ApplicationsDataService);
 
   private id = toSignal(this.route.paramMap.pipe(map(p => p.get('id') ?? '')));
 
   trip = computed(() => this.tripService.getById(this.id() ?? ''));
 
-  readonly currentUser = this.authService.currentUser;
   readonly currentRole = this.authService.currentRole;
 
-  // Data signals
-  readonly applications = signal<ApplicationWithTrip[]>([]);
-  readonly actors = signal<Actor[]>([]);
-
-  // State signals
-  readonly isLoadingApplications = signal(false);
-  readonly loadApplicationsError = signal<string | null>(null);
-
-  // Temporary UID to actor ID mapping
-  private readonly uidToActorId: Record<string, string> = {
-    'dALmY94uwtRtkt4jnWywUMV5Rz82': 'manager-1', // manager@acme-explorer.com
-  };
-
-  readonly currentActorId = computed(() => {
-    const user = this.currentUser();
-    const actors = this.actors();
-
-    if (!user) return null;
-
-    const byUid = actors.find((a) => a.id === user.uid);
-    if (byUid) return byUid.id;
-
-    const byEmail = actors.find((a) => a.email === user.email);
-    if (byEmail) return byEmail.id;
-
-    return this.uidToActorId[user.uid] ?? null;
-  });
+  readonly applications = signal<Application[]>([
+    {
+      id: 'app-1',
+      version: 0,
+      tripId: '1',
+      explorerId: 'explorer-1',
+      createdAt: new Date('2026-01-10T09:00:00.000Z'),
+      status: 'ACCEPTED',
+      comments: 'Very excited about the Alps trip!',
+    },
+    {
+      id: 'app-2',
+      version: 0,
+      tripId: '3',
+      explorerId: 'explorer-1',
+      createdAt: new Date('2026-01-15T11:30:00.000Z'),
+      status: 'PENDING',
+      comments: 'Huge fan of Japanese culture.',
+    },
+    {
+      id: 'app-3',
+      version: 0,
+      tripId: '2',
+      explorerId: 'explorer-2',
+      createdAt: new Date('2026-02-01T08:00:00.000Z'),
+      status: 'ACCEPTED',
+    },
+    {
+      id: 'app-4',
+      version: 0,
+      tripId: '4',
+      explorerId: 'explorer-2',
+      createdAt: new Date('2026-02-20T14:00:00.000Z'),
+      status: 'REJECTED',
+      comments: 'Interested in Amazon wildlife.',
+      rejectionReason: 'Trip is fully booked.',
+    },
+    {
+      id: 'app-5',
+      version: 0,
+      tripId: '3',
+      explorerId: 'explorer-3',
+      createdAt: new Date('2026-01-20T10:00:00.000Z'),
+      status: 'ACCEPTED',
+    },
+    {
+      id: 'app-6',
+      version: 0,
+      tripId: '4',
+      explorerId: 'explorer-3',
+      createdAt: new Date('2026-03-01T09:30:00.000Z'),
+      status: 'PENDING',
+      comments: 'I have jungle survival training.',
+    },
+    {
+      id: 'app-7',
+      version: 0,
+      tripId: '1',
+      explorerId: 'explorer-2',
+      createdAt: new Date('2026-01-25T16:00:00.000Z'),
+      status: 'CANCELLED',
+      comments: 'Schedule conflict, unfortunately.',
+    },
+  ]);
 
   // Filter applications for current trip (manager view)
   readonly tripApplications = computed(() => {
@@ -108,22 +119,10 @@ export class TripDisplayComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.loadApplicationsData();
+    this.isLoadingApplications.set(false);
   }
 
-  private loadApplicationsData(): void {
-    this.isLoadingApplications.set(true);
-    this.loadApplicationsError.set(null);
-
-    try {
-      const { applications, actors } = this.applicationsDataService.getApplicationsData();
-      this.actors.set(actors);
-      this.applications.set(applications);
-    } catch {
-      this.loadApplicationsError.set('Failed to load applications.');
-    } finally {
-      this.isLoadingApplications.set(false);
-    }
-  }
+  readonly isLoadingApplications = signal(false);
+  readonly loadApplicationsError = signal<string | null>(null);
 }
 
