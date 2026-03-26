@@ -838,6 +838,27 @@
           <context context-type="linenumber">117</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="8341209876543210991" datatype="html">
+        <source>Administrator</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/pipes/user-role.pipe.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2765432109876543002" datatype="html">
+        <source>Manager</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/pipes/user-role.pipe.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6198765432109876543" datatype="html">
+        <source>Explorer</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/pipes/user-role.pipe.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

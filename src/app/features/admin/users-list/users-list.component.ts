@@ -1,5 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { UserRolePipe } from '../../../shared/pipes/user-role.pipe';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '../../../infrastructure/firebase.config';
 import { AnyActor } from '../../../shared/actor.model';
@@ -16,7 +17,7 @@ interface ActorRow {
 
 @Component({
   selector: 'app-users-list',
-  imports: [RouterLink],
+  imports: [RouterLink, UserRolePipe],
   templateUrl: './users-list.component.html',
 })
 export class UsersListComponent implements OnInit {
