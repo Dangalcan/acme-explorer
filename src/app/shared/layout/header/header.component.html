@@ -7,22 +7,29 @@
   </div>
 
   <div class="flex items-center gap-4 text-base font-medium">
-    <a mat-button routerLink="/trips">Trips</a>
-    <a mat-button routerLink="/applications">Applications</a>
-    <a mat-button routerLink="/finder">Finder</a>
-    <a mat-button routerLink="/dashboard">Dashboard</a>
-    <a mat-button routerLink="/settings">Settings</a>
+    <a mat-button routerLink="/trips" i18n>Trips</a>
+    <a mat-button routerLink="/applications" i18n>Applications</a>
+    <a mat-button routerLink="/finder" i18n>Finder</a>
+    <a mat-button routerLink="/settings" i18n>Settings</a>
+    @if (currentRole() === 'administrator') {
+      <button mat-button [matMenuTriggerFor]="adminMenu" i18n>Admin</button>
+      <mat-menu #adminMenu="matMenu">
+        <a mat-menu-item routerLink="/admin/dashboard" i18n>Dashboard</a>
+        <a mat-menu-item routerLink="/admin/users" i18n>Users list</a>
+        <a mat-menu-item routerLink="/admin/create-manager" i18n>Create manager</a>
+      </mat-menu>
+    }
   </div>
 
   <div class="flex items-center gap-4 text-sm font-medium">
     @if (currentUser()) {
-      <button mat-button type="button" (click)="logout()">Logout</button>
+      <button mat-button type="button" (click)="logout()" i18n>Logout</button>
     } @else {
       @if (router.url !== '/login') {
-        <button mat-button type="button" (click)="goToLogin()">Login</button>
+        <button mat-button type="button" (click)="goToLogin()" i18n>Login</button>
       }
       @if (router.url !== '/register') {
-        <a mat-raised-button routerLink="/register" color="primary">Register</a>
+        <a mat-raised-button routerLink="/register" color="primary" i18n>Register</a>
       }
     }
   </div>

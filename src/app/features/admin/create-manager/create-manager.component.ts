@@ -1,17 +1,16 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ACTOR_VALIDATION } from '../../../shared/actor.model';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-create-manager',
   imports: [FormsModule, RouterLink],
-  templateUrl: './register.component.html',
+  templateUrl: './create-manager.component.html',
 })
-export class RegisterComponent {
+export class CreateManagerComponent {
   private authService = inject(AuthService);
-  private router = inject(Router);
 
   name = signal('');
   surname = signal('');
@@ -21,21 +20,15 @@ export class RegisterComponent {
   password = signal('');
   confirmPassword = signal('');
   errorMessage = signal('');
+  successMessage = signal('');
   isShaking = signal(false);
   isLoading = signal(false);
 
   readonly validation = ACTOR_VALIDATION;
 
-  constructor() {
-    effect(() => {
-      if (this.authService.currentUser()) {
-        this.router.navigateByUrl('/');
-      }
-    });
-  }
-
-  async register() {
+  async createManager() {
     this.errorMessage.set('');
+    this.successMessage.set('');
 
     if (!this.name().trim()) {
       this.errorMessage.set($localize`Name is required`);
@@ -44,7 +37,7 @@ export class RegisterComponent {
     }
 
     if (this.name().trim().length > this.validation.name.maxLength) {
-      this.errorMessage.set($localize `Name must be at most ${this.validation.name.maxLength} characters`);
+      this.errorMessage.set($localize`Name must be at most ${this.validation.name.maxLength} characters`);
       this.triggerShake();
       return;
     }
@@ -56,7 +49,7 @@ export class RegisterComponent {
     }
 
     if (this.surname().trim().length > this.validation.surname.maxLength) {
-      this.errorMessage.set($localize `Surname must be at most ${this.validation.surname.maxLength} characters`);
+      this.errorMessage.set($localize`Surname must be at most ${this.validation.surname.maxLength} characters`);
       this.triggerShake();
       return;
     }
@@ -74,7 +67,7 @@ export class RegisterComponent {
     }
 
     if (this.address().trim().length > this.validation.address.maxLength) {
-      this.errorMessage.set($localize `Address must be at most ${this.validation.address.maxLength} characters`);
+      this.errorMessage.set($localize`Address must be at most ${this.validation.address.maxLength} characters`);
       this.triggerShake();
       return;
     }
@@ -93,16 +86,24 @@ export class RegisterComponent {
 
     this.isLoading.set(true);
     try {
-      await this.authService.register({
+      await this.authService.createManager({
         name: this.name().trim(),
         surname: this.surname().trim(),
-        email: this.email(),
+        email: this.email().trim(),
         phoneNumber: this.phoneNumber().trim() || undefined,
         address: this.address().trim() || undefined,
         password: this.password(),
-        role: 'explorer',
+        role: 'manager',
       });
-      await this.router.navigateByUrl('/');
+
+      this.successMessage.set($localize`Manager account created successfully for ${this.email().trim()}`);
+      this.name.set('');
+      this.surname.set('');
+      this.email.set('');
+      this.phoneNumber.set('');
+      this.address.set('');
+      this.password.set('');
+      this.confirmPassword.set('');
     } catch (err: any) {
       console.error(err);
       const FIREBASE_ERRORS: Record<string, string> = {
@@ -112,9 +113,7 @@ export class RegisterComponent {
         'auth/weak-password':        $localize`Password is too weak`,
         'auth/operation-not-allowed':$localize`Email/password registration is not enabled`,
       };
-      const msg =
-        FIREBASE_ERRORS[err?.code] ??
-        $localize`Registration failed. Please try again.`;
+      const msg = FIREBASE_ERRORS[err?.code] ?? $localize`Account creation failed. Please try again.`;
       this.errorMessage.set(msg);
       this.triggerShake();
     } finally {

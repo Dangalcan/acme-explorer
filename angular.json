@@ -13,6 +13,12 @@
           "style": "scss"
         }
       },
+      "i18n":{
+        "sourceLocale": "en-US",
+        "locales": {
+          "es": "src/locale/messages.es.xlf"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -29,9 +35,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
@@ -39,9 +43,13 @@
             },
             "ssr": {
               "entry": "src/server.ts"
-            }
+            },
+            "polyfills": ["@angular/localize/init"]
           },
           "configurations": {
+            "es": {
+              "localize": ["es"]
+            },
             "production": {
               "budgets": [
                 {
@@ -68,6 +76,9 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
+            "es": {
+              "buildTarget": "acme-explorer:build:es"
+            },
             "production": {
               "buildTarget": "acme-explorer:build:production"
             },

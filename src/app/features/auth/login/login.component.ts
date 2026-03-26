@@ -36,7 +36,7 @@ export class LoginComponent {
       await this.router.navigateByUrl('/');
     } catch (err) {
       console.error(err);
-      this.errorMessage.set('Invalid email or password');
+      this.errorMessage.set($localize `Invalid email or password`);
       this.triggerShake();
     } finally {
       this.isLoading.set(false);
