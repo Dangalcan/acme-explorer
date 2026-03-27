@@ -16,10 +16,10 @@
     <!-- Applications section for managers -->
     @if (currentRole() === 'manager') {
       <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mt-6">
-        <h2 class="text-lg font-bold text-slate-800 mb-4">Applications for this trip</h2>
+        <h2 class="text-lg font-bold text-slate-800 mb-4" i18n>Applications for this trip</h2>
 
         @if (isLoadingApplications()) {
-          <div class="bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 text-blue-700 text-sm">
+          <div class="bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 text-blue-700 text-sm" i18n>
             Loading applications...
           </div>
         }
@@ -29,7 +29,7 @@
           </div>
         }
         @else if (tripApplications().length === 0) {
-          <div class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-gray-700 text-sm">
+          <div class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-gray-700 text-sm" i18n>
             No applications yet.
           </div>
         }
@@ -38,20 +38,20 @@
             <table class="w-full text-sm">
               <thead>
                 <tr class="border-b border-slate-200">
-                  <th class="text-left py-3 px-4 font-semibold text-slate-700">Explorer</th>
-                  <th class="text-left py-3 px-4 font-semibold text-slate-700">Applied</th>
-                  <th class="text-left py-3 px-4 font-semibold text-slate-700">Status</th>
-                  <th class="text-left py-3 px-4 font-semibold text-slate-700">Comments</th>
+                  <th class="text-left py-3 px-4 font-semibold text-slate-700" i18n>Explorer</th>
+                  <th class="text-left py-3 px-4 font-semibold text-slate-700" i18n>Applied</th>
+                  <th class="text-left py-3 px-4 font-semibold text-slate-700" i18n>Status</th>
+                  <th class="text-left py-3 px-4 font-semibold text-slate-700" i18n>Comments</th>
                 </tr>
               </thead>
               <tbody>
-                @for (app of tripApplications(); track app.id) {
+                @for (app of paginatedTripApplications(); track app.id) {
                   <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
                     <td class="py-3 px-4 text-slate-800">{{ app.explorerId }}</td>
                     <td class="py-3 px-4 text-slate-600">{{ app.createdAt | date:'d MMM yyyy' }}</td>
                     <td class="py-3 px-4">
-                      <span class="text-xs font-semibold px-2 py-1 rounded-full border {{ statusClasses[app.status] }}">
-                        {{ app.status }}
+                      <span class="text-xs font-semibold px-2 py-1 rounded-full border {{ statusConfig[app.status].classes }}">
+                        {{ statusConfig[app.status].label }}
                       </span>
                     </td>
                     <td class="py-3 px-4 text-slate-600 max-w-xs truncate">
@@ -69,6 +69,53 @@
                 }
               </tbody>
             </table>
+          </div>
+          <div class="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">
+            <div class="font-medium">
+              <span i18n>Applications:</span>
+              {{ pageStartItem() }}–{{ pageEndItem() }} / {{ totalApplications() }}
+            </div>
+
+            <div class="flex items-center gap-2">
+              <label class="flex items-center gap-2">
+                <span i18n>Rows:</span>
+                <select
+                  class="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm"
+                  [value]="pageSize()"
+                  (change)="changePageSize($any($event.target).value)"
+                  aria-label="Rows per page"
+                  i18n-aria-label
+                >
+                  @for (size of pageSizeOptions; track size) {
+                    <option [value]="size">{{ size }}</option>
+                  }
+                </select>
+              </label>
+
+              <button
+                type="button"
+                class="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 disabled:opacity-50"
+                (click)="previousPage()"
+                [disabled]="currentPage() === 0"
+                i18n
+              >
+                Prev
+              </button>
+
+              <span class="min-w-[3rem] text-center font-medium">
+                {{ currentPage() + 1 }} / {{ totalPages() }}
+              </span>
+
+              <button
+                type="button"
+                class="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 disabled:opacity-50"
+                (click)="nextPage()"
+                [disabled]="currentPage() >= totalPages() - 1"
+                i18n
+              >
+                Next
+              </button>
+            </div>
           </div>
         }
       </div>
