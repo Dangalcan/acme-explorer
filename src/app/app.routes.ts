@@ -13,19 +13,36 @@ import { CreateManagerComponent } from './features/admin/create-manager/create-m
 import { UsersListComponent } from './features/admin/users-list/users-list.component';
 import { adminGuard } from './core/guards/admin-guard';
 import { explorerGuard } from './core/guards/explorer-guard';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
-  { path: 'trips', component: TripListComponent },
-  { path: 'trips/:id', component: TripDisplayComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: '', redirectTo: '/trips', pathMatch: 'full' },
+
+  {
+    path: 'trips',
+    children: [
+      { path: '', component: TripListComponent },
+      { path: ':id', component: TripDisplayComponent },
+    ],
+  },
+ 
   { path: 'applications', component: ApplicationsComponent, canActivate: [explorerGuard] },
   { path: 'finder', component: FinderComponent , canActivate: [explorerGuard]  },
-  { path: 'admin/dashboard', component: DashboardComponent, canActivate: [adminGuard] },
-  { path: 'settings', component: SettingsComponent },
-  { path: 'admin/create-manager', component: CreateManagerComponent, canActivate: [adminGuard] },
-  { path: 'admin/users', component: UsersListComponent, canActivate: [adminGuard] },
+
+  { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
+ 
+  {
+    path: 'admin',
+    canActivate: [adminGuard],
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'create-manager', component: CreateManagerComponent },
+      { path: 'users', component: UsersListComponent },
+    ],
+  },
+
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'forbidden', component: ForbiddenComponent },
-  { path: '', redirectTo: '/trips', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
 ];
