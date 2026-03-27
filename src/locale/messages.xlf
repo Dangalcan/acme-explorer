@@ -460,6 +460,142 @@
           <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="6282564192620237619" datatype="html">
+        <source>My Applications</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1649581098291838000" datatype="html">
+        <source>Track the status of your trip applications.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5412498556236269243" datatype="html">
+        <source> This view is only available for explorers. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.html</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4568139966477128016" datatype="html">
+        <source>No applications yet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.html</context>
+          <context context-type="linenumber">14,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8697570339214330908" datatype="html">
+        <source>When you apply for a trip, it will appear here.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.html</context>
+          <context context-type="linenumber">15,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4238444168354179734" datatype="html">
+        <source> Created: <x id="INTERPOLATION" equiv-text="{{ application.createdAt | fechas:&apos;d MMM yyyy, HH:mm&apos; }}"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.html</context>
+          <context context-type="linenumber">33,34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2385634023146528014" datatype="html">
+        <source>Application ID</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.html</context>
+          <context context-type="linenumber">62,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1462318977346081492" datatype="html">
+        <source>Trip ID</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.html</context>
+          <context context-type="linenumber">66,67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3807699453257291879" datatype="html">
+        <source>Comments</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.html</context>
+          <context context-type="linenumber">70,71</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.html</context>
+          <context context-type="linenumber">44,45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2155420995630976835" datatype="html">
+        <source>No comments provided.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.html</context>
+          <context context-type="linenumber">75,76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2222914600354616473" datatype="html">
+        <source>Rejection reason</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.html</context>
+          <context context-type="linenumber">81,82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="application.status.pending" datatype="html">
+        <source>Pending</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.ts</context>
+          <context context-type="linenumber">152</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="application.status.rejected" datatype="html">
+        <source>Rejected</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.ts</context>
+          <context context-type="linenumber">160</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="application.status.due" datatype="html">
+        <source>Due</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.ts</context>
+          <context context-type="linenumber">168</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="application.status.accepted" datatype="html">
+        <source>Accepted</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.ts</context>
+          <context context-type="linenumber">156</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="application.status.cancelled" datatype="html">
+        <source>Cancelled</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/applications/applications.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.ts</context>
+          <context context-type="linenumber">164</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="4200317694838753109" datatype="html">
         <source>Welcome back</source>
         <context-group purpose="location">
@@ -743,13 +879,6 @@
           <context context-type="linenumber">43,44</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="3807699453257291879" datatype="html">
-        <source>Comments</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.html</context>
-          <context context-type="linenumber">44,45</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="7394724388146889767" datatype="html">
         <source>Applications:</source>
         <context-group purpose="location">
@@ -797,41 +926,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.html</context>
           <context context-type="linenumber">127,128</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="application.status.pending" datatype="html">
-        <source>Pending</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.ts</context>
-          <context context-type="linenumber">152</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="application.status.accepted" datatype="html">
-        <source>Accepted</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.ts</context>
-          <context context-type="linenumber">156</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="application.status.rejected" datatype="html">
-        <source>Rejected</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.ts</context>
-          <context context-type="linenumber">160</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="application.status.cancelled" datatype="html">
-        <source>Cancelled</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.ts</context>
-          <context context-type="linenumber">164</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="application.status.due" datatype="html">
-        <source>Due</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/trips/trip-display/trip-display.component.ts</context>
-          <context context-type="linenumber">168</context>
         </context-group>
       </trans-unit>
       <trans-unit id="591594125118052917" datatype="html">
