@@ -47,7 +47,7 @@
         @for (list of favouriteLists(); track list.id) {
           <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
             <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-6">
-              <div class="flex-1">
+              <div class="flex-1 min-w-0">
                 @if (editingListId() === list.id) {
                   <div class="flex flex-col sm:flex-row gap-3">
                     <input
@@ -79,7 +79,9 @@
                   </div>
                 } @else {
                   <div>
-                    <h2 class="text-2xl font-bold text-slate-800">{{ list.name }}</h2>
+                    <h2 class="text-2xl font-bold text-slate-800 break-all">
+                      {{ list.name }}
+                    </h2>
                     <p class="text-sm text-slate-500 mt-1">
                       {{ list.tripIds.length }}
                       @if (list.tripIds.length === 1) {
