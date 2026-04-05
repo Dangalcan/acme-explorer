@@ -14,6 +14,7 @@ import { UsersListComponent } from './features/admin/users-list/users-list.compo
 import { adminGuard } from './core/guards/admin-guard';
 import { explorerGuard } from './core/guards/explorer-guard';
 import { authGuard } from './core/guards/auth-guard';
+import { FavouritesPageComponent } from './features/favourites/favourites-page.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/trips', pathMatch: 'full' },
@@ -28,6 +29,7 @@ export const routes: Routes = [
  
   { path: 'applications', component: ApplicationsComponent, canActivate: [explorerGuard] },
   { path: 'finder', component: FinderComponent , canActivate: [explorerGuard]  },
+  { path: 'favourites', component: FavouritesPageComponent, canActivate: [explorerGuard] },
 
   { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
  
