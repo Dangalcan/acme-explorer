@@ -84,6 +84,12 @@ export class FavouritesPageComponent {
   }
 
   deleteList(listId: string): void {
+    const confirmed = confirm(
+      $localize`:@@favourites.delete.confirm:Are you sure you want to delete this list?`
+    );
+
+    if (!confirmed) return;
+      
     this.favouritesService.deleteList(listId);
     this.selectedTripByListId.update(state => {
       const copy = { ...state };
@@ -134,6 +140,11 @@ export class FavouritesPageComponent {
   }
 
   removeTrip(listId: string, tripId: string): void {
+    const confirmed = confirm(
+      $localize`:@@favourites.trip.remove.confirm:Are you sure you want to remove this trip from the list?`
+    );
+
+    if (!confirmed) return;
     this.favouritesService.removeTripFromList(listId, tripId);
   }
 
