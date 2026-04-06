@@ -35,6 +35,12 @@
       <p class="text-xs text-slate-400 mt-2">
         {{ newListName().length }} / {{ maxNameLength }}
       </p>
+
+      @if (createListError(); as error) {
+        <p class="text-sm text-red-600 mt-2 font-medium">
+          {{ error }}
+        </p>
+      }
     </div>
 
     @if (!hasLists()) {
@@ -77,6 +83,11 @@
                       </button>
                     </div>
                   </div>
+                  @if (editListError(); as error) {
+                    <p class="text-sm text-red-600 mt-2 font-medium">
+                      {{ error }}
+                    </p>
+                  }
                 } @else {
                   <div>
                     <h2 class="text-2xl font-bold text-slate-800 break-all">
@@ -144,6 +155,11 @@
                     Add trip
                   </button>
                 </div>
+                @if (addTripErrorByListId()[list.id]; as error) {
+                  <p class="text-sm text-red-600 mt-3 font-medium">
+                    {{ error }}
+                  </p>
+                }
               }
             </div>
 
