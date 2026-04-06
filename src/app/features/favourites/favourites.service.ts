@@ -1,4 +1,5 @@
-import { Injectable, computed, effect, inject, signal } from '@angular/core';
+import { Injectable, computed, effect, inject, signal, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FavouriteList } from './favourite-list.model';
 import { AuthService } from '../../core/services/auth.service';
 import { TripService } from '../trips/trip.service';
@@ -12,8 +13,9 @@ export class FavouritesService {
 
   private authService = inject(AuthService);
   private tripService = inject(TripService);
+  private platformId = inject(PLATFORM_ID);
 
-  private allLists = signal<FavouriteList[]>(this.loadFromStorage());
+  private allLists = signal<FavouriteList[]>([]);
 
   readonly currentExplorerId = computed(() => this.authService.currentUser()?.uid ?? null);
 
@@ -24,12 +26,22 @@ export class FavouritesService {
   });
 
   constructor() {
-    effect(() => {
-      localStorage.setItem(this.storageKey, JSON.stringify(this.allLists()));
-    });
+    if (this.isBrowser()) {
+      this.allLists.set(this.loadFromStorage());
+
+      effect(() => {
+        localStorage.setItem(this.storageKey, JSON.stringify(this.allLists()));
+      });
+    }
+  }
+
+  private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
   }
 
   private loadFromStorage(): FavouriteList[] {
+    if (!this.isBrowser()) return [];
+
     try {
       const raw = localStorage.getItem(this.storageKey);
       if (!raw) return [];
