@@ -16,6 +16,7 @@
           class="animate-slide-up"
           [trip]="trip"
           [style.animation-delay]="i * 100 + 'ms'"
+          [enableFavouriteControls]="true"
           (cancel)="cancelTrip($event)"
           (apply)="applyTrip($event)"
           (view)="viewTrip($event)"

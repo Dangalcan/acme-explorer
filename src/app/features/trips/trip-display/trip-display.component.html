@@ -11,7 +11,12 @@
     </a>
 
     @if (trip(); as t) {
-    <app-trip-card [trip]="t" mode="details" [reviews]="sampleReviews" />
+    <app-trip-card
+      [trip]="t"
+      mode="details"
+      [reviews]="sampleReviews"
+      [enableFavouriteControls]="true"
+    />
 
     <!-- Applications section for managers -->
     @if (currentRole() === 'manager') {
