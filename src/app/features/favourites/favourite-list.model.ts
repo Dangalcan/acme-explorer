@@ -7,5 +7,5 @@ export const FAVOURITE_LIST_VALIDATION = {
 export interface FavouriteList extends Entity {
     explorerId: string;
     name: string;
-    tripIds?: string[];
+    tripIds: string[];
 }

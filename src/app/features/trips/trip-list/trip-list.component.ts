@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TripCardComponent } from '../trip-card/trip-card.component';
 import { TripService } from '../trip.service';
@@ -15,6 +15,8 @@ export class TripListComponent {
 
   availableTrips = this.tripService.trips;
 
+  readonly openFavouriteTripId = signal<string | null>(null);
+
   cancelTrip(trip: Trip): void {
     this.tripService.cancelTrip(trip.id);
   }
@@ -26,5 +28,13 @@ export class TripListComponent {
 
   viewTrip(trip: Trip): void {
     this.router.navigate(['/trips', trip.id]);
+  }
+
+  toggleFavouritePanel(tripId: string): void {
+    this.openFavouriteTripId.update(current => current === tripId ? null : tripId);
+  }
+
+  closeFavouritePanel(): void {
+    this.openFavouriteTripId.set(null);
   }
 }
