@@ -9,83 +9,117 @@
       This view is only available for explorers.
     </div>
   } @else {
-    @if (explorerApplications().length === 0) {
+    @if (groupedApplications().length === 0) {
       <div class="rounded-2xl border border-dashed border-slate-300 bg-white px-8 py-12 text-center">
         <p i18n class="text-lg font-semibold text-slate-700">No applications yet</p>
         <p i18n class="text-sm text-slate-500 mt-1">When you apply for a trip, it will appear here.</p>
       </div>
     } @else {
-      <div class="space-y-3">
-        @for (application of explorerApplications(); track application.id) {
-          <article class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-            <button
-              type="button"
-              class="w-full text-left px-5 py-4 hover:bg-slate-50 transition-colors"
-              (click)="toggleAccordion(application.id)"
-              [attr.aria-expanded]="isExpanded(application.id)"
-            >
-              <div class="flex items-start justify-between gap-3">
-                <div class="min-w-0">
-                  <p class="text-sm font-semibold text-slate-800 truncate">
-                    {{ getTripLabel(application) }}
-                  </p>
-                  <p i18n class="text-xs text-slate-500 mt-1">
-                    Created: {{ application.createdAt | fechas:'d MMM yyyy, HH:mm' }}
-                  </p>
-                </div>
+      <div class="space-y-8">
+        @for (group of groupedApplications(); track group.status) {
+          <section class="space-y-3">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+              {{ statusLabel[group.status] }} ({{ group.applications.length }})
+            </h2>
 
-                <div class="flex items-center gap-2 shrink-0">
-                  <span
-                    class="px-2.5 py-1 rounded-full text-xs font-semibold border"
-                    [class]="statusClasses[application.status]"
-                  >
-                    {{ statusLabel[application.status] }}
-                  </span>
-                  <svg
-                    class="w-4 h-4 text-slate-500 transition-transform"
-                    [class.rotate-180]="isExpanded(application.id)"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-              </div>
-            </button>
-
-            @if (isExpanded(application.id)) {
-              <div class="px-5 pb-5 border-t border-slate-100">
-                <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 text-sm">
-                  <div>
-                    <dt i18n class="text-xs uppercase tracking-wide text-slate-400 mb-1">Application ID</dt>
-                    <dd class="font-medium text-slate-700">{{ application.id }}</dd>
-                  </div>
-                  <div>
-                    <dt i18n class="text-xs uppercase tracking-wide text-slate-400 mb-1">Trip ID</dt>
-                    <dd class="font-medium text-slate-700">{{ application.tripId }}</dd>
-                  </div>
-                  <div class="sm:col-span-2">
-                    <dt i18n class="text-xs uppercase tracking-wide text-slate-400 mb-1">Comments</dt>
-                    <dd class="text-slate-700">
-                      @if (application.comments) {
-                        {{ application.comments }}
-                      } @else {
-                        <span i18n>No comments provided.</span>
-                      }
-                    </dd>
-                  </div>
-                  @if (application.status === 'REJECTED' && application.rejectionReason) {
-                    <div class="sm:col-span-2">
-                      <dt i18n class="text-xs uppercase tracking-wide text-slate-400 mb-1">Rejection reason</dt>
-                      <dd class="text-red-700 font-medium">{{ application.rejectionReason }}</dd>
+            @for (application of group.applications; track application.id) {
+              <article class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                <button
+                  type="button"
+                  class="w-full text-left px-5 py-4 hover:bg-slate-50 transition-colors"
+                  (click)="toggleAccordion(application.id)"
+                  [attr.aria-expanded]="isExpanded(application.id)"
+                >
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="min-w-0">
+                      <p class="text-sm font-semibold text-slate-800 truncate">
+                        {{ getTripLabel(application) }}
+                      </p>
+                      <p i18n class="text-xs text-slate-500 mt-1">
+                        Created: {{ application.createdAt | fechas:'d MMM yyyy, HH:mm' }}
+                      </p>
                     </div>
-                  }
-                </dl>
-              </div>
+
+                    <div class="flex items-center gap-2 shrink-0">
+                      <span
+                        class="px-2.5 py-1 rounded-full text-xs font-semibold border"
+                        [class]="statusClasses[application.status]"
+                      >
+                        {{ statusLabel[application.status] }}
+                      </span>
+                      <svg
+                        class="w-4 h-4 text-slate-500 transition-transform"
+                        [class.rotate-180]="isExpanded(application.id)"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                </button>
+
+                @if (isExpanded(application.id)) {
+                  <div class="px-5 pb-5 border-t border-slate-100">
+                    <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 text-sm">
+                      <div>
+                        <dt i18n class="text-xs uppercase tracking-wide text-slate-400 mb-1">Application ID</dt>
+                        <dd class="font-medium text-slate-700">{{ application.id }}</dd>
+                      </div>
+                      <div>
+                        <dt i18n class="text-xs uppercase tracking-wide text-slate-400 mb-1">Trip ID</dt>
+                        <dd class="font-medium text-slate-700">{{ application.tripId }}</dd>
+                      </div>
+                      <div class="sm:col-span-2">
+                        <dt i18n class="text-xs uppercase tracking-wide text-slate-400 mb-1">Comments</dt>
+                        <dd class="text-slate-700">
+                          @if (application.comments) {
+                            {{ application.comments }}
+                          } @else {
+                            <span i18n>No comments provided.</span>
+                          }
+                        </dd>
+                      </div>
+                      @if (application.status === 'REJECTED' && application.rejectionReason) {
+                        <div class="sm:col-span-2">
+                          <dt i18n class="text-xs uppercase tracking-wide text-slate-400 mb-1">Rejection reason</dt>
+                          <dd class="text-red-700 font-medium">{{ application.rejectionReason }}</dd>
+                        </div>
+                      }
+                    </dl>
+
+                    @if (canPay(application) || canCancel(application)) {
+                      <div class="mt-4 flex flex-wrap items-center gap-2">
+                        @if (canPay(application)) {
+                          <button
+                            type="button"
+                            class="inline-flex items-center rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+                            (click)="payApplication(application.id)"
+                            i18n
+                          >
+                            Pay
+                          </button>
+                        }
+
+                        @if (canCancel(application)) {
+                          <button
+                            type="button"
+                            class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            (click)="cancelApplication(application.id)"
+                            i18n
+                          >
+                            Cancel application
+                          </button>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              </article>
             }
-          </article>
+          </section>
         }
       </div>
     }
