@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Application, AppStatus } from './application.model';
+import { ApplicationService } from './application.service';
 import { FechasPipe } from '../../shared/pipes/fechas.pipe';
 
 interface ApplicationItem extends Application {
@@ -15,6 +16,7 @@ interface ApplicationItem extends Application {
 })
 export class ApplicationsComponent {
   private readonly authService = inject(AuthService);
+  private readonly applicationService = inject(ApplicationService);
   private readonly explorerUid = 'dALmY94uwtRtkt4jnWywUMV5Rz82';
 
   readonly currentRole = this.authService.currentRole;
@@ -38,49 +40,19 @@ readonly statusClasses: Record<AppStatus, string> = {
   CANCELLED: 'bg-slate-100 text-slate-700 border-slate-200',
 };
 
-  readonly mockApplications = signal<ApplicationItem[]>([
-    {
-      id: 'a1',
-      version: 0,
-      tripId: '1',
-      tripTitle: 'Adventure in the Alps',
-      explorerId: 'dALmY94uwtRtkt4jnWywUMV5Rz82',
-      createdAt: new Date('2026-03-16T10:30:00Z'),
-      status: 'PENDING',
-      comments: 'I have previous mountain trekking experience and can adapt to weather changes.',
-    },
-    {
-      id: 'a2',
-      version: 0,
-      tripId: '2',
-      tripTitle: 'Sahara Desert Trek',
-      explorerId: 'dALmY94uwtRtkt4jnWywUMV5Rz82',
-      createdAt: new Date('2026-03-12T09:20:00Z'),
-      status: 'REJECTED',
-      comments: 'Flexible dates and available for all pre-trip briefings.',
-      rejectionReason: 'Required vaccination document is missing.',
-    },
-    {
-      id: 'a3',
-      version: 0,
-      tripId: '3',
-      tripTitle: 'Kyoto Cherry Blossom',
-      explorerId: 'explorer-2',
-      createdAt: new Date('2026-03-20T15:10:00Z'),
-      status: 'ACCEPTED',
-      comments: 'Interested in culture-focused itinerary and temple visits.',
-    },
-    {
-      id: 'a4',
-      version: 0,
-      tripId: '4',
-      tripTitle: 'Amazon Rainforest Expedition',
-      explorerId: 'dALmY94uwtRtkt4jnWywUMV5Rz82',
-      createdAt: new Date('2026-03-01T11:45:00Z'),
-      status: 'CANCELLED',
-      comments: 'I cancelled due to a schedule conflict with work.',
-    },
-  ]);
+  readonly mockApplications = computed<ApplicationItem[]>(() =>
+    this.applicationService.applications().map((app) => ({
+      ...app,
+      tripTitle: this.tripTitles[app.tripId],
+    })),
+  );
+
+  private readonly tripTitles: Record<string, string> = {
+    '1': 'Adventure in the Alps',
+    '2': 'Sahara Desert Trek',
+    '3': 'Kyoto Cherry Blossom',
+    '4': 'Amazon Rainforest Expedition',
+  };
 
   private readonly currentExplorerId = computed(
     () => this.authService.currentUser()?.uid ?? this.fallbackExplorerId,
