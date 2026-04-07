@@ -13,7 +13,7 @@
           "style": "scss"
         }
       },
-      "i18n":{
+      "i18n": {
         "sourceLocale": "en-US",
         "locales": {
           "es": "src/locale/messages.es.xlf"
@@ -89,7 +89,10 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "runnerConfig": true
+          }
         }
       }
     }
