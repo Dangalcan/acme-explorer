@@ -70,7 +70,7 @@ export class ApplicationService {
 
   applyForTrip(trip: Trip, comments?: string): boolean {
     const explorerId = this.currentExplorerId();
-    if (!explorerId || this.hasTripStarted(trip)) return false;
+    if (!explorerId || this.hasTripStarted(trip) || this.isTripSoldOut(trip)) return false;
 
     if (this.hasActiveApplicationForTrip(trip.id)) return false;
 
@@ -92,7 +92,7 @@ export class ApplicationService {
 
   canApplyForTrip(trip: Trip): boolean {
     const explorerId = this.currentExplorerId();
-    if (!explorerId || this.hasTripStarted(trip)) return false;
+    if (!explorerId || this.hasTripStarted(trip) || this.isTripSoldOut(trip)) return false;
 
     return !this.hasActiveApplicationForTrip(trip.id);
   }
@@ -161,6 +161,10 @@ export class ApplicationService {
 
   private hasTripStarted(trip: Trip): boolean {
     return new Date(trip.startDate).getTime() <= Date.now();
+  }
+
+  private isTripSoldOut(trip: Trip): boolean {
+    return trip.availablePlaces !== undefined && trip.availablePlaces <= 0;
   }
 
   private updateCurrentExplorerApplication(

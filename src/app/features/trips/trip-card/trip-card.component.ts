@@ -81,6 +81,7 @@ export class TripCardComponent {
   isApplyDisabled(): boolean {
     if (this.currentRole() === 'manager') return true;
     if (this.trip.cancellation) return true;
+    if (this.trip.availablePlaces !== undefined && this.trip.availablePlaces <= 0) return true;
     return !this.applicationService.canApplyForTrip(this.trip);
   }
 
@@ -95,6 +96,10 @@ export class TripCardComponent {
 
     if (new Date(this.trip.startDate).getTime() <= Date.now()) {
       return $localize`:@@trip.card.apply.started:Started`;
+    }
+
+    if (this.trip.availablePlaces !== undefined && this.trip.availablePlaces <= 0) {
+      return $localize`:@@trip.card.apply.soldOut:Sold out`;
     }
 
     if (this.applicationService.hasActiveApplicationForTrip(this.trip.id)) {
