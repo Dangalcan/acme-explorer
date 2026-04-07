@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, inject, Input, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { Trip } from '../trip.model';
@@ -33,13 +33,17 @@ export class TripCardComponent {
   @Input() mode: 'list' | 'details' = 'list';
   @Input() reviews: any[] = [];
   @Input() enableFavouriteControls = false;
+  @Input() favouritePanelOpen = false;
 
+  @Output() favouritePanelToggle = new EventEmitter<string>();
+  @Output() favouritePanelClose = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<Trip>();
   @Output() apply = new EventEmitter<Trip>();
   @Output() view = new EventEmitter<Trip>();
 
   private authService = inject(AuthService);
   private favouritesService = inject(FavouritesService);
+  private elementRef = inject(ElementRef);
 
   currentRole = this.authService.currentRole;
   favouriteLists = this.favouritesService.favouriteLists;
@@ -50,7 +54,7 @@ export class TripCardComponent {
     HARD: 'bg-red-100 text-red-700',
   };
 
-  readonly isFavouritePanelOpen = signal(false);
+  readonly isFavouritePanelOpenLocal = signal(false);
   readonly selectedFavouriteListId = signal('');
   readonly favouriteError = signal<string | null>(null);
 
@@ -75,36 +79,49 @@ export class TripCardComponent {
   toggleFavouritePanel(event: Event): void {
     event.stopPropagation();
 
-    if (this.isFavouritePanelOpen()) {
-      this.closeFavouritePanel();
-      return;
-    }
-
     const lists = this.favouriteLists();
     const availableLists = this.getAvailableFavouriteLists();
 
     if (lists.length === 0) {
       this.favouriteError.set($localize`:@@favourites.trip.noLists:You must create a favourite list first.`);
-      this.isFavouritePanelOpen.set(true);
+      if (this.mode === 'list') {
+        this.favouritePanelToggle.emit(this.trip.id);
+      } else {
+        this.isFavouritePanelOpenLocal.set(true);
+      }
       return;
     }
 
     if (availableLists.length === 0) {
       this.favouriteError.set($localize`:@@favourites.trip.alreadySavedEverywhere:This trip is already in all your favourite lists.`);
-      this.isFavouritePanelOpen.set(true);
+      if (this.mode === 'list') {
+        this.favouritePanelToggle.emit(this.trip.id);
+      } else {
+        this.isFavouritePanelOpenLocal.set(true);
+      }
       return;
     }
 
     this.favouriteError.set(null);
     this.selectedFavouriteListId.set('');
-    this.isFavouritePanelOpen.set(true);
+
+    if (this.mode === 'list') {
+      this.favouritePanelToggle.emit(this.trip.id);
+    } else {
+      this.isFavouritePanelOpenLocal.update(value => !value);
+    }
   }
 
   closeFavouritePanel(event?: Event): void {
     event?.stopPropagation();
-    this.isFavouritePanelOpen.set(false);
     this.selectedFavouriteListId.set('');
     this.favouriteError.set(null);
+
+    if (this.mode === 'list') {
+      this.favouritePanelClose.emit();
+    } else {
+      this.isFavouritePanelOpenLocal.set(false);
+    }
   }
 
   updateSelectedFavouriteList(listId: string, event?: Event): void {
@@ -125,5 +142,20 @@ export class TripCardComponent {
 
     this.favouritesService.addTripToList(listId, this.trip.id);
     this.closeFavouritePanel();
+  }
+
+  isFavouritePanelVisible(): boolean {
+    return this.mode === 'list' ? this.favouritePanelOpen : this.isFavouritePanelOpenLocal();
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleDocumentClick(event: Event): void {
+    if (this.mode !== 'list') return;
+    if (!this.favouritePanelOpen) return;
+
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.closeFavouritePanel();
+    }
   }
 }
