@@ -198,4 +198,68 @@ describe('TripCardComponent', () => {
     expect(component.favouriteError()).toBeNull();
     expect(closeSpy).toHaveBeenCalled();
   });
+
+  it('shows an error when the trip is already saved in all favourite lists', () => {
+    const toggleSpy = vi.spyOn(component.favouritePanelToggle, 'emit');
+    const event = { stopPropagation: vi.fn() } as unknown as Event;
+
+    favouriteListsSignal.set([
+        {
+        id: 'list-1',
+        version: 0,
+        explorerId: 'explorer-1',
+        name: 'Summer',
+        tripIds: ['trip-1'],
+        },
+        {
+        id: 'list-2',
+        version: 0,
+        explorerId: 'explorer-1',
+        name: 'Dream trips',
+        tripIds: ['trip-1'],
+        },
+    ]);
+
+    favouritesServiceMock.isTripInList.mockReturnValue(true);
+
+    component.toggleFavouritePanel(event);
+
+    expect(event.stopPropagation).toHaveBeenCalled();
+    expect(component.favouriteError()).toBe('This trip is already in all your favourite lists.');
+    expect(toggleSpy).toHaveBeenCalledWith('trip-1');
+  });
+
+  it('closes the favourite panel when clicking outside in list mode', () => {
+    const closeSpy = vi.spyOn(component.favouritePanelClose, 'emit');
+
+    component.mode = 'list';
+    component.favouritePanelOpen = true;
+    component.selectedFavouriteListId.set('list-1');
+    component.favouriteError.set('some error');
+
+    vi.spyOn((component as any).elementRef.nativeElement, 'contains').mockReturnValue(false);
+
+    const event = { target: document.createElement('div') } as unknown as Event;
+
+    component.handleDocumentClick(event);
+
+    expect(component.selectedFavouriteListId()).toBe('');
+    expect(component.favouriteError()).toBeNull();
+    expect(closeSpy).toHaveBeenCalled();
+  });
+
+  it('does not close the favourite panel when clicking inside', () => {
+    const closeSpy = vi.spyOn(component.favouritePanelClose, 'emit');
+
+    component.mode = 'list';
+    component.favouritePanelOpen = true;
+
+    vi.spyOn((component as any).elementRef.nativeElement, 'contains').mockReturnValue(true);
+
+    const event = { target: document.createElement('div') } as unknown as Event;
+
+    component.handleDocumentClick(event);
+
+    expect(closeSpy).not.toHaveBeenCalled();
+  });
 });
