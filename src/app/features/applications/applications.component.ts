@@ -24,21 +24,23 @@ export class ApplicationsComponent {
 
   readonly expandedId = signal<string | null>(null);
 
-  readonly statusLabel: Record<AppStatus, string> = {
-  PENDING: $localize`:@@application.status.pending:Pending`,
-  REJECTED: $localize`:@@application.status.rejected:Rejected`,
-  DUE: $localize`:@@application.status.due:Due`,
-  ACCEPTED: $localize`:@@application.status.accepted:Accepted`,
-  CANCELLED: $localize`:@@application.status.cancelled:Cancelled`,
-};
+  readonly statusOrder: AppStatus[] = ['PENDING', 'DUE', 'ACCEPTED', 'REJECTED', 'CANCELLED'];
 
-readonly statusClasses: Record<AppStatus, string> = {
-  PENDING: 'bg-amber-100 text-amber-700 border-amber-200',
-  REJECTED: 'bg-red-100 text-red-700 border-red-200',
-  DUE: 'bg-blue-100 text-blue-700 border-blue-200',
-  ACCEPTED: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-  CANCELLED: 'bg-slate-100 text-slate-700 border-slate-200',
-};
+  readonly statusLabel: Record<AppStatus, string> = {
+    PENDING: $localize`:@@application.status.pending:Pending`,
+    REJECTED: $localize`:@@application.status.rejected:Rejected`,
+    DUE: $localize`:@@application.status.due:Due`,
+    ACCEPTED: $localize`:@@application.status.accepted:Accepted`,
+    CANCELLED: $localize`:@@application.status.cancelled:Cancelled`,
+  };
+
+  readonly statusClasses: Record<AppStatus, string> = {
+    PENDING: 'bg-amber-100 text-amber-700 border-amber-200',
+    REJECTED: 'bg-red-100 text-red-700 border-red-200',
+    DUE: 'bg-blue-100 text-blue-700 border-blue-200',
+    ACCEPTED: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+    CANCELLED: 'bg-slate-100 text-slate-700 border-slate-200',
+  };
 
   readonly mockApplications = computed<ApplicationItem[]>(() =>
     this.applicationService.applications().map((app) => ({
@@ -80,6 +82,15 @@ readonly statusClasses: Record<AppStatus, string> = {
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   });
 
+  readonly groupedApplications = computed(() =>
+    this.statusOrder
+      .map((status) => ({
+        status,
+        applications: this.explorerApplications().filter((application) => application.status === status),
+      }))
+      .filter((group) => group.applications.length > 0),
+  );
+
   toggleAccordion(applicationId: string): void {
     this.expandedId.update((current) => (current === applicationId ? null : applicationId));
   }
@@ -90,5 +101,21 @@ readonly statusClasses: Record<AppStatus, string> = {
 
   getTripLabel(application: ApplicationItem): string {
     return application.tripTitle?.trim() || application.tripId;
+  }
+
+  canPay(application: ApplicationItem): boolean {
+    return application.status === 'DUE';
+  }
+
+  canCancel(application: ApplicationItem): boolean {
+    return application.status === 'PENDING' || application.status === 'DUE';
+  }
+
+  payApplication(applicationId: string): void {
+    this.applicationService.payApplication(applicationId);
+  }
+
+  cancelApplication(applicationId: string): void {
+    this.applicationService.cancelApplication(applicationId);
   }
 }
