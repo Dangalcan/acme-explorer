@@ -12,6 +12,7 @@ import { FavouriteList } from '../../favourites/favourite-list.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { ApplicationService } from '../../applications/application.service';
 
 @Component({
   selector: 'app-trip-card',
@@ -43,6 +44,7 @@ export class TripCardComponent {
 
   private authService = inject(AuthService);
   private favouritesService = inject(FavouritesService);
+  private applicationService = inject(ApplicationService);
   private elementRef = inject(ElementRef);
 
   currentRole = this.authService.currentRole;
@@ -74,6 +76,32 @@ export class TripCardComponent {
 
   getAvailableFavouriteLists(): FavouriteList[] {
     return this.favouriteLists().filter(list => !this.favouritesService.isTripInList(list.id, this.trip.id));
+  }
+
+  isApplyDisabled(): boolean {
+    if (this.currentRole() === 'manager') return true;
+    if (this.trip.cancellation) return true;
+    return !this.applicationService.canApplyForTrip(this.trip);
+  }
+
+  applyButtonLabel(): string {
+    if (this.currentRole() === 'manager') {
+      return $localize`:@@trip.card.apply.managerHidden:Apply`;
+    }
+
+    if (this.trip.cancellation) {
+      return $localize`:@@trip.card.apply.unavailableCancelled:Unavailable`;
+    }
+
+    if (new Date(this.trip.startDate).getTime() <= Date.now()) {
+      return $localize`:@@trip.card.apply.started:Started`;
+    }
+
+    if (this.applicationService.hasActiveApplicationForTrip(this.trip.id)) {
+      return $localize`:@@trip.card.apply.alreadyApplied:Applied`;
+    }
+
+    return $localize`:@@trip.card.apply.default:Apply`;
   }
 
   toggleFavouritePanel(event: Event): void {

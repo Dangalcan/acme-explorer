@@ -82,9 +82,10 @@
           @if (currentRole() !== 'manager') {
             <button type="button"
                     (click)="apply.emit(trip); $event.stopPropagation()"
+                    [disabled]="isApplyDisabled()"
                     class="flex-1 py-2 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723] active:scale-95
-                          text-white text-sm font-semibold transition-all duration-150" i18n>
-              Apply
+                          text-white text-sm font-semibold transition-all duration-150 disabled:bg-slate-300 disabled:text-slate-600 disabled:cursor-not-allowed disabled:active:scale-100 disabled:hover:bg-slate-300" i18n>
+              {{ applyButtonLabel() }}
             </button>
           }
 
