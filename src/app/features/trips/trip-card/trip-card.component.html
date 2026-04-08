@@ -49,10 +49,10 @@
           </p>
         }
         <p class="flex items-center gap-1" i18n>
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/>
-          </svg>
+          </svg> -->
           Max {{ trip.maxParticipants }} participants
         </p>
       </div>
@@ -319,6 +319,11 @@
           }
         </div>
       </div>
+    }
+
+    <!-- Weather forecast -->
+    @if (trip.location && trip.startDate > today) {
+      <app-weather-widget [location]="trip.location" [startDate]="trip.startDate" />
     }
 
     <!-- Reviews -->

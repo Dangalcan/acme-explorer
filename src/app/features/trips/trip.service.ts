@@ -83,8 +83,8 @@ export class TripService {
       difficultyLevel: 'HARD',
       maxParticipants: 10,
       availablePlaces: 2,
-      startDate: new Date('2026-09-01'),
-      endDate: new Date('2026-09-14'),
+      startDate: new Date('2026-04-10'),
+      endDate: new Date('2026-04-14'),
       pictures: [{ url: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80' }],
     },
   ]);
