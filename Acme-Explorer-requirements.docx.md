@@ -122,4 +122,4 @@ build, ng test), and other diagnostic tools.
 
 5. ~~Implement lazy loading to improve application performance by loading modules only when they are required.~~ ***DONE***
 
-6. Use a library to support dynamic language switching at runtime.
+6. ~~Use a library to support dynamic language switching at runtime.~~ ***DONE***
