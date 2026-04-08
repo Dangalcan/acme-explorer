@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { ApplicationService } from '../../applications/application.service';
+import { WeatherWidgetComponent } from '../../../shared/weather/weather-widget.component';
 
 @Component({
   selector: 'app-trip-card',
@@ -26,6 +27,7 @@ import { ApplicationService } from '../../applications/application.service';
     MatFormFieldModule,
     MatSelectModule,
     MatButtonModule,
+    WeatherWidgetComponent,
   ],
   templateUrl: './trip-card.component.html',
 })
@@ -49,6 +51,8 @@ export class TripCardComponent {
 
   currentRole = this.authService.currentRole;
   favouriteLists = this.favouritesService.favouriteLists;
+
+  readonly today = new Date();
 
   readonly difficultyConfig = {
     EASY: 'bg-green-100 text-green-700',
