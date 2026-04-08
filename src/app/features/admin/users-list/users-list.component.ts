@@ -1,9 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { UserRolePipe } from '../../../shared/pipes/user-role.pipe';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '../../../infrastructure/firebase.config';
 import { AnyActor } from '../../../shared/actor.model';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 interface ActorRow {
   id: string;
@@ -17,10 +18,12 @@ interface ActorRow {
 
 @Component({
   selector: 'app-users-list',
-  imports: [RouterLink, UserRolePipe],
+  imports: [RouterLink, UserRolePipe, TranslatePipe],
   templateUrl: './users-list.component.html',
 })
 export class UsersListComponent implements OnInit {
+  private translate = inject(TranslateService);
+
   actors = signal<ActorRow[]>([]);
   isLoading = signal(true);
   errorMessage = signal('');
@@ -44,7 +47,7 @@ export class UsersListComponent implements OnInit {
       this.actors.set(rows);
     } catch (err) {
       console.error(err);
-      this.errorMessage.set($localize`Failed to load users. Check Firestore permissions.`);
+      this.errorMessage.set(this.translate.instant('admin.users.load_error'));
     } finally {
       this.isLoading.set(false);
     }

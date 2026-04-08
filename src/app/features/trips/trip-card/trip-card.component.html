@@ -13,11 +13,11 @@
 
     <!-- Cancelled banner -->
     @if (trip.cancellation) {
-      <div class="bg-red-50 border-b border-red-100 px-5 py-2 flex items-center gap-1.5 text-xs font-semibold text-red-600" i18n>
+      <div class="bg-red-50 border-b border-red-100 px-5 py-2 flex items-center gap-1.5 text-xs font-semibold text-red-600">
         <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
         </svg>
-        Cancelled
+        {{ 'trips.card.cancelled' | translate }}
       </div>
     }
 
@@ -48,12 +48,8 @@
             {{ trip.location.city }}, {{ trip.location.country }}
           </p>
         }
-        <p class="flex items-center gap-1" i18n>
-          <!-- <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/>
-          </svg> -->
-          Max {{ trip.maxParticipants }} participants
+        <p class="flex items-center gap-1">
+          {{ 'trips.card.max_participants' | translate: { count: trip.maxParticipants } }}
         </p>
       </div>
 
@@ -61,7 +57,7 @@
       <div class="border-t border-slate-100 mt-auto pt-3 flex items-center justify-between">
         <div>
           <p class="text-xs text-slate-400">{{ trip.startDate | fechas:'d MMM' }} → {{ trip.endDate | fechas:'d MMM yyyy' }}</p>
-          <p class="text-xs font-semibold text-indigo-500 mt-0.5" i18n>{{ getDuration(trip) }} days</p>
+          <p class="text-xs font-semibold text-indigo-500 mt-0.5">{{ 'trips.card.days' | translate: { count: getDuration(trip) } }}</p>
           <p class="text-xs font-semibold text-amber-600 mt-0.5">{{ trip.availablePlaces | soldOut:trip.maxParticipants }}</p>
         </div>
         <p class="text-lg font-bold text-slate-800">{{ getTotalPrice(trip) | appCurrency }}</p>
@@ -74,8 +70,8 @@
             <button type="button"
                     (click)="cancel.emit(trip); $event.stopPropagation()"
                     class="flex-1 py-2 rounded-lg bg-red-50 hover:bg-red-100 active:scale-95
-                          text-[#b21c2b] text-sm font-semibold border border-red-200 transition-all duration-150" i18n>
-              Cancel trip
+                          text-[#b21c2b] text-sm font-semibold border border-red-200 transition-all duration-150">
+              {{ 'trips.card.cancel_trip' | translate }}
             </button>
           }
 
@@ -84,7 +80,7 @@
                     (click)="apply.emit(trip); $event.stopPropagation()"
                     [disabled]="isApplyDisabled()"
                     class="flex-1 py-2 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723] active:scale-95
-                          text-white text-sm font-semibold transition-all duration-150 disabled:bg-slate-300 disabled:text-slate-600 disabled:cursor-not-allowed disabled:active:scale-100 disabled:hover:bg-slate-300" i18n>
+                          text-white text-sm font-semibold transition-all duration-150 disabled:bg-slate-300 disabled:text-slate-600 disabled:cursor-not-allowed disabled:active:scale-100 disabled:hover:bg-slate-300">
               {{ applyButtonLabel() }}
             </button>
           }
@@ -95,9 +91,8 @@
               (click)="toggleFavouritePanel($event)"
               class="shrink-0 px-3 py-2 rounded-lg border border-indigo-200 bg-indigo-50 hover:bg-indigo-100
                     text-indigo-700 transition-all duration-150"
-              i18n-aria-label
-              aria-label="Add to favourites"
-              title="Add to favourites"
+              [attr.aria-label]="'trips.card.aria_add_to_favourites' | translate"
+              [title]="'trips.card.aria_add_to_favourites' | translate"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -112,12 +107,12 @@
             class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3"
             (click)="$event.stopPropagation()"
           >
-            <p class="text-sm font-semibold text-slate-700 mb-4" i18n>Save to favourite list</p>
+            <p class="text-sm font-semibold text-slate-700 mb-4">{{ 'trips.card.save_to_favourite' | translate }}</p>
 
             @if (getAvailableFavouriteLists().length > 0) {
               <div class="flex flex-col gap-1">
                 <mat-form-field appearance="outline" class="w-full favourites-field -mb-2">
-                  <mat-label i18n>Select a list</mat-label>
+                  <mat-label>{{ 'trips.card.select_list' | translate }}</mat-label>
                   <mat-select
                     [ngModel]="selectedFavouriteListId()"
                     (ngModelChange)="updateSelectedFavouriteList($event)"
@@ -130,22 +125,15 @@
                 </mat-form-field>
 
                 <div class="flex justify-end">
-                  <button
-                    type="button"
-                    mat-flat-button
-                    (click)="saveToFavouriteList($event)"
-                    i18n
-                  >
-                    Save
+                  <button type="button" mat-flat-button (click)="saveToFavouriteList($event)">
+                    {{ 'trips.card.save' | translate }}
                   </button>
                 </div>
               </div>
             }
 
             @if (favouriteError(); as error) {
-              <p class="mt-2 text-sm font-medium text-red-600">
-                {{ error }}
-              </p>
+              <p class="mt-2 text-sm font-medium text-red-600">{{ error }}</p>
             }
           </div>
         }
@@ -178,11 +166,11 @@
 
       <!-- Cancelled banner -->
       @if (trip.cancellation) {
-        <div class="bg-red-50 border border-red-100 rounded-lg px-4 py-2.5 flex items-center gap-2 text-sm font-semibold text-red-600 mb-3" i18n>
+        <div class="bg-red-50 border border-red-100 rounded-lg px-4 py-2.5 flex items-center gap-2 text-sm font-semibold text-red-600 mb-3">
           <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
           </svg>
-          Cancelled on {{ trip.cancellation.cancelledAt | fechas:'d MMM yyyy' }} — {{ trip.cancellation.reason }}
+          {{ 'trips.card.cancelled' | translate }} — {{ trip.cancellation.cancelledAt | fechas:'d MMM yyyy' }} — {{ trip.cancellation.reason }}
         </div>
       }
 
@@ -190,29 +178,28 @@
 
       @if (canShowFavouriteButton() && !trip.cancellation) {
         <div class="mb-4">
-          <button 
+          <button
             type="button"
             (click)="toggleFavouritePanel($event)"
             class="inline-flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 hover:bg-indigo-100
                   text-indigo-700 px-4 py-2 text-sm font-semibold transition-all duration-150"
-            i18n
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
-            Add to favourites
+            {{ 'trips.card.add_to_favourites' | translate }}
           </button>
         </div>
 
         @if (isFavouritePanelVisible()) {
           <div class="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <p class="text-sm font-semibold text-slate-700 mb-2" i18n>Save to favourite list</p>
+            <p class="text-sm font-semibold text-slate-700 mb-2">{{ 'trips.card.save_to_favourite' | translate }}</p>
 
             @if (getAvailableFavouriteLists().length > 0) {
               <div class="flex items-start gap-2">
                 <mat-form-field appearance="outline" class="flex-1">
-                  <mat-label i18n>Select a list</mat-label>
+                  <mat-label>{{ 'trips.card.select_list' | translate }}</mat-label>
                   <mat-select
                     [ngModel]="selectedFavouriteListId()"
                     (ngModelChange)="updateSelectedFavouriteList($event)"
@@ -224,56 +211,49 @@
                   </mat-select>
                 </mat-form-field>
 
-                <button
-                  type="button"
-                  mat-flat-button
-                  class="mt-1"
-                  (click)="saveToFavouriteList($event)"
-                  i18n
-                >
-                  Save
+                <button type="button" mat-flat-button class="mt-1" (click)="saveToFavouriteList($event)">
+                  {{ 'trips.card.save' | translate }}
                 </button>
               </div>
             }
 
             @if (favouriteError(); as error) {
-              <p class="mt-2 text-sm font-medium text-red-600">
-                {{ error }}
-              </p>
+              <p class="mt-2 text-sm font-medium text-red-600">{{ error }}</p>
             }
           </div>
         }
       }
+
       <!-- Key facts grid -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
         <div>
-          <p class="text-xs text-slate-400 mb-0.5" i18n>Start date</p>
+          <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.start_date' | translate }}</p>
           <p class="font-semibold text-slate-700">{{ trip.startDate | fechas:'d MMM yyyy' }}</p>
         </div>
         <div>
-          <p class="text-xs text-slate-400 mb-0.5" i18n>End date</p>
+          <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.end_date' | translate }}</p>
           <p class="font-semibold text-slate-700">{{ trip.endDate | fechas:'d MMM yyyy' }}</p>
         </div>
         <div>
-          <p class="text-xs text-slate-400 mb-0.5" i18n>Duration</p>
+          <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.duration' | translate }}</p>
           <p class="font-semibold text-slate-700">{{ getDuration(trip) }} days</p>
         </div>
         <div>
-          <p class="text-xs text-slate-400 mb-0.5" i18n>Max participants</p>
+          <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.max_participants_label' | translate }}</p>
           <p class="font-semibold text-slate-700">{{ trip.maxParticipants }}</p>
         </div>
         @if (trip.location) {
           <div>
-            <p class="text-xs text-slate-400 mb-0.5" i18n>Location</p>
+            <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.location' | translate }}</p>
             <p class="font-semibold text-slate-700">{{ trip.location.city }}, {{ trip.location.country }}</p>
           </div>
         }
         <div>
-          <p class="text-xs text-slate-400 mb-0.5" i18n>Total price</p>
+          <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.total_price' | translate }}</p>
           <p class="font-bold text-indigo-600">{{ getTotalPrice(trip) | appCurrency }}</p>
         </div>
         <div>
-          <p class="text-xs text-slate-400 mb-0.5" i18n>Availability</p>
+          <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.availability' | translate }}</p>
           <p class="font-semibold text-slate-700">{{ trip.availablePlaces | soldOut:trip.maxParticipants }}</p>
         </div>
       </div>
@@ -281,7 +261,7 @@
 
     <!-- Stages -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-4">
-      <h2 class="text-lg font-bold text-slate-800 mb-4" i18n>Stages</h2>
+      <h2 class="text-lg font-bold text-slate-800 mb-4">{{ 'trips.card.stages' | translate }}</h2>
       <ol class="space-y-4">
         @for (stage of trip.stages; track stage.id; let i = $index) {
           <li class="flex gap-4">
@@ -296,9 +276,7 @@
             <div class="pb-4 flex-1">
               <div class="flex items-center justify-between gap-2">
                 <p class="font-semibold text-slate-800">{{ stage.title }}</p>
-                <p class="text-sm font-semibold text-indigo-500 shrink-0">
-                  {{ stage.price | appCurrency }}
-                </p>
+                <p class="text-sm font-semibold text-indigo-500 shrink-0">{{ stage.price | appCurrency }}</p>
               </div>
               <p class="text-sm text-slate-500 mt-0.5">{{ stage.description | description:180 }}</p>
             </div>
@@ -310,7 +288,7 @@
     <!-- All pictures -->
     @if (trip.pictures && trip.pictures.length > 1) {
       <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-4">
-        <h2 class="text-lg font-bold text-slate-800 mb-4" i18n>Photos</h2>
+        <h2 class="text-lg font-bold text-slate-800 mb-4">{{ 'trips.card.photos' | translate }}</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
           @for (pic of trip.pictures; track pic.url) {
             <div class="rounded-xl overflow-hidden h-36">
@@ -328,10 +306,10 @@
 
     <!-- Reviews -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-      <h2 class="text-lg font-bold text-slate-800 mb-4" i18n>Reviews</h2>
+      <h2 class="text-lg font-bold text-slate-800 mb-4">{{ 'trips.card.reviews' | translate }}</h2>
 
       @if (reviews.length === 0) {
-        <p class="text-sm text-slate-400" i18n>No reviews yet.</p>
+        <p class="text-sm text-slate-400">{{ 'trips.card.no_reviews' | translate }}</p>
       } @else {
         <ul class="space-y-4">
           @for (review of reviews; track review.id) {
@@ -340,7 +318,6 @@
                 <p class="text-sm font-semibold text-slate-700">{{ review.explorerId }}</p>
                 <p class="text-xs text-slate-400">{{ review.createdAt | fechas:'d MMM yyyy' }}</p>
               </div>
-              <!-- Star rating -->
               <div class="flex gap-0.5 mb-1.5">
                 @for (star of [1,2,3,4,5]; track star) {
                   <svg class="w-4 h-4 {{ star <= review.rating ? 'text-amber-400' : 'text-slate-200' }}"
@@ -359,4 +336,3 @@
     </div>
   </div>
 }
-

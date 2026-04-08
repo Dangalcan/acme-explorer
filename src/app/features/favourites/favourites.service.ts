@@ -8,7 +8,7 @@ import {
   query,
   updateDoc,
   where,
-  arrayUnion, 
+  arrayUnion,
   arrayRemove,
 } from 'firebase/firestore';
 import { FavouriteList } from './favourite-list.model';
@@ -16,6 +16,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { TripService } from '../trips/trip.service';
 import { Trip } from '../trips/trip.model';
 import { db } from '../../infrastructure/firebase.config';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,7 @@ import { db } from '../../infrastructure/firebase.config';
 export class FavouritesService {
   private readonly authService = inject(AuthService);
   private readonly tripService = inject(TripService);
+  private readonly translate = inject(TranslateService);
 
   private readonly favouriteListsCollection = collection(db, 'favouriteLists');
 
@@ -33,7 +35,6 @@ export class FavouritesService {
   readonly currentExplorerId = computed(() => {
     const user = this.authService.currentUser();
     const role = this.authService.currentRole();
-
     if (!user || role !== 'explorer') return null;
     return user.uid;
   });
@@ -62,22 +63,16 @@ export class FavouritesService {
     this.error.set(null);
 
     try {
-      const listsQuery = query(
-        this.favouriteListsCollection,
-        where('explorerId', '==', explorerId)
-      );
-
+      const listsQuery = query(this.favouriteListsCollection, where('explorerId', '==', explorerId));
       const snapshot = await getDocs(listsQuery);
-
       const lists = snapshot.docs.map(docSnap => ({
         id: docSnap.id,
         ...(docSnap.data() as Omit<FavouriteList, 'id'>),
       }));
-
       this.allLists.set(lists);
     } catch (error) {
       console.error('Error loading favourite lists', error);
-      this.error.set($localize`:@@favourites.firebase.loadError:Could not load favourite lists.`);
+      this.error.set(this.translate.instant('favourites.errors.load'));
       this.allLists.set([]);
     } finally {
       this.isLoading.set(false);
@@ -91,23 +86,15 @@ export class FavouritesService {
   async createList(name: string): Promise<void> {
     const explorerId = this.currentExplorerId();
     const normalizedName = name.trim();
-
     if (!explorerId || !normalizedName) return;
 
     this.error.set(null);
-
     try {
-      await addDoc(this.favouriteListsCollection, {
-        explorerId,
-        name: normalizedName,
-        tripIds: [],
-        version: 0,
-      });
-
+      await addDoc(this.favouriteListsCollection, { explorerId, name: normalizedName, tripIds: [], version: 0 });
       await this.refresh();
     } catch (error) {
       console.error('Error creating favourite list', error);
-      this.error.set($localize`:@@favourites.firebase.createError:Could not create the favourite list.`);
+      this.error.set(this.translate.instant('favourites.errors.create'));
       throw error;
     }
   }
@@ -118,33 +105,26 @@ export class FavouritesService {
 
     const currentList = this.allLists().find(list => list.id === listId);
     if (!currentList) return;
-    
+
     this.error.set(null);
-
     try {
-      await updateDoc(doc(db, 'favouriteLists', listId), {
-        name: normalizedName,
-        version: currentList.version + 1,
-      });
-
+      await updateDoc(doc(db, 'favouriteLists', listId), { name: normalizedName, version: currentList.version + 1 });
       await this.refresh();
     } catch (error) {
       console.error('Error updating favourite list', error);
-      this.error.set($localize`:@@favourites.firebase.updateError:Could not update the favourite list.`);
+      this.error.set(this.translate.instant('favourites.errors.update'));
       throw error;
     }
   }
 
   async deleteList(listId: string): Promise<void> {
-
     this.error.set(null);
-
     try {
       await deleteDoc(doc(db, 'favouriteLists', listId));
       await this.refresh();
     } catch (error) {
       console.error('Error deleting favourite list', error);
-      this.error.set($localize`:@@favourites.firebase.deleteError:Could not delete the favourite list.`);
+      this.error.set(this.translate.instant('favourites.errors.delete'));
       throw error;
     }
   }
@@ -153,19 +133,14 @@ export class FavouritesService {
     const currentList = this.allLists().find(list => list.id === listId);
     if (!currentList) return;
     if (currentList.tripIds.includes(tripId)) return;
-    
+
     this.error.set(null);
-
     try {
-      await updateDoc(doc(db, 'favouriteLists', listId), {
-        tripIds: arrayUnion(tripId),
-        version: currentList.version + 1,
-      });
-
+      await updateDoc(doc(db, 'favouriteLists', listId), { tripIds: arrayUnion(tripId), version: currentList.version + 1 });
       await this.refresh();
     } catch (error) {
       console.error('Error adding trip to favourite list', error);
-      this.error.set($localize`:@@favourites.firebase.addTripError:Could not add the trip to the favourite list.`);
+      this.error.set(this.translate.instant('favourites.errors.add_trip'));
       throw error;
     }
   }
@@ -175,17 +150,12 @@ export class FavouritesService {
     if (!currentList) return;
 
     this.error.set(null);
-
     try {
-      await updateDoc(doc(db, 'favouriteLists', listId), {
-        tripIds: arrayRemove(tripId),
-        version: currentList.version + 1,
-      });
-
+      await updateDoc(doc(db, 'favouriteLists', listId), { tripIds: arrayRemove(tripId), version: currentList.version + 1 });
       await this.refresh();
     } catch (error) {
       console.error('Error removing trip from favourite list', error);
-      this.error.set($localize`:@@favourites.firebase.removeTripError:Could not remove the trip from the favourite list.`);
+      this.error.set(this.translate.instant('favourites.errors.remove_trip'));
       throw error;
     }
   }

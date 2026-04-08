@@ -1,0 +1,280 @@
+{
+  "header": {
+    "trips": "Viajes",
+    "applications": "Solicitudes",
+    "finder": "Buscador",
+    "favourites": "Favoritos",
+    "settings": "Ajustes",
+    "admin": "Admin",
+    "dashboard": "Panel",
+    "users_list": "Lista de usuarios",
+    "create_manager": "Crear gestor",
+    "logout": "Cerrar sesión",
+    "login": "Iniciar sesión",
+    "register": "Registrarse"
+  },
+  "errors": {
+    "forbidden": {
+      "title": "Acceso denegado",
+      "message": "Lo sentimos, no tienes permiso para acceder a esta página. Contacta con el administrador si crees que es un error.",
+      "go_home": "Volver al inicio"
+    },
+    "not_found": {
+      "title": "Página no encontrada"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Bienvenido de nuevo",
+      "subtitle": "Inicia sesión en Acme Explorer",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "email_placeholder": "Introduce tu correo electrónico",
+      "password_placeholder": "Introduce tu contraseña",
+      "back": "Volver",
+      "signing_in": "Iniciando sesión...",
+      "submit": "Iniciar sesión",
+      "no_account": "¿No tienes cuenta?",
+      "create_one": "Créala aquí",
+      "error": "Correo electrónico o contraseña incorrectos"
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "subtitle": "Únete a Acme Explorer hoy",
+      "name": "Nombre",
+      "surname": "Apellido",
+      "email": "Correo electrónico",
+      "phone": "Número de teléfono",
+      "address": "Dirección",
+      "password": "Contraseña",
+      "confirm_password": "Confirmar contraseña",
+      "address_placeholder": "Calle Principal 123, Ciudad",
+      "password_placeholder": "Mín. 8 caracteres, may., min., núm. y símbolo",
+      "confirm_placeholder": "Repite tu contraseña",
+      "login_button": "Iniciar sesión",
+      "creating": "Creando...",
+      "submit": "Crear cuenta",
+      "already_account": "¿Ya tienes una cuenta?",
+      "log_in": "Inicia sesión",
+      "error": {
+        "name_required": "El nombre es obligatorio",
+        "name_max": "El nombre no puede superar {{max}} caracteres",
+        "surname_required": "El apellido es obligatorio",
+        "surname_max": "El apellido no puede superar {{max}} caracteres",
+        "email_required": "El correo electrónico es obligatorio",
+        "phone_invalid": "Formato de número de teléfono no válido",
+        "address_max": "La dirección no puede superar {{max}} caracteres",
+        "password_invalid": "La contraseña debe tener al menos 8 caracteres e incluir mayúscula, minúscula, número y carácter especial (@$!%*?&)",
+        "passwords_mismatch": "Las contraseñas no coinciden",
+        "email_in_use": "Este correo electrónico ya está registrado",
+        "invalid_email": "Dirección de correo electrónico no válida",
+        "weak_password": "La contraseña es demasiado débil",
+        "not_allowed": "El registro por correo/contraseña no está habilitado",
+        "failed": "El registro ha fallado. Inténtalo de nuevo."
+      }
+    }
+  },
+  "common": {
+    "back": "Volver",
+    "optional": "(opcional)"
+  },
+  "admin": {
+    "create_manager": {
+      "title": "Crear cuenta de gestor",
+      "subtitle": "Añade un nuevo gestor a Acme Explorer",
+      "name_placeholder": "Juan",
+      "surname_placeholder": "García",
+      "email_placeholder": "gestor@acme.com",
+      "phone_placeholder": "+34600000000",
+      "address_placeholder": "Calle Principal 123, Ciudad",
+      "password_placeholder": "Mín. 8 caracteres, may., min., núm. y símbolo",
+      "confirm_placeholder": "Repite la contraseña",
+      "creating": "Creando...",
+      "submit": "Crear gestor",
+      "success": "Cuenta de gestor creada correctamente para {{email}}",
+      "error": {
+        "name_required": "El nombre es obligatorio",
+        "name_max": "El nombre no puede superar {{max}} caracteres",
+        "surname_required": "El apellido es obligatorio",
+        "surname_max": "El apellido no puede superar {{max}} caracteres",
+        "email_required": "El correo electrónico es obligatorio",
+        "phone_invalid": "Formato de número de teléfono no válido",
+        "address_max": "La dirección no puede superar {{max}} caracteres",
+        "password_invalid": "La contraseña debe tener al menos 8 caracteres e incluir mayúscula, minúscula, número y carácter especial (@$!%*?&)",
+        "passwords_mismatch": "Las contraseñas no coinciden",
+        "email_in_use": "Este correo electrónico ya está registrado",
+        "invalid_email": "Dirección de correo electrónico no válida",
+        "weak_password": "La contraseña es demasiado débil",
+        "not_allowed": "El registro por correo/contraseña no está habilitado",
+        "failed": "La creación de cuenta ha fallado. Inténtalo de nuevo."
+      }
+    },
+    "users": {
+      "title": "Usuarios",
+      "subtitle": "Todos los actores registrados en Firebase",
+      "new_manager": "Nuevo gestor",
+      "no_users": "No se encontraron usuarios.",
+      "col_name": "Nombre",
+      "col_email": "Correo electrónico",
+      "col_role": "Rol",
+      "col_phone": "Teléfono",
+      "col_firebase_uid": "UID de Firebase",
+      "user_total_one": "1 usuario en total",
+      "user_total": "{{count}} usuarios en total",
+      "load_error": "Error al cargar los usuarios. Comprueba los permisos de Firestore."
+    },
+    "dashboard": {
+      "title": "Panel",
+      "trips_per_manager": "Viajes por gestor",
+      "average": "Media",
+      "minimum": "Mínimo",
+      "maximum": "Máximo",
+      "std_deviation": "Desv. típica",
+      "no_trip_data": "No hay datos de viajes disponibles.",
+      "available_seats_title": "Plazas disponibles - Viajes que comienzan este mes",
+      "available_seats": "Plazas disponibles",
+      "applications_by_status": "Solicitudes por estado",
+      "no_application_data": "No hay datos de solicitudes disponibles.",
+      "revenue_per_month": "Ingresos totales por mes ({{year}})",
+      "applications_per_trip": "Solicitudes por viaje",
+      "months": {
+        "0": "Enero",
+        "1": "Febrero",
+        "2": "Marzo",
+        "3": "Abril",
+        "4": "Mayo",
+        "5": "Junio",
+        "6": "Julio",
+        "7": "Agosto",
+        "8": "Septiembre",
+        "9": "Octubre",
+        "10": "Noviembre",
+        "11": "Diciembre"
+      }
+    }
+  },
+  "trips": {
+    "explore": {
+      "title": "Explorar viajes",
+      "subtitle": "Encuentra tu próxima aventura alrededor del mundo"
+    },
+    "card": {
+      "cancelled": "Cancelado",
+      "max_participants": "Máx. {{count}} participantes",
+      "days": "{{count}} días",
+      "cancel_trip": "Cancelar viaje",
+      "apply": "Solicitar",
+      "unavailable": "No disponible",
+      "started": "Iniciado",
+      "sold_out": "Agotado",
+      "applied": "Solicitado",
+      "add_to_favourites": "Añadir a favoritos",
+      "save_to_favourite": "Guardar en lista de favoritos",
+      "select_list": "Seleccionar una lista",
+      "save": "Guardar",
+      "start_date": "Fecha de inicio",
+      "end_date": "Fecha de fin",
+      "duration": "Duración",
+      "max_participants_label": "Máx. participantes",
+      "location": "Ubicación",
+      "total_price": "Precio total",
+      "availability": "Disponibilidad",
+      "stages": "Etapas",
+      "photos": "Fotos",
+      "reviews": "Reseñas",
+      "no_reviews": "Aún no hay reseñas.",
+      "aria_add_to_favourites": "Añadir a favoritos"
+    },
+    "details": {
+      "back": "Volver a viajes",
+      "applications_title": "Solicitudes para este viaje",
+      "loading_apps": "Cargando solicitudes...",
+      "no_apps": "Aún no hay solicitudes.",
+      "col_explorer": "Explorador",
+      "col_applied": "Solicitado",
+      "col_status": "Estado",
+      "col_comments": "Comentarios",
+      "applications_label": "Solicitudes:",
+      "rows": "Filas:",
+      "prev": "Anterior",
+      "next": "Siguiente",
+      "not_found": "Viaje no encontrado.",
+      "browse_all": "Ver todos los viajes"
+    }
+  },
+  "applications": {
+    "title": "Mis solicitudes",
+    "subtitle": "Sigue el estado de tus solicitudes de viaje.",
+    "explorer_only": "Esta vista solo está disponible para exploradores.",
+    "no_apps": "Aún no tienes solicitudes",
+    "no_apps_hint": "Cuando solicites un viaje, aparecerá aquí.",
+    "created": "Creado:",
+    "app_id": "ID de solicitud",
+    "trip_id": "ID de viaje",
+    "comments": "Comentarios",
+    "no_comments": "Sin comentarios.",
+    "rejection_reason": "Motivo de rechazo",
+    "pay": "Pagar",
+    "cancel": "Cancelar solicitud",
+    "status": {
+      "pending": "Pendiente",
+      "rejected": "Rechazada",
+      "due": "Pendiente de pago",
+      "accepted": "Aceptada",
+      "cancelled": "Cancelada"
+    }
+  },
+  "favourites": {
+    "title": "Mis listas de favoritos",
+    "subtitle": "Crea y gestiona tus colecciones de viajes favoritos",
+    "loading": "Cargando listas de favoritos...",
+    "create_list": "Crear una nueva lista",
+    "placeholder": "Planes de verano, Aventuras soñadas, Escapadas de fin de semana...",
+    "create_button": "Crear lista",
+    "no_lists": "Aún no tienes listas de favoritos",
+    "no_lists_hint": "Crea tu primera lista para empezar a guardar viajes.",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "rename": "Renombrar",
+    "delete": "Eliminar",
+    "trip_saved_one": "viaje guardado",
+    "trips_saved": "viajes guardados",
+    "add_trip_title": "Añadir un viaje a esta lista",
+    "all_trips_added": "Todos los viajes disponibles ya están en esta lista.",
+    "select_trip": "Seleccionar un viaje",
+    "add_trip_button": "Añadir viaje",
+    "empty_list": "Esta lista está vacía.",
+    "remove_from_list": "Eliminar de la lista",
+    "errors": {
+      "load": "No se pudieron cargar las listas de favoritos.",
+      "create": "No se pudo crear la lista de favoritos.",
+      "update": "No se pudo actualizar la lista de favoritos.",
+      "delete": "No se pudo eliminar la lista de favoritos.",
+      "add_trip": "No se pudo añadir el viaje a la lista de favoritos.",
+      "remove_trip": "No se pudo eliminar el viaje de la lista de favoritos.",
+      "no_lists": "Debes crear primero una lista de favoritos.",
+      "already_saved": "Este viaje ya está en todas tus listas de favoritos.",
+      "select_list": "Por favor, selecciona una lista.",
+      "select_trip": "Por favor, selecciona un viaje.",
+      "delete_confirm": "¿Seguro que quieres eliminar esta lista?",
+      "remove_confirm": "¿Seguro que quieres eliminar este viaje de la lista?"
+    },
+    "create_errors": {
+      "required": "El nombre de la lista es obligatorio.",
+      "max_length": "El nombre de la lista no puede superar {{max}} caracteres."
+    },
+    "edit_errors": {
+      "required": "El nombre de la lista es obligatorio.",
+      "max_length": "El nombre de la lista no puede superar {{max}} caracteres."
+    }
+  },
+  "roles": {
+    "administrator": "Administrador",
+    "manager": "Gestor",
+    "explorer": "Explorador"
+  },
+  "language": {
+    "switch": "EN",
+    "current": "ES"
+  }
+}

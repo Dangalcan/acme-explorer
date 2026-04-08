@@ -12,8 +12,8 @@
                 d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
         </svg>
       </div>
-      <h1 class="text-2xl font-bold text-[#2c3e50]" i18n>Create account</h1>
-      <p class="text-slate-500 text-sm mt-1" i18n>Join Acme Explorer today</p>
+      <h1 class="text-2xl font-bold text-[#2c3e50]">{{ 'auth.register.title' | translate }}</h1>
+      <p class="text-slate-500 text-sm mt-1">{{ 'auth.register.subtitle' | translate }}</p>
     </div>
 
     <!-- Form -->
@@ -22,8 +22,8 @@
       <!-- Name + Surname row -->
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-            Name <span class="text-[#b21c2b]">*</span>
+          <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+            {{ 'auth.register.name' | translate }} <span class="text-[#b21c2b]">*</span>
           </label>
           <input
             type="text"
@@ -36,8 +36,8 @@
           />
         </div>
         <div>
-          <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-            Surname <span class="text-[#b21c2b]">*</span>
+          <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+            {{ 'auth.register.surname' | translate }} <span class="text-[#b21c2b]">*</span>
           </label>
           <input
             type="text"
@@ -52,8 +52,8 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-          Email <span class="text-[#b21c2b]">*</span>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          {{ 'auth.register.email' | translate }} <span class="text-[#b21c2b]">*</span>
         </label>
         <input
           type="email"
@@ -66,8 +66,8 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-          Phone number <span class="text-slate-400 font-normal">(optional)</span>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          {{ 'auth.register.phone' | translate }} <span class="text-slate-400 font-normal">{{ 'common.optional' | translate }}</span>
         </label>
         <input
           type="tel"
@@ -80,14 +80,14 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-          Address <span class="text-slate-400 font-normal">(optional)</span>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          {{ 'auth.register.address' | translate }} <span class="text-slate-400 font-normal">{{ 'common.optional' | translate }}</span>
         </label>
         <input
           type="text"
           [ngModel]="address()"
           (ngModelChange)="address.set($event)"
-          placeholder="123 Main St, City" i18n-placeholder
+          [placeholder]="'auth.register.address_placeholder' | translate"
           [maxlength]="validation.address.maxLength"
           class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
@@ -95,28 +95,28 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-          Password <span class="text-[#b21c2b]">*</span>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          {{ 'auth.register.password' | translate }} <span class="text-[#b21c2b]">*</span>
         </label>
         <input
           type="password"
           [ngModel]="password()"
           (ngModelChange)="password.set($event)"
-          placeholder="Min 8 chars, upper, lower, number & symbol" i18n-placeholder
+          [placeholder]="'auth.register.password_placeholder' | translate"
           class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-          Confirm Password <span class="text-[#b21c2b]">*</span>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          {{ 'auth.register.confirm_password' | translate }} <span class="text-[#b21c2b]">*</span>
         </label>
         <input
           type="password"
           [ngModel]="confirmPassword()"
           (ngModelChange)="confirmPassword.set($event)"
-          placeholder="Repeat your password" i18n-placeholder
+          [placeholder]="'auth.register.confirm_placeholder' | translate"
           class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
         />
@@ -135,8 +135,8 @@
       <div class="flex gap-3 pt-1">
         <a routerLink="/login"
            class="flex-1 py-2.5 rounded-lg bg-[#6c757d] hover:bg-[#5a6268] active:scale-95
-                  text-white font-bold text-center transition-all duration-150 cursor-pointer" i18n>
-          Log In
+                  text-white font-bold text-center transition-all duration-150 cursor-pointer">
+          {{ 'auth.register.login_button' | translate }}
         </a>
         <button
           type="button"
@@ -150,19 +150,19 @@
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
               </svg>
-              <ng-container i18n>Creating…</ng-container>
+              {{ 'auth.register.creating' | translate }}
             </span>
           } @else {
-            <ng-container i18n>Create account</ng-container>
+            {{ 'auth.register.submit' | translate }}
           }
         </button>
       </div>
     </div>
 
     <!-- Login link -->
-    <p class="text-center text-sm text-slate-500 mt-6" i18n>
-      Already have an account?
-      <a routerLink="/login" class="text-[#b21c2b] font-medium hover:text-[#8e1723] transition">Log in</a>
+    <p class="text-center text-sm text-slate-500 mt-6">
+      {{ 'auth.register.already_account' | translate }}
+      <a routerLink="/login" class="text-[#b21c2b] font-medium hover:text-[#8e1723] transition">{{ 'auth.register.log_in' | translate }}</a>
     </p>
   </div>
 

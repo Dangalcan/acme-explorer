@@ -2,16 +2,17 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, TranslatePipe],
   templateUrl: './login.component.html',
-  // styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private translate = inject(TranslateService);
 
   email = signal('');
   password = signal('');
@@ -36,7 +37,7 @@ export class LoginComponent {
       await this.router.navigateByUrl('/');
     } catch (err) {
       console.error(err);
-      this.errorMessage.set($localize `Invalid email or password`);
+      this.errorMessage.set(this.translate.instant('auth.login.error'));
       this.triggerShake();
     } finally {
       this.isLoading.set(false);

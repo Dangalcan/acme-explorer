@@ -44,7 +44,7 @@
             "ssr": {
               "entry": "src/server.ts"
             },
-            "polyfills": ["@angular/localize/init"]
+            "polyfills": []
           },
           "configurations": {
             "es": {

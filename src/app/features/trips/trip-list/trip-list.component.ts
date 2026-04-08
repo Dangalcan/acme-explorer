@@ -4,10 +4,11 @@ import { TripCardComponent } from '../trip-card/trip-card.component';
 import { TripService } from '../trip.service';
 import { Trip } from '../trip.model';
 import { ApplicationService } from '../../applications/application.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-trip-list',
-  imports: [TripCardComponent],
+  imports: [TripCardComponent, TranslatePipe],
   templateUrl: './trip-list.component.html',
 })
 export class TripListComponent {

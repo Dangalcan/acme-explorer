@@ -3,14 +3,16 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ACTOR_VALIDATION } from '../../../shared/actor.model';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-manager',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, TranslatePipe],
   templateUrl: './create-manager.component.html',
 })
 export class CreateManagerComponent {
   private authService = inject(AuthService);
+  private translate = inject(TranslateService);
 
   name = signal('');
   surname = signal('');
@@ -31,55 +33,55 @@ export class CreateManagerComponent {
     this.successMessage.set('');
 
     if (!this.name().trim()) {
-      this.errorMessage.set($localize`Name is required`);
+      this.errorMessage.set(this.translate.instant('admin.create_manager.error.name_required'));
       this.triggerShake();
       return;
     }
 
     if (this.name().trim().length > this.validation.name.maxLength) {
-      this.errorMessage.set($localize`Name must be at most ${this.validation.name.maxLength} characters`);
+      this.errorMessage.set(this.translate.instant('admin.create_manager.error.name_max', { max: this.validation.name.maxLength }));
       this.triggerShake();
       return;
     }
 
     if (!this.surname().trim()) {
-      this.errorMessage.set($localize`Surname is required`);
+      this.errorMessage.set(this.translate.instant('admin.create_manager.error.surname_required'));
       this.triggerShake();
       return;
     }
 
     if (this.surname().trim().length > this.validation.surname.maxLength) {
-      this.errorMessage.set($localize`Surname must be at most ${this.validation.surname.maxLength} characters`);
+      this.errorMessage.set(this.translate.instant('admin.create_manager.error.surname_max', { max: this.validation.surname.maxLength }));
       this.triggerShake();
       return;
     }
 
     if (!this.email().trim()) {
-      this.errorMessage.set($localize`Email is required`);
+      this.errorMessage.set(this.translate.instant('admin.create_manager.error.email_required'));
       this.triggerShake();
       return;
     }
 
     if (this.phoneNumber().trim() && !this.validation.phoneNumber.pattern.test(this.phoneNumber().trim())) {
-      this.errorMessage.set($localize`Invalid phone number format`);
+      this.errorMessage.set(this.translate.instant('admin.create_manager.error.phone_invalid'));
       this.triggerShake();
       return;
     }
 
     if (this.address().trim().length > this.validation.address.maxLength) {
-      this.errorMessage.set($localize`Address must be at most ${this.validation.address.maxLength} characters`);
+      this.errorMessage.set(this.translate.instant('admin.create_manager.error.address_max', { max: this.validation.address.maxLength }));
       this.triggerShake();
       return;
     }
 
     if (!this.validation.password.pattern.test(this.password())) {
-      this.errorMessage.set($localize`Password must be at least 8 characters and include uppercase, lowercase, number, and special character (@$!%*?&)`);
+      this.errorMessage.set(this.translate.instant('admin.create_manager.error.password_invalid'));
       this.triggerShake();
       return;
     }
 
     if (this.password() !== this.confirmPassword()) {
-      this.errorMessage.set($localize`Passwords do not match`);
+      this.errorMessage.set(this.translate.instant('admin.create_manager.error.passwords_mismatch'));
       this.triggerShake();
       return;
     }
@@ -96,7 +98,7 @@ export class CreateManagerComponent {
         role: 'manager',
       });
 
-      this.successMessage.set($localize`Manager account created successfully for ${this.email().trim()}`);
+      this.successMessage.set(this.translate.instant('admin.create_manager.success', { email: this.email().trim() }));
       this.name.set('');
       this.surname.set('');
       this.email.set('');
@@ -106,15 +108,15 @@ export class CreateManagerComponent {
       this.confirmPassword.set('');
     } catch (err: any) {
       console.error(err);
-      const FIREBASE_ERRORS: Record<string, string> = {
-        'auth/email-already-in-use': $localize`This email is already registered`,
-        'auth/invalid-email':        $localize`Invalid email address`,
-        'auth/missing-email':        $localize`Email is required`,
-        'auth/weak-password':        $localize`Password is too weak`,
-        'auth/operation-not-allowed':$localize`Email/password registration is not enabled`,
+      const FIREBASE_ERROR_KEYS: Record<string, string> = {
+        'auth/email-already-in-use': 'admin.create_manager.error.email_in_use',
+        'auth/invalid-email':        'admin.create_manager.error.invalid_email',
+        'auth/missing-email':        'admin.create_manager.error.email_required',
+        'auth/weak-password':        'admin.create_manager.error.weak_password',
+        'auth/operation-not-allowed':'admin.create_manager.error.not_allowed',
       };
-      const msg = FIREBASE_ERRORS[err?.code] ?? $localize`Account creation failed. Please try again.`;
-      this.errorMessage.set(msg);
+      const key = FIREBASE_ERROR_KEYS[err?.code] ?? 'admin.create_manager.error.failed';
+      this.errorMessage.set(this.translate.instant(key));
       this.triggerShake();
     } finally {
       this.isLoading.set(false);

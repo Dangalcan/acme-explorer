@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { ApplicationService } from '../../applications/application.service';
 import { WeatherWidgetComponent } from '../../../shared/weather/weather-widget.component';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-trip-card',
@@ -28,6 +29,7 @@ import { WeatherWidgetComponent } from '../../../shared/weather/weather-widget.c
     MatSelectModule,
     MatButtonModule,
     WeatherWidgetComponent,
+    TranslatePipe,
   ],
   templateUrl: './trip-card.component.html',
 })
@@ -48,6 +50,7 @@ export class TripCardComponent {
   private favouritesService = inject(FavouritesService);
   private applicationService = inject(ApplicationService);
   private elementRef = inject(ElementRef);
+  private translate = inject(TranslateService);
 
   currentRole = this.authService.currentRole;
   favouriteLists = this.favouritesService.favouriteLists;
@@ -90,27 +93,12 @@ export class TripCardComponent {
   }
 
   applyButtonLabel(): string {
-    if (this.currentRole() === 'manager') {
-      return $localize`:@@trip.card.apply.managerHidden:Apply`;
-    }
-
-    if (this.trip.cancellation) {
-      return $localize`:@@trip.card.apply.unavailableCancelled:Unavailable`;
-    }
-
-    if (new Date(this.trip.startDate).getTime() <= Date.now()) {
-      return $localize`:@@trip.card.apply.started:Started`;
-    }
-
-    if (this.trip.availablePlaces !== undefined && this.trip.availablePlaces <= 0) {
-      return $localize`:@@trip.card.apply.soldOut:Sold out`;
-    }
-
-    if (this.applicationService.hasActiveApplicationForTrip(this.trip.id)) {
-      return $localize`:@@trip.card.apply.alreadyApplied:Applied`;
-    }
-
-    return $localize`:@@trip.card.apply.default:Apply`;
+    if (this.currentRole() === 'manager') return this.translate.instant('trips.card.apply');
+    if (this.trip.cancellation) return this.translate.instant('trips.card.unavailable');
+    if (new Date(this.trip.startDate).getTime() <= Date.now()) return this.translate.instant('trips.card.started');
+    if (this.trip.availablePlaces !== undefined && this.trip.availablePlaces <= 0) return this.translate.instant('trips.card.sold_out');
+    if (this.applicationService.hasActiveApplicationForTrip(this.trip.id)) return this.translate.instant('trips.card.applied');
+    return this.translate.instant('trips.card.apply');
   }
 
   toggleFavouritePanel(event: Event): void {
@@ -120,45 +108,32 @@ export class TripCardComponent {
     const availableLists = this.getAvailableFavouriteLists();
 
     if (lists.length === 0) {
-      this.favouriteError.set($localize`:@@favourites.trip.noLists:You must create a favourite list first.`);
-      if (this.mode === 'list') {
-        this.favouritePanelToggle.emit(this.trip.id);
-      } else {
-        this.isFavouritePanelOpenLocal.set(true);
-      }
+      this.favouriteError.set(this.translate.instant('favourites.errors.no_lists'));
+      if (this.mode === 'list') this.favouritePanelToggle.emit(this.trip.id);
+      else this.isFavouritePanelOpenLocal.set(true);
       return;
     }
 
     if (availableLists.length === 0) {
-      this.favouriteError.set($localize`:@@favourites.trip.alreadySavedEverywhere:This trip is already in all your favourite lists.`);
-      if (this.mode === 'list') {
-        this.favouritePanelToggle.emit(this.trip.id);
-      } else {
-        this.isFavouritePanelOpenLocal.set(true);
-      }
+      this.favouriteError.set(this.translate.instant('favourites.errors.already_saved'));
+      if (this.mode === 'list') this.favouritePanelToggle.emit(this.trip.id);
+      else this.isFavouritePanelOpenLocal.set(true);
       return;
     }
 
     this.favouriteError.set(null);
     this.selectedFavouriteListId.set('');
 
-    if (this.mode === 'list') {
-      this.favouritePanelToggle.emit(this.trip.id);
-    } else {
-      this.isFavouritePanelOpenLocal.update(value => !value);
-    }
+    if (this.mode === 'list') this.favouritePanelToggle.emit(this.trip.id);
+    else this.isFavouritePanelOpenLocal.update(value => !value);
   }
 
   closeFavouritePanel(event?: Event): void {
     event?.stopPropagation();
     this.selectedFavouriteListId.set('');
     this.favouriteError.set(null);
-
-    if (this.mode === 'list') {
-      this.favouritePanelClose.emit();
-    } else {
-      this.isFavouritePanelOpenLocal.set(false);
-    }
+    if (this.mode === 'list') this.favouritePanelClose.emit();
+    else this.isFavouritePanelOpenLocal.set(false);
   }
 
   updateSelectedFavouriteList(listId: string, event?: Event): void {
@@ -169,14 +144,11 @@ export class TripCardComponent {
 
   saveToFavouriteList(event: Event): void {
     event.stopPropagation();
-
     const listId = this.selectedFavouriteListId();
-
     if (!listId) {
-      this.favouriteError.set($localize`:@@favourites.trip.selectList:Please select a list.`);
+      this.favouriteError.set(this.translate.instant('favourites.errors.select_list'));
       return;
     }
-
     this.favouritesService.addTripToList(listId, this.trip.id);
     this.closeFavouritePanel();
   }
@@ -189,10 +161,7 @@ export class TripCardComponent {
   handleDocumentClick(event: Event): void {
     if (this.mode !== 'list') return;
     if (!this.favouritePanelOpen) return;
-
     const clickedInside = this.elementRef.nativeElement.contains(event.target);
-    if (!clickedInside) {
-      this.closeFavouritePanel();
-    }
+    if (!clickedInside) this.closeFavouritePanel();
   }
 }
