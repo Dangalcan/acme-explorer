@@ -2,9 +2,19 @@
 
 ### DO2
 
-1. Integrate a third-party API providing weather information, so that when a forthcoming
+1. ~~Integrate a third-party API providing weather information, so that when a forthcoming
 trip is displayed, the application shows the weather forecast for the corresponding
-location and date.
+location and date.~~ DONE: Integrated the **Open-Meteo** API (free, no API key required) to display a weather forecast widget on the trip detail page for forthcoming trips.
+
+   **How it works:**
+
+   - `provideHttpClient(withFetch())` was added to `app.config.ts` — the app had no `HttpClient` registered before.
+   - A new `WeatherService` (`src/app/shared/weather/weather.service.ts`) handles two sequential API calls:
+     1. **Geocoding** — `https://geocoding-api.open-meteo.com/v1/search?name={city}&count=1` converts the trip's `city` field into latitude/longitude coordinates.
+     2. **Forecast** — `https://api.open-meteo.com/v1/forecast?latitude=...&longitude=...&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto&start_date=...&end_date=...` retrieves daily forecasts from today up to the trip's start date (capped at 16 days, which is Open-Meteo's maximum forecast window). Both calls use `firstValueFrom()` (RxJS) to await a single HTTP response inside an `async` method, keeping the public API as Angular signals (`loading`, `error`, `forecast`).
+   - WMO weather codes returned by the API are mapped to human-readable labels and emoji icons via a `weatherLabel(code)` helper function (e.g. code `0` → ☀️ Clear sky, codes `51–67` → 🌧️ Rain, codes `95+` → ⛈️ Thunderstorm).
+   - A standalone `WeatherWidgetComponent` (`src/app/shared/weather/weather-widget.component.ts`) takes `location: TripLocation` and `startDate: Date` as inputs. On `ngOnInit` it calls the service if the trip is within the 16-day window. The template renders a responsive grid of day cards (emoji, °max/°min, condition label), a spinner while loading, an error message on failure, and a friendly "Forecast not yet available" notice for trips further than 16 days away.
+   - The widget is inserted in `trip-card.component.html` inside the `details` mode block, between the Photos section and the Reviews section, guarded by `@if (trip.location && trip.startDate > today)` so it only appears for forthcoming trips that have a location set.
 
 2. Integrate a third-party API for currency conversion to adapt trip prices according to the
 user’s locale.
