@@ -2,6 +2,9 @@ import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { TripCardComponent } from './trip-card.component';
@@ -67,6 +70,9 @@ describe('TripCardComponent', () => {
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: FavouritesService, useValue: favouritesServiceMock },
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideTranslateService({ fallbackLang: 'en' }),
       ],
     }).compileComponents();
   }
@@ -129,7 +135,7 @@ describe('TripCardComponent', () => {
     component.toggleFavouritePanel(event);
 
     expect(event.stopPropagation).toHaveBeenCalled();
-    expect(component.favouriteError()).toBe('You must create a favourite list first.');
+    expect(component.favouriteError()).toBe('favourites.errors.no_lists');
     expect(toggleSpy).toHaveBeenCalledWith('trip-1');
   });
 
@@ -169,7 +175,7 @@ describe('TripCardComponent', () => {
     component.saveToFavouriteList(event);
 
     expect(event.stopPropagation).toHaveBeenCalled();
-    expect(component.favouriteError()).toBe('Please select a list.');
+    expect(component.favouriteError()).toBe('favourites.errors.select_list');
     expect(favouritesServiceMock.addTripToList).not.toHaveBeenCalled();
   });
 
@@ -225,7 +231,7 @@ describe('TripCardComponent', () => {
     component.toggleFavouritePanel(event);
 
     expect(event.stopPropagation).toHaveBeenCalled();
-    expect(component.favouriteError()).toBe('This trip is already in all your favourite lists.');
+    expect(component.favouriteError()).toBe('favourites.errors.already_saved');
     expect(toggleSpy).toHaveBeenCalledWith('trip-1');
   });
 
