@@ -149,7 +149,7 @@ export class ApplicationService {
     if (!normalizedReason) return false;
 
     return this.updateApplication(applicationId, (application) => {
-      if (application.status !== 'PENDING' && application.status !== 'DUE') return application;
+      if (application.status !== 'PENDING') return application;
       return {
         ...application,
         status: 'REJECTED',

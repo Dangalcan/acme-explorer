@@ -11,7 +11,7 @@ export class TripService {
       ticker: '260601-ALPS',
       title: 'Adventure in the Alps',
       description: 'A breathtaking journey through the Swiss Alps, featuring glaciers, mountain huts, and traditional Swiss culture. Suitable for intermediate hikers looking for a multi-day alpine experience.',
-      managerId: 'manager-1',
+      managerId: 'manager@acme-explorer.com',
       stages: [
         { id: 's1', version: 0, title: 'Arrival in Zurich', description: 'Check-in and city tour along the Limmat river.', price: 200 },
         { id: 's2', version: 0, title: 'Grindelwald Hike', description: 'Full-day hike with panoramic views of the Eiger north face.', price: 500 },
@@ -31,7 +31,7 @@ export class TripService {
       ticker: '260715-SAHRA',
       title: 'Sahara Desert Trek',
       description: 'Cross the golden dunes of the Moroccan Sahara on camelback, sleeping under a canopy of stars in a traditional Berber camp. A truly life-changing desert experience.',
-      managerId: 'manager-2',
+      managerId: 'manager@acme-explorer.com',
       stages: [
         { id: 's4', version: 0, title: 'Arrival in Marrakech', description: 'Welcome dinner and orientation at a riad in the medina.', price: 150 },
         { id: 's5', version: 0, title: 'Camel Trek to Erg Chebbi', description: 'Two-day camel ride through the high dunes of Erg Chebbi.', price: 500 },
@@ -51,7 +51,7 @@ export class TripService {
       ticker: '260328-KYOT',
       title: 'Kyoto Cherry Blossom',
       description: 'Discover ancient temples, bamboo groves and imperial gardens during sakura season. Walk through thousands of torii gates at Fushimi Inari and witness the geisha tradition in Gion.',
-      managerId: 'manager-1',
+      managerId: 'manager@acme-explorer.com',
       stages: [
         { id: 's7', version: 0, title: 'Arrival in Osaka', description: 'Transfer to Kyoto and check-in at a traditional ryokan.', price: 300 },
         { id: 's8', version: 0, title: 'Fushimi Inari & Arashiyama', description: 'Full-day temple and bamboo grove tour with a tea ceremony.', price: 600 },
@@ -72,7 +72,7 @@ export class TripService {
       ticker: '260901-AMZN',
       title: 'Amazon Rainforest Expedition',
       description: 'Explore the unparalleled biodiversity of the Amazon basin with expert naturalist guides. Navigate black-water rivers, learn jungle survival skills, and observe nocturnal wildlife in their natural habitat.',
-      managerId: 'manager-3',
+      managerId: 'manager@acme-explorer.com',
       stages: [
         { id: 's11', version: 0, title: 'Arrival in Manaus', description: 'Briefing session and gear preparation at base camp.', price: 300 },
         { id: 's12', version: 0, title: 'River Navigation', description: 'Multi-day boat trip through Amazon tributaries spotting pink dolphins.', price: 700 },
