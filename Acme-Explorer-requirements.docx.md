@@ -108,9 +108,7 @@ Contact your lecturers to propose an A+ task that your group wish to develop. Th
 
 ### DO2
 
-1. Integrate a third-party API providing weather information, so that when a forthcoming
-trip is displayed, the application shows the weather forecast for the corresponding
-location and date.
+1. ~~Integrate a third-party API providing weather information, so that when a forthcoming trip is displayed, the application shows the weather forecast for the corresponding location and date.~~ ***DONE***
 
 2. Integrate a third-party API for currency conversion to adapt trip prices according to the
 user’s locale.
@@ -122,7 +120,6 @@ nearby trips.
 Angular application using developer tools, Angular CLI commands (e.g., ng serve, ng
 build, ng test), and other diagnostic tools.
 
-5. Implement lazy loading to improve application performance by loading modules only
-when they are required.
+5. ~~Implement lazy loading to improve application performance by loading modules only when they are required.~~ ***DONE***
 
-6. Use a library to support dynamic language switching at runtime.
+6. ~~Use a library to support dynamic language switching at runtime.~~ ***DONE***

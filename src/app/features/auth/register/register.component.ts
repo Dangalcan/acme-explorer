@@ -3,15 +3,17 @@ import { AuthService } from '../../../core/services/auth.service';
 import { ACTOR_VALIDATION } from '../../../shared/actor.model';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, TranslatePipe],
   templateUrl: './register.component.html',
 })
 export class RegisterComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private translate = inject(TranslateService);
 
   name = signal('');
   surname = signal('');
@@ -38,55 +40,55 @@ export class RegisterComponent {
     this.errorMessage.set('');
 
     if (!this.name().trim()) {
-      this.errorMessage.set($localize`Name is required`);
+      this.errorMessage.set(this.translate.instant('auth.register.error.name_required'));
       this.triggerShake();
       return;
     }
 
     if (this.name().trim().length > this.validation.name.maxLength) {
-      this.errorMessage.set($localize `Name must be at most ${this.validation.name.maxLength} characters`);
+      this.errorMessage.set(this.translate.instant('auth.register.error.name_max', { max: this.validation.name.maxLength }));
       this.triggerShake();
       return;
     }
 
     if (!this.surname().trim()) {
-      this.errorMessage.set($localize`Surname is required`);
+      this.errorMessage.set(this.translate.instant('auth.register.error.surname_required'));
       this.triggerShake();
       return;
     }
 
     if (this.surname().trim().length > this.validation.surname.maxLength) {
-      this.errorMessage.set($localize `Surname must be at most ${this.validation.surname.maxLength} characters`);
+      this.errorMessage.set(this.translate.instant('auth.register.error.surname_max', { max: this.validation.surname.maxLength }));
       this.triggerShake();
       return;
     }
 
     if (!this.email().trim()) {
-      this.errorMessage.set($localize`Email is required`);
+      this.errorMessage.set(this.translate.instant('auth.register.error.email_required'));
       this.triggerShake();
       return;
     }
 
     if (this.phoneNumber().trim() && !this.validation.phoneNumber.pattern.test(this.phoneNumber().trim())) {
-      this.errorMessage.set($localize`Invalid phone number format`);
+      this.errorMessage.set(this.translate.instant('auth.register.error.phone_invalid'));
       this.triggerShake();
       return;
     }
 
     if (this.address().trim().length > this.validation.address.maxLength) {
-      this.errorMessage.set($localize `Address must be at most ${this.validation.address.maxLength} characters`);
+      this.errorMessage.set(this.translate.instant('auth.register.error.address_max', { max: this.validation.address.maxLength }));
       this.triggerShake();
       return;
     }
 
     if (!this.validation.password.pattern.test(this.password())) {
-      this.errorMessage.set($localize`Password must be at least 8 characters and include uppercase, lowercase, number, and special character (@$!%*?&)`);
+      this.errorMessage.set(this.translate.instant('auth.register.error.password_invalid'));
       this.triggerShake();
       return;
     }
 
     if (this.password() !== this.confirmPassword()) {
-      this.errorMessage.set($localize`Passwords do not match`);
+      this.errorMessage.set(this.translate.instant('auth.register.error.passwords_mismatch'));
       this.triggerShake();
       return;
     }
@@ -105,17 +107,15 @@ export class RegisterComponent {
       await this.router.navigateByUrl('/');
     } catch (err: any) {
       console.error(err);
-      const FIREBASE_ERRORS: Record<string, string> = {
-        'auth/email-already-in-use': $localize`This email is already registered`,
-        'auth/invalid-email':        $localize`Invalid email address`,
-        'auth/missing-email':        $localize`Email is required`,
-        'auth/weak-password':        $localize`Password is too weak`,
-        'auth/operation-not-allowed':$localize`Email/password registration is not enabled`,
+      const FIREBASE_ERROR_KEYS: Record<string, string> = {
+        'auth/email-already-in-use': 'auth.register.error.email_in_use',
+        'auth/invalid-email':        'auth.register.error.invalid_email',
+        'auth/missing-email':        'auth.register.error.email_required',
+        'auth/weak-password':        'auth.register.error.weak_password',
+        'auth/operation-not-allowed':'auth.register.error.not_allowed',
       };
-      const msg =
-        FIREBASE_ERRORS[err?.code] ??
-        $localize`Registration failed. Please try again.`;
-      this.errorMessage.set(msg);
+      const key = FIREBASE_ERROR_KEYS[err?.code] ?? 'auth.register.error.failed';
+      this.errorMessage.set(this.translate.instant(key));
       this.triggerShake();
     } finally {
       this.isLoading.set(false);

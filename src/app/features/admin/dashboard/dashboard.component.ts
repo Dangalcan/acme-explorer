@@ -1,12 +1,13 @@
 import { Component, computed, inject } from '@angular/core';
 import { CurrencyPipe, DecimalPipe, PercentPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TripService } from '../../trips/trip.service';
 import { ApplicationService } from '../../applications/application.service';
 import { AppStatus } from '../../applications/application.model';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CurrencyPipe, DecimalPipe, PercentPipe],
+  imports: [CurrencyPipe, DecimalPipe, PercentPipe, TranslatePipe],
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {
@@ -23,7 +24,6 @@ export class DashboardComponent {
 
   readonly applicationsPerTripStats = computed(() => {
     const counts = new Map<string, number>();
-    // Seed all trips with 0 so trips with no applications are included
     for (const trip of this.tripService.trips()) {
       counts.set(trip.id, 0);
     }
@@ -47,11 +47,7 @@ export class DashboardComponent {
 
   readonly currentYear = new Date().getFullYear();
 
-  readonly monthNames = [
-    $localize`January`, $localize`February`, $localize`March`, $localize`April`,
-    $localize`May`, $localize`June`, $localize`July`, $localize`August`,
-    $localize`September`, $localize`October`, $localize`November`, $localize`December`,
-  ];
+  readonly monthKeys = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(i => `admin.dashboard.months.${i}`);
 
   readonly ALL_STATUSES: AppStatus[] = ['PENDING', 'REJECTED', 'DUE', 'ACCEPTED', 'CANCELLED'];
 

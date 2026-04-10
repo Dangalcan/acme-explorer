@@ -4,19 +4,23 @@ import { TripCardComponent } from '../trips/trip-card/trip-card.component';
 import { FavouritesService } from './favourites.service';
 import { FavouriteList, FAVOURITE_LIST_VALIDATION } from './favourite-list.model';
 import { Router } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-favourites-page',
   standalone: true,
-  imports: [FormsModule, TripCardComponent],
+  imports: [FormsModule, TripCardComponent, TranslatePipe],
   templateUrl: './favourites-page.component.html',
 })
 export class FavouritesPageComponent {
   private favouritesService = inject(FavouritesService);
   private router = inject(Router);
+  private translate = inject(TranslateService);
 
   readonly favouriteLists = this.favouritesService.favouriteLists;
   readonly maxNameLength = FAVOURITE_LIST_VALIDATION.name.maxLength;
+  readonly isLoading = this.favouritesService.isLoading;
+  readonly firebaseError = this.favouritesService.error;
 
   newListName = signal('');
   editingListId = signal<string | null>(null);
@@ -30,25 +34,25 @@ export class FavouritesPageComponent {
 
   readonly hasLists = computed(() => this.favouriteLists().length > 0);
 
-  createList(): void {
+  async createList(): Promise<void> {
     const rawName = this.newListName();
     const name = rawName.trim();
 
     if (!rawName.trim()) {
-      this.createListError.set($localize`:@@favourites.create.error.required:List name is required.`);
+      this.createListError.set(this.translate.instant('favourites.create_errors.required'));
       return;
     }
 
     if (name.length > this.maxNameLength) {
-      this.createListError.set(
-        $localize`:@@favourites.create.error.maxLength:List name cannot exceed ${this.maxNameLength} characters.`
-      );
+      this.createListError.set(this.translate.instant('favourites.create_errors.max_length', { max: this.maxNameLength }));
       return;
     }
 
-    this.favouritesService.createList(name);
-    this.newListName.set('');
-    this.createListError.set(null);
+    try {
+      await this.favouritesService.createList(name);
+      this.newListName.set('');
+      this.createListError.set(null);
+    } catch {}
   }
 
   startEditing(list: FavouriteList): void {
@@ -63,89 +67,67 @@ export class FavouritesPageComponent {
     this.editListError.set(null);
   }
 
-  saveEdit(listId: string): void {
+  async saveEdit(listId: string): Promise<void> {
     const rawName = this.editingName();
     const name = rawName.trim();
 
     if (!rawName.trim()) {
-      this.editListError.set($localize`:@@favourites.edit.error.required:List name is required.`);
+      this.editListError.set(this.translate.instant('favourites.edit_errors.required'));
       return;
     }
 
     if (name.length > this.maxNameLength) {
-      this.editListError.set(
-        $localize`:@@favourites.edit.error.maxLength:List name cannot exceed ${this.maxNameLength} characters.`
-      );
+      this.editListError.set(this.translate.instant('favourites.edit_errors.max_length', { max: this.maxNameLength }));
       return;
     }
 
-    this.favouritesService.updateList(listId, name);
-    this.cancelEditing();
+    try {
+      await this.favouritesService.updateList(listId, name);
+      this.cancelEditing();
+    } catch {}
   }
 
-  deleteList(listId: string): void {
-    const confirmed = confirm(
-      $localize`:@@favourites.delete.confirm:Are you sure you want to delete this list?`
-    );
-
+  async deleteList(listId: string): Promise<void> {
+    const confirmed = confirm(this.translate.instant('favourites.errors.delete_confirm'));
     if (!confirmed) return;
-      
-    this.favouritesService.deleteList(listId);
-    this.selectedTripByListId.update(state => {
-      const copy = { ...state };
-      delete copy[listId];
-      return copy;
-    });
-    this.addTripErrorByListId.update(state => {
-      const copy = { ...state };
-      delete copy[listId];
-      return copy;
-    });
+
+    try {
+      await this.favouritesService.deleteList(listId);
+      this.selectedTripByListId.update(state => { const copy = { ...state }; delete copy[listId]; return copy; });
+      this.addTripErrorByListId.update(state => { const copy = { ...state }; delete copy[listId]; return copy; });
+    } catch {}
   }
 
   setSelectedTrip(listId: string, tripId: string): void {
-    this.selectedTripByListId.update(state => ({
-      ...state,
-      [listId]: tripId,
-    }));
-
-    this.addTripErrorByListId.update(state => ({
-      ...state,
-      [listId]: null,
-    }));
+    this.selectedTripByListId.update(state => ({ ...state, [listId]: tripId }));
+    this.addTripErrorByListId.update(state => ({ ...state, [listId]: null }));
   }
 
-  addSelectedTrip(listId: string): void {
+  async addSelectedTrip(listId: string): Promise<void> {
     const tripId = this.selectedTripByListId()[listId];
 
     if (!tripId) {
       this.addTripErrorByListId.update(state => ({
         ...state,
-        [listId]: $localize`:@@favourites.trip.error.select:Please select a trip.`,
+        [listId]: this.translate.instant('favourites.errors.select_trip'),
       }));
       return;
     }
 
-    this.favouritesService.addTripToList(listId, tripId);
-
-    this.selectedTripByListId.update(state => ({
-      ...state,
-      [listId]: '',
-    }));
-
-    this.addTripErrorByListId.update(state => ({
-      ...state,
-      [listId]: null,
-    }));
+    try {
+      await this.favouritesService.addTripToList(listId, tripId);
+      this.selectedTripByListId.update(state => ({ ...state, [listId]: '' }));
+      this.addTripErrorByListId.update(state => ({ ...state, [listId]: null }));
+    } catch {}
   }
 
-  removeTrip(listId: string, tripId: string): void {
-    const confirmed = confirm(
-      $localize`:@@favourites.trip.remove.confirm:Are you sure you want to remove this trip from the list?`
-    );
-
+  async removeTrip(listId: string, tripId: string): Promise<void> {
+    const confirmed = confirm(this.translate.instant('favourites.errors.remove_confirm'));
     if (!confirmed) return;
-    this.favouritesService.removeTripFromList(listId, tripId);
+
+    try {
+      await this.favouritesService.removeTripFromList(listId, tripId);
+    } catch {}
   }
 
   tripsForList(list: FavouriteList) {

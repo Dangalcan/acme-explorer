@@ -12,31 +12,31 @@
                 d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/>
         </svg>
       </div>
-      <h1 class="text-2xl font-bold text-[#2c3e50]" i18n>Welcome back</h1>
-      <p class="text-slate-500 text-sm mt-1" i18n>Log in to Acme Explorer</p>
+      <h1 class="text-2xl font-bold text-[#2c3e50]">{{ 'auth.login.title' | translate }}</h1>
+      <p class="text-slate-500 text-sm mt-1">{{ 'auth.login.subtitle' | translate }}</p>
     </div>
 
     <!-- Form -->
     <div class="space-y-5">
       <div>
-        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>Email</label>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">{{ 'auth.login.email' | translate }}</label>
         <input
           type="email"
           [ngModel]="email()"
           (ngModelChange)="email.set($event)"
-          placeholder="Enter your email" i18n-placeholder
+          [placeholder]="'auth.login.email_placeholder' | translate"
           class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>Password</label>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">{{ 'auth.login.password' | translate }}</label>
         <input
           type="password"
           [ngModel]="password()"
           (ngModelChange)="password.set($event)"
-          placeholder="Enter your password" i18n-placeholder
+          [placeholder]="'auth.login.password_placeholder' | translate"
           class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
         />
@@ -57,8 +57,8 @@
           type="button"
           (click)="goBack()"
           class="flex-1 py-2.5 rounded-lg bg-[#6c757d] hover:bg-[#5a6268] active:scale-95
-                 text-white font-bold transition-all duration-150 cursor-pointer" i18n>
-          Back
+                 text-white font-bold transition-all duration-150 cursor-pointer">
+          {{ 'auth.login.back' | translate }}
         </button>
         <button
           type="button"
@@ -72,19 +72,19 @@
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
               </svg>
-              <ng-container i18n>Signing in…</ng-container>
+              {{ 'auth.login.signing_in' | translate }}
             </span>
           } @else {
-            <ng-container i18n>Log in</ng-container>
+            {{ 'auth.login.submit' | translate }}
           }
         </button>
       </div>
     </div>
 
     <!-- Register link -->
-    <p class="text-center text-sm text-slate-500 mt-6" i18n>
-      Don't have an account?
-      <a routerLink="/register" class="text-[#b21c2b] font-medium hover:text-[#8e1723] transition">Create one</a>
+    <p class="text-center text-sm text-slate-500 mt-6">
+      {{ 'auth.login.no_account' | translate }}
+      <a routerLink="/register" class="text-[#b21c2b] font-medium hover:text-[#8e1723] transition">{{ 'auth.login.create_one' | translate }}</a>
     </p>
   </div>
 

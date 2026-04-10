@@ -3,6 +3,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { Application, AppStatus } from './application.model';
 import { ApplicationService } from './application.service';
 import { FechasPipe } from '../../shared/pipes/fechas.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 interface ApplicationItem extends Application {
   tripTitle?: string;
@@ -10,9 +11,8 @@ interface ApplicationItem extends Application {
 
 @Component({
   selector: 'app-applications',
-  imports: [FechasPipe],
+  imports: [FechasPipe, TranslatePipe],
   templateUrl: './applications.component.html',
-  // styleUrl: './applications.component.scss',
 })
 export class ApplicationsComponent {
   private readonly authService = inject(AuthService);
@@ -26,19 +26,19 @@ export class ApplicationsComponent {
 
   readonly statusOrder: AppStatus[] = ['PENDING', 'DUE', 'ACCEPTED', 'REJECTED', 'CANCELLED'];
 
-  readonly statusLabel: Record<AppStatus, string> = {
-    PENDING: $localize`:@@application.status.pending:Pending`,
-    REJECTED: $localize`:@@application.status.rejected:Rejected`,
-    DUE: $localize`:@@application.status.due:Due`,
-    ACCEPTED: $localize`:@@application.status.accepted:Accepted`,
-    CANCELLED: $localize`:@@application.status.cancelled:Cancelled`,
+  readonly statusKeys: Record<AppStatus, string> = {
+    PENDING:   'applications.status.pending',
+    REJECTED:  'applications.status.rejected',
+    DUE:       'applications.status.due',
+    ACCEPTED:  'applications.status.accepted',
+    CANCELLED: 'applications.status.cancelled',
   };
 
   readonly statusClasses: Record<AppStatus, string> = {
-    PENDING: 'bg-amber-100 text-amber-700 border-amber-200',
-    REJECTED: 'bg-red-100 text-red-700 border-red-200',
-    DUE: 'bg-blue-100 text-blue-700 border-blue-200',
-    ACCEPTED: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+    PENDING:   'bg-amber-100 text-amber-700 border-amber-200',
+    REJECTED:  'bg-red-100 text-red-700 border-red-200',
+    DUE:       'bg-blue-100 text-blue-700 border-blue-200',
+    ACCEPTED:  'bg-emerald-100 text-emerald-700 border-emerald-200',
     CANCELLED: 'bg-slate-100 text-slate-700 border-slate-200',
   };
 
@@ -63,20 +63,15 @@ export class ApplicationsComponent {
   readonly explorerApplications = computed(() => {
     const explorerId = this.currentExplorerId();
     const applications = this.mockApplications();
-
     const matchingByCurrentUser = applications.filter((app) => app.explorerId === explorerId);
-
     if (matchingByCurrentUser.length > 0) {
       return matchingByCurrentUser.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
     }
-
-    // Keep explorer demo data visible even if Firebase UID differs from mock IDs.
     if (this.currentRole() === 'explorer') {
       return applications
         .filter((app) => app.explorerId === this.fallbackExplorerId)
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
     }
-
     return applications
       .filter((app) => app.explorerId === explorerId)
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());

@@ -1,23 +1,43 @@
-import { Injectable, computed, effect, inject, signal, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+  arrayUnion,
+  arrayRemove,
+} from 'firebase/firestore';
 import { FavouriteList } from './favourite-list.model';
 import { AuthService } from '../../core/services/auth.service';
 import { TripService } from '../trips/trip.service';
 import { Trip } from '../trips/trip.model';
+import { db } from '../../infrastructure/firebase.config';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FavouritesService {
-  private readonly storageKey = 'acme-explorer-favourite-lists';
+  private readonly authService = inject(AuthService);
+  private readonly tripService = inject(TripService);
+  private readonly translate = inject(TranslateService);
 
-  private authService = inject(AuthService);
-  private tripService = inject(TripService);
-  private platformId = inject(PLATFORM_ID);
+  private readonly favouriteListsCollection = collection(db, 'favouriteLists');
 
-  private allLists = signal<FavouriteList[]>([]);
+  private readonly allLists = signal<FavouriteList[]>([]);
+  readonly isLoading = signal(false);
+  readonly error = signal<string | null>(null);
 
-  readonly currentExplorerId = computed(() => this.authService.currentUser()?.uid ?? null);
+  readonly currentExplorerId = computed(() => {
+    const user = this.authService.currentUser();
+    const role = this.authService.currentRole();
+    if (!user || role !== 'explorer') return null;
+    return user.uid;
+  });
 
   readonly favouriteLists = computed(() => {
     const explorerId = this.currentExplorerId();
@@ -26,93 +46,118 @@ export class FavouritesService {
   });
 
   constructor() {
-    if (this.isBrowser()) {
-      this.allLists.set(this.loadFromStorage());
+    effect(() => {
+      const explorerId = this.currentExplorerId();
+      void this.loadLists(explorerId);
+    });
+  }
 
-      effect(() => {
-        localStorage.setItem(this.storageKey, JSON.stringify(this.allLists()));
-      });
+  private async loadLists(explorerId: string | null): Promise<void> {
+    if (!explorerId) {
+      this.allLists.set([]);
+      this.error.set(null);
+      return;
     }
-  }
 
-  private isBrowser(): boolean {
-    return isPlatformBrowser(this.platformId);
-  }
-
-  private loadFromStorage(): FavouriteList[] {
-    if (!this.isBrowser()) return [];
+    this.isLoading.set(true);
+    this.error.set(null);
 
     try {
-      const raw = localStorage.getItem(this.storageKey);
-      if (!raw) return [];
-      const parsed = JSON.parse(raw) as FavouriteList[];
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
+      const listsQuery = query(this.favouriteListsCollection, where('explorerId', '==', explorerId));
+      const snapshot = await getDocs(listsQuery);
+      const lists = snapshot.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...(docSnap.data() as Omit<FavouriteList, 'id'>),
+      }));
+      this.allLists.set(lists);
+    } catch (error) {
+      console.error('Error loading favourite lists', error);
+      this.error.set(this.translate.instant('favourites.errors.load'));
+      this.allLists.set([]);
+    } finally {
+      this.isLoading.set(false);
     }
   }
 
-  createList(name: string): void {
-    const explorerId = this.currentExplorerId();
-    const normalizedName = name.trim();
-
-    if (!explorerId || !normalizedName) return;
-
-    const newList: FavouriteList = {
-      id: crypto.randomUUID(),
-      version: 0,
-      explorerId,
-      name: normalizedName,
-      tripIds: [],
-    };
-
-    this.allLists.update(lists => [...lists, newList]);
+  async refresh(): Promise<void> {
+    await this.loadLists(this.currentExplorerId());
   }
 
-  updateList(listId: string, name: string): void {
+  async createList(name: string): Promise<void> {
+    const explorerId = this.currentExplorerId();
+    const normalizedName = name.trim();
+    if (!explorerId || !normalizedName) return;
+
+    this.error.set(null);
+    try {
+      await addDoc(this.favouriteListsCollection, { explorerId, name: normalizedName, tripIds: [], version: 0 });
+      await this.refresh();
+    } catch (error) {
+      console.error('Error creating favourite list', error);
+      this.error.set(this.translate.instant('favourites.errors.create'));
+      throw error;
+    }
+  }
+
+  async updateList(listId: string, name: string): Promise<void> {
     const normalizedName = name.trim();
     if (!normalizedName) return;
 
-    this.allLists.update(lists =>
-      lists.map(list =>
-        list.id === listId
-          ? { ...list, name: normalizedName, version: list.version + 1 }
-          : list
-      )
-    );
+    const currentList = this.allLists().find(list => list.id === listId);
+    if (!currentList) return;
+
+    this.error.set(null);
+    try {
+      await updateDoc(doc(db, 'favouriteLists', listId), { name: normalizedName, version: currentList.version + 1 });
+      await this.refresh();
+    } catch (error) {
+      console.error('Error updating favourite list', error);
+      this.error.set(this.translate.instant('favourites.errors.update'));
+      throw error;
+    }
   }
 
-  deleteList(listId: string): void {
-    this.allLists.update(lists => lists.filter(list => list.id !== listId));
+  async deleteList(listId: string): Promise<void> {
+    this.error.set(null);
+    try {
+      await deleteDoc(doc(db, 'favouriteLists', listId));
+      await this.refresh();
+    } catch (error) {
+      console.error('Error deleting favourite list', error);
+      this.error.set(this.translate.instant('favourites.errors.delete'));
+      throw error;
+    }
   }
 
-  addTripToList(listId: string, tripId: string): void {
-    this.allLists.update(lists =>
-      lists.map(list => {
-        if (list.id !== listId) return list;
-        if (list.tripIds.includes(tripId)) return list;
+  async addTripToList(listId: string, tripId: string): Promise<void> {
+    const currentList = this.allLists().find(list => list.id === listId);
+    if (!currentList) return;
+    if (currentList.tripIds.includes(tripId)) return;
 
-        return {
-          ...list,
-          tripIds: [...list.tripIds, tripId],
-          version: list.version + 1,
-        };
-      })
-    );
+    this.error.set(null);
+    try {
+      await updateDoc(doc(db, 'favouriteLists', listId), { tripIds: arrayUnion(tripId), version: currentList.version + 1 });
+      await this.refresh();
+    } catch (error) {
+      console.error('Error adding trip to favourite list', error);
+      this.error.set(this.translate.instant('favourites.errors.add_trip'));
+      throw error;
+    }
   }
 
-  removeTripFromList(listId: string, tripId: string): void {
-    this.allLists.update(lists =>
-      lists.map(list =>
-        list.id === listId
-          ? {
-              ...list,
-              tripIds: list.tripIds.filter(id => id !== tripId),
-              version: list.version + 1,
-            }
-          : list
-      )
-    );
+  async removeTripFromList(listId: string, tripId: string): Promise<void> {
+    const currentList = this.allLists().find(list => list.id === listId);
+    if (!currentList) return;
+
+    this.error.set(null);
+    try {
+      await updateDoc(doc(db, 'favouriteLists', listId), { tripIds: arrayRemove(tripId), version: currentList.version + 1 });
+      await this.refresh();
+    } catch (error) {
+      console.error('Error removing trip from favourite list', error);
+      this.error.set(this.translate.instant('favourites.errors.remove_trip'));
+      throw error;
+    }
   }
 
   getTripsForList(list: FavouriteList): Trip[] {

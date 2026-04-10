@@ -3,11 +3,11 @@
 
     <!-- Back link -->
     <a routerLink="/trips"
-      class="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 mb-6 transition-colors" i18n>
+      class="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 mb-6 transition-colors">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
       </svg>
-      Back to trips
+      {{ 'trips.details.back' | translate }}
     </a>
 
     @if (trip(); as t) {
@@ -21,7 +21,7 @@
     <!-- Applications section for managers -->
     @if (currentRole() === 'manager') {
       <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mt-6">
-        <h2 class="text-lg font-bold text-slate-800 mb-4" i18n>Applications for this trip</h2>
+        <h2 class="text-lg font-bold text-slate-800 mb-4">{{ 'trips.details.applications_title' | translate }}</h2>
 
         @if (!canManageCurrentTrip()) {
           <div class="bg-amber-50 border border-amber-200 rounded-lg px-4 py-2 text-amber-700 text-sm" i18n>
@@ -31,8 +31,8 @@
         @else {
 
         @if (isLoadingApplications()) {
-          <div class="bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 text-blue-700 text-sm" i18n>
-            Loading applications...
+          <div class="bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 text-blue-700 text-sm">
+            {{ 'trips.details.loading_apps' | translate }}
           </div>
         }
         @else if (loadApplicationsError()) {
@@ -41,8 +41,8 @@
           </div>
         }
         @else if (tripApplications().length === 0) {
-          <div class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-gray-700 text-sm" i18n>
-            No applications yet.
+          <div class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-gray-700 text-sm">
+            {{ 'trips.details.no_apps' | translate }}
           </div>
         }
         @else {
@@ -50,10 +50,10 @@
             <table class="w-full text-sm">
               <thead>
                 <tr class="border-b border-slate-200">
-                  <th class="text-left py-3 px-4 font-semibold text-slate-700" i18n>Explorer</th>
-                  <th class="text-left py-3 px-4 font-semibold text-slate-700" i18n>Applied</th>
-                  <th class="text-left py-3 px-4 font-semibold text-slate-700" i18n>Status</th>
-                  <th class="text-left py-3 px-4 font-semibold text-slate-700" i18n>Comments</th>
+                  <th class="text-left py-3 px-4 font-semibold text-slate-700">{{ 'trips.details.col_explorer' | translate }}</th>
+                  <th class="text-left py-3 px-4 font-semibold text-slate-700">{{ 'trips.details.col_applied' | translate }}</th>
+                  <th class="text-left py-3 px-4 font-semibold text-slate-700">{{ 'trips.details.col_status' | translate }}</th>
+                  <th class="text-left py-3 px-4 font-semibold text-slate-700">{{ 'trips.details.col_comments' | translate }}</th>
                   <th class="text-left py-3 px-4 font-semibold text-slate-700" i18n>Actions</th>
                 </tr>
               </thead>
@@ -64,7 +64,7 @@
                     <td class="py-3 px-4 text-slate-600">{{ app.createdAt | date:'d MMM yyyy' }}</td>
                     <td class="py-3 px-4">
                       <span class="text-xs font-semibold px-2 py-1 rounded-full border {{ statusConfig[app.status].classes }}">
-                        {{ statusConfig[app.status].label }}
+                        {{ statusConfig[app.status].key | translate }}
                       </span>
                     </td>
                     <td class="py-3 px-4 text-slate-600 max-w-xs truncate">
@@ -127,19 +127,18 @@
           </div>
           <div class="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">
             <div class="font-medium">
-              <span i18n>Applications:</span>
+              <span>{{ 'trips.details.applications_label' | translate }}</span>
               {{ pageStartItem() }}–{{ pageEndItem() }} / {{ totalApplications() }}
             </div>
 
             <div class="flex items-center gap-2">
               <label class="flex items-center gap-2">
-                <span i18n>Rows:</span>
+                <span>{{ 'trips.details.rows' | translate }}</span>
                 <select
                   class="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm"
                   [value]="pageSize()"
                   (change)="changePageSize($any($event.target).value)"
-                  aria-label="Rows per page"
-                  i18n-aria-label
+                  [attr.aria-label]="'trips.details.rows' | translate"
                 >
                   @for (size of pageSizeOptions; track size) {
                     <option [value]="size">{{ size }}</option>
@@ -152,9 +151,8 @@
                 class="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 disabled:opacity-50"
                 (click)="previousPage()"
                 [disabled]="currentPage() === 0"
-                i18n
               >
-                Prev
+                {{ 'trips.details.prev' | translate }}
               </button>
 
               <span class="min-w-[3rem] text-center font-medium">
@@ -166,9 +164,8 @@
                 class="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 disabled:opacity-50"
                 (click)="nextPage()"
                 [disabled]="currentPage() >= totalPages() - 1"
-                i18n
               >
-                Next
+                {{ 'trips.details.next' | translate }}
               </button>
             </div>
           </div>
@@ -179,8 +176,8 @@
 
     } @else {
     <div class="text-center py-20 text-slate-400">
-      <p class="text-lg font-semibold" i18n>Trip not found.</p>
-      <a routerLink="/trips" class="text-sm text-indigo-500 hover:underline mt-2 inline-block" i18n>Browse all trips</a>
+      <p class="text-lg font-semibold">{{ 'trips.details.not_found' | translate }}</p>
+      <a routerLink="/trips" class="text-sm text-indigo-500 hover:underline mt-2 inline-block">{{ 'trips.details.browse_all' | translate }}</a>
     </div>
     }
 

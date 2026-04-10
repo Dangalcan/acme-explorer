@@ -1,45 +1,45 @@
 <section class="max-w-4xl mx-auto px-6 py-16 space-y-12">
-  <h1 class="text-3xl font-bold text-gray-800" i18n>Dashboard</h1>
+  <h1 class="text-3xl font-bold text-gray-800">{{ 'admin.dashboard.title' | translate }}</h1>
 
   <!-- Trips per Manager -->
   <div>
-    <h2 class="text-xl font-semibold text-gray-700 mb-4" i18n>Trips per Manager</h2>
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">{{ 'admin.dashboard.trips_per_manager' | translate }}</h2>
     @if (tripsPerManagerStats(); as stats) {
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div class="bg-white rounded-xl shadow p-6 text-center">
-          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide" i18n>Average</p>
+          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ 'admin.dashboard.average' | translate }}</p>
           <p class="mt-2 text-3xl font-bold text-gray-800">{{ stats.avg | number:'1.2-2' }}</p>
         </div>
         <div class="bg-white rounded-xl shadow p-6 text-center">
-          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide" i18n>Minimum</p>
+          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ 'admin.dashboard.minimum' | translate }}</p>
           <p class="mt-2 text-3xl font-bold text-gray-800">{{ stats.min }}</p>
         </div>
         <div class="bg-white rounded-xl shadow p-6 text-center">
-          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide" i18n>Maximum</p>
+          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ 'admin.dashboard.maximum' | translate }}</p>
           <p class="mt-2 text-3xl font-bold text-gray-800">{{ stats.max }}</p>
         </div>
         <div class="bg-white rounded-xl shadow p-6 text-center">
-          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide" i18n>Std Deviation</p>
+          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ 'admin.dashboard.std_deviation' | translate }}</p>
           <p class="mt-2 text-3xl font-bold text-gray-800">{{ stats.stdDev | number:'1.2-2' }}</p>
         </div>
       </div>
     } @else {
-      <p class="text-gray-500" i18n>No trip data available.</p>
+      <p class="text-gray-500">{{ 'admin.dashboard.no_trip_data' | translate }}</p>
     }
   </div>
 
   <!-- Available seats this month -->
   <div>
-    <h2 class="text-xl font-semibold text-gray-700 mb-4" i18n>Available Seats — Trips Starting This Month</h2>
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">{{ 'admin.dashboard.available_seats_title' | translate }}</h2>
     <div class="bg-white rounded-xl shadow p-6 inline-block text-center min-w-40">
-      <p class="text-sm font-medium text-gray-500 uppercase tracking-wide" i18n>Available Seats</p>
+      <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ 'admin.dashboard.available_seats' | translate }}</p>
       <p class="mt-2 text-4xl font-bold text-gray-800">{{ availableSeatsThisMonth() }}</p>
     </div>
   </div>
 
   <!-- Application Status Ratios -->
   <div>
-    <h2 class="text-xl font-semibold text-gray-700 mb-4" i18n>Applications by Status</h2>
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">{{ 'admin.dashboard.applications_by_status' | translate }}</h2>
     @if (applicationStatusRatios(); as ratios) {
       <div class="bg-white rounded-xl shadow overflow-hidden">
         @for (item of ratios; track item.status) {
@@ -55,17 +55,17 @@
         }
       </div>
     } @else {
-      <p class="text-gray-500" i18n>No application data available.</p>
+      <p class="text-gray-500">{{ 'admin.dashboard.no_application_data' | translate }}</p>
     }
   </div>
 
   <!-- Revenue per Month -->
   <div>
-    <h2 class="text-xl font-semibold text-gray-700 mb-4" i18n>Total Revenue per Month ({{ currentYear }})</h2>
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">{{ 'admin.dashboard.revenue_per_month' | translate: { year: currentYear } }}</h2>
     <div class="bg-white rounded-xl shadow overflow-hidden">
       @for (item of revenuePerMonth(); track item.month) {
         <div class="flex items-center justify-between px-6 py-3 border-b border-gray-100 last:border-0">
-          <span class="text-sm font-medium text-gray-700 w-24">{{ monthNames[item.month] }}</span>
+          <span class="text-sm font-medium text-gray-700 w-24">{{ monthKeys[item.month] | translate }}</span>
           <div class="flex items-center gap-4 flex-1">
             <div class="flex-1 bg-gray-100 rounded-full h-2">
               <div class="bg-emerald-500 h-2 rounded-full"
@@ -80,28 +80,28 @@
 
   <!-- Applications per Trip -->
   <div>
-    <h2 class="text-xl font-semibold text-gray-700 mb-4" i18n>Applications per Trip</h2>
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">{{ 'admin.dashboard.applications_per_trip' | translate }}</h2>
     @if (applicationsPerTripStats(); as stats) {
       <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div class="bg-white rounded-xl shadow p-6 text-center">
-          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide" i18n>Average</p>
+          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ 'admin.dashboard.average' | translate }}</p>
           <p class="mt-2 text-3xl font-bold text-gray-800">{{ stats.avg | number:'1.2-2' }}</p>
         </div>
         <div class="bg-white rounded-xl shadow p-6 text-center">
-          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide" i18n>Minimum</p>
+          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ 'admin.dashboard.minimum' | translate }}</p>
           <p class="mt-2 text-3xl font-bold text-gray-800">{{ stats.min }}</p>
         </div>
         <div class="bg-white rounded-xl shadow p-6 text-center">
-          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide" i18n>Maximum</p>
+          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ 'admin.dashboard.maximum' | translate }}</p>
           <p class="mt-2 text-3xl font-bold text-gray-800">{{ stats.max }}</p>
         </div>
         <div class="bg-white rounded-xl shadow p-6 text-center">
-          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide" i18n>Std Deviation</p>
+          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ 'admin.dashboard.std_deviation' | translate }}</p>
           <p class="mt-2 text-3xl font-bold text-gray-800">{{ stats.stdDev | number:'1.2-2' }}</p>
         </div>
       </div>
     } @else {
-      <p class="text-gray-500" i18n>No application data available.</p>
+      <p class="text-gray-500">{{ 'admin.dashboard.no_application_data' | translate }}</p>
     }
   </div>
 </section>

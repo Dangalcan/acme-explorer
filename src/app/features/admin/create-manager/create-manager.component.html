@@ -12,8 +12,8 @@
                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
         </svg>
       </div>
-      <h1 class="text-2xl font-bold text-[#2c3e50]" i18n>Create Manager Account</h1>
-      <p class="text-slate-500 text-sm mt-1" i18n>Add a new manager to Acme Explorer</p>
+      <h1 class="text-2xl font-bold text-[#2c3e50]">{{ 'admin.create_manager.title' | translate }}</h1>
+      <p class="text-slate-500 text-sm mt-1">{{ 'admin.create_manager.subtitle' | translate }}</p>
     </div>
 
     <!-- Form -->
@@ -22,30 +22,28 @@
       <!-- Name + Surname row -->
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-            Name <span class="text-[#b21c2b]">*</span>
+          <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+            {{ 'auth.register.name' | translate }} <span class="text-[#b21c2b]">*</span>
           </label>
           <input
             type="text"
             [ngModel]="name()"
             (ngModelChange)="name.set($event)"
-            placeholder="John"
-            i18n-placeholder
+            [placeholder]="'admin.create_manager.name_placeholder' | translate"
             [maxlength]="validation.name.maxLength"
             class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
                    focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
           />
         </div>
         <div>
-          <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-            Surname <span class="text-[#b21c2b]">*</span>
+          <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+            {{ 'auth.register.surname' | translate }} <span class="text-[#b21c2b]">*</span>
           </label>
           <input
             type="text"
             [ngModel]="surname()"
             (ngModelChange)="surname.set($event)"
-            placeholder="Doe"
-            i18n-placeholder
+            [placeholder]="'admin.create_manager.surname_placeholder' | translate"
             [maxlength]="validation.surname.maxLength"
             class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
                    focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
@@ -54,45 +52,42 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-          Email <span class="text-[#b21c2b]">*</span>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          {{ 'auth.register.email' | translate }} <span class="text-[#b21c2b]">*</span>
         </label>
         <input
           type="email"
           [ngModel]="email()"
           (ngModelChange)="email.set($event)"
-          placeholder="manager@acme.com"
-          i18n-placeholder
+          [placeholder]="'admin.create_manager.email_placeholder' | translate"
           class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-          Phone number <span class="text-slate-400 font-normal">(optional)</span>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          {{ 'auth.register.phone' | translate }} <span class="text-slate-400 font-normal">{{ 'common.optional' | translate }}</span>
         </label>
         <input
           type="tel"
           [ngModel]="phoneNumber()"
           (ngModelChange)="phoneNumber.set($event)"
-          placeholder="+1234567890"
-          i18n-placeholder
+          [placeholder]="'admin.create_manager.phone_placeholder' | translate"
           class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-          Address <span class="text-slate-400 font-normal">(optional)</span>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          {{ 'auth.register.address' | translate }} <span class="text-slate-400 font-normal">{{ 'common.optional' | translate }}</span>
         </label>
         <input
           type="text"
           [ngModel]="address()"
           (ngModelChange)="address.set($event)"
-          placeholder="123 Main St, City"
-          i18n-placeholder
+          [placeholder]="'admin.create_manager.address_placeholder' | translate"
           [maxlength]="validation.address.maxLength"
           class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
@@ -100,30 +95,28 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-          Password <span class="text-[#b21c2b]">*</span>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          {{ 'auth.register.password' | translate }} <span class="text-[#b21c2b]">*</span>
         </label>
         <input
           type="password"
           [ngModel]="password()"
           (ngModelChange)="password.set($event)"
-          placeholder="Min 8 chars, upper, lower, number & symbol"
-          i18n-placeholder
+          [placeholder]="'admin.create_manager.password_placeholder' | translate"
           class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5" i18n>
-          Confirm Password <span class="text-[#b21c2b]">*</span>
+        <label class="block text-sm font-medium text-[#2c3e50] mb-1.5">
+          {{ 'auth.register.confirm_password' | translate }} <span class="text-[#b21c2b]">*</span>
         </label>
         <input
           type="password"
           [ngModel]="confirmPassword()"
           (ngModelChange)="confirmPassword.set($event)"
-          placeholder="Repeat the password"
-          i18n-placeholder
+          [placeholder]="'admin.create_manager.confirm_placeholder' | translate"
           class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-300 text-slate-800 placeholder-slate-400
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition"
         />
@@ -151,8 +144,8 @@
       <div class="flex gap-3 pt-1">
         <a routerLink="/admin/dashboard"
            class="flex-1 py-2.5 rounded-lg bg-[#6c757d] hover:bg-[#5a6268] active:scale-95
-                  text-white font-bold text-center transition-all duration-150 cursor-pointer" i18n>
-          Back
+                  text-white font-bold text-center transition-all duration-150 cursor-pointer">
+          {{ 'common.back' | translate }}
         </a>
         <button
           type="button"
@@ -166,10 +159,10 @@
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
               </svg>
-              <ng-container i18n>Creating…</ng-container>
+              {{ 'admin.create_manager.creating' | translate }}
             </span>
           } @else {
-            <ng-container i18n>Create Manager</ng-container>
+            {{ 'admin.create_manager.submit' | translate }}
           }
         </button>
       </div>

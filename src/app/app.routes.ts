@@ -1,20 +1,7 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './features/auth/login/login.component';
-import { RegisterComponent } from './features/auth/register/register.component';
-import { TripListComponent } from './features/trips/trip-list/trip-list.component';
-import { TripDisplayComponent } from './features/trips/trip-display/trip-display.component';
-import { NotFoundComponent } from './core/not-found/not-found.component';
-import { ForbiddenComponent } from './core/forbidden/forbidden.component';
-import { ApplicationsComponent } from './features/applications/applications.component';
-import { FinderComponent } from './features/finder/finder.component';
-import { DashboardComponent } from './features/admin/dashboard/dashboard.component';
-import { SettingsComponent } from './features/settings/settings.component';
-import { CreateManagerComponent } from './features/admin/create-manager/create-manager.component';
-import { UsersListComponent } from './features/admin/users-list/users-list.component';
 import { adminGuard } from './core/guards/admin-guard';
 import { explorerGuard } from './core/guards/explorer-guard';
 import { authGuard } from './core/guards/auth-guard';
-import { FavouritesPageComponent } from './features/favourites/favourites-page.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/trips', pathMatch: 'full' },
@@ -22,29 +9,99 @@ export const routes: Routes = [
   {
     path: 'trips',
     children: [
-      { path: '', component: TripListComponent },
-      { path: ':id', component: TripDisplayComponent },
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/trips/trip-list/trip-list.component').then(
+            (m) => m.TripListComponent,
+          ),
+      },
+      {
+        path: ':id',
+        loadComponent: () =>
+          import('./features/trips/trip-display/trip-display.component').then(
+            (m) => m.TripDisplayComponent,
+          ),
+      },
     ],
   },
- 
-  { path: 'applications', component: ApplicationsComponent, canActivate: [explorerGuard] },
-  { path: 'finder', component: FinderComponent , canActivate: [explorerGuard]  },
-  { path: 'favourites', component: FavouritesPageComponent, canActivate: [explorerGuard] },
 
-  { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
- 
+  {
+    path: 'applications',
+    canActivate: [explorerGuard],
+    loadComponent: () =>
+      import('./features/applications/applications.component').then(
+        (m) => m.ApplicationsComponent,
+      ),
+  },
+  {
+    path: 'finder',
+    canActivate: [explorerGuard],
+    loadComponent: () =>
+      import('./features/finder/finder.component').then((m) => m.FinderComponent),
+  },
+  {
+    path: 'favourites',
+    canActivate: [explorerGuard],
+    loadComponent: () =>
+      import('./features/favourites/favourites-page.component').then(
+        (m) => m.FavouritesPageComponent,
+      ),
+  },
+
+  {
+    path: 'settings',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/settings/settings.component').then((m) => m.SettingsComponent),
+  },
+
   {
     path: 'admin',
     canActivate: [adminGuard],
     children: [
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'create-manager', component: CreateManagerComponent },
-      { path: 'users', component: UsersListComponent },
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/admin/dashboard/dashboard.component').then(
+            (m) => m.DashboardComponent,
+          ),
+      },
+      {
+        path: 'create-manager',
+        loadComponent: () =>
+          import('./features/admin/create-manager/create-manager.component').then(
+            (m) => m.CreateManagerComponent,
+          ),
+      },
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('./features/admin/users-list/users-list.component').then(
+            (m) => m.UsersListComponent,
+          ),
+      },
     ],
   },
 
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'forbidden', component: ForbiddenComponent },
-  { path: '**', component: NotFoundComponent },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./features/auth/login/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./features/auth/register/register.component').then((m) => m.RegisterComponent),
+  },
+  {
+    path: 'forbidden',
+    loadComponent: () =>
+      import('./core/forbidden/forbidden.component').then((m) => m.ForbiddenComponent),
+  },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./core/not-found/not-found.component').then((m) => m.NotFoundComponent),
+  },
 ];
