@@ -144,14 +144,14 @@ describe('TripCardComponent', () => {
       {
         id: 'list-1',
         version: 0,
-        explorerId: 'explorer-1',
+        explorerId: 'uid-explorer-1',
         name: 'Summer',
         tripIds: [],
       },
       {
         id: 'list-2',
         version: 0,
-        explorerId: 'explorer-1',
+        explorerId: 'uid-explorer-1',
         name: 'Dream trips',
         tripIds: [],
       },
@@ -187,7 +187,7 @@ describe('TripCardComponent', () => {
       {
         id: 'list-1',
         version: 0,
-        explorerId: 'explorer-1',
+        explorerId: 'uid-explorer-1',
         name: 'Summer',
         tripIds: [],
       },
@@ -213,14 +213,14 @@ describe('TripCardComponent', () => {
         {
         id: 'list-1',
         version: 0,
-        explorerId: 'explorer-1',
+        explorerId: 'uid-explorer-1',
         name: 'Summer',
         tripIds: ['trip-1'],
         },
         {
         id: 'list-2',
         version: 0,
-        explorerId: 'explorer-1',
+        explorerId: 'uid-explorer-1',
         name: 'Dream trips',
         tripIds: ['trip-1'],
         },

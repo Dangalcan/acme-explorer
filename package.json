@@ -9,7 +9,8 @@
     "test": "ng test",
     "test:coverage": "ng test --coverage",
     "serve:ssr:acme-explorer": "node dist/acme-explorer/server/server.mjs",
-    "i18n:extract": "ng extract-i18n --output-path src/locale"
+    "i18n:extract": "ng extract-i18n --output-path src/locale",
+    "seed:firestore": "node scripts/seed-firestore.mjs"
   },
   "private": true,
   "packageManager": "npm@11.6.2",

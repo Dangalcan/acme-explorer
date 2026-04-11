@@ -6,10 +6,10 @@ import { map } from 'rxjs';
 import { TripService } from '../trip.service';
 import { TripCardComponent } from '../trip-card/trip-card.component';
 import { AuthService } from '../../../core/services/auth.service';
-import { Application, AppStatus } from '../../applications/application.model';
-import { Review } from '../review.model';
+import { AppStatus } from '../../applications/application.model';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ApplicationService } from '../../applications/application.service';
+import { ReviewService } from '../review.service';
 
 
 @Component({
@@ -23,6 +23,7 @@ export class TripDisplayComponent {
   private tripService = inject(TripService);
   private authService = inject(AuthService);
   private applicationService = inject(ApplicationService);
+  private reviewService = inject(ReviewService);
 
   private id = toSignal(this.route.paramMap.pipe(map(p => p.get('id') ?? '')));
 
@@ -30,40 +31,23 @@ export class TripDisplayComponent {
 
   readonly currentRole = this.authService.currentRole;
 
-  readonly applications = this.applicationService.applications;
-  readonly fallbackApplications = signal<Application[]>([
-    { id: 'app-1', version: 0, tripId: '1', explorerId: 'explorer-1', createdAt: new Date('2026-01-10T09:00:00.000Z'), status: 'ACCEPTED', comments: 'Very excited about the Alps trip!' },
-    { id: 'app-2', version: 0, tripId: '3', explorerId: 'explorer-1', createdAt: new Date('2026-01-15T11:30:00.000Z'), status: 'PENDING', comments: 'Huge fan of Japanese culture.' },
-    { id: 'app-3', version: 0, tripId: '2', explorerId: 'explorer-2', createdAt: new Date('2026-02-01T08:00:00.000Z'), status: 'ACCEPTED' },
-    { id: 'app-4', version: 0, tripId: '4', explorerId: 'explorer-2', createdAt: new Date('2026-02-20T14:00:00.000Z'), status: 'REJECTED', comments: 'Interested in Amazon wildlife.', rejectionReason: 'Trip is fully booked.' },
-    { id: 'app-5', version: 0, tripId: '3', explorerId: 'explorer-3', createdAt: new Date('2026-01-20T10:00:00.000Z'), status: 'ACCEPTED' },
-    { id: 'app-6', version: 0, tripId: '4', explorerId: 'explorer-3', createdAt: new Date('2026-03-01T09:30:00.000Z'), status: 'PENDING', comments: 'I have jungle survival training.' },
-    { id: 'app-7', version: 0, tripId: '1', explorerId: 'explorer-2', createdAt: new Date('2026-01-25T16:00:00.000Z'), status: 'CANCELLED', comments: 'Schedule conflict, unfortunately.' },
-    { id: 'app-8', version: 0, tripId: '1', explorerId: 'explorer-4', createdAt: new Date('2026-01-28T10:00:00.000Z'), status: 'PENDING', comments: 'Looking forward to this trip.' },
-    { id: 'app-9', version: 0, tripId: '1', explorerId: 'explorer-5', createdAt: new Date('2026-01-29T09:15:00.000Z'), status: 'DUE', comments: 'Please confirm payment instructions.' },
-    { id: 'app-10', version: 0, tripId: '1', explorerId: 'explorer-6', createdAt: new Date('2026-01-30T12:45:00.000Z'), status: 'REJECTED', rejectionReason: 'No seats available.' },
-    { id: 'app-11', version: 0, tripId: '1', explorerId: 'explorer-7', createdAt: new Date('2026-01-31T08:20:00.000Z'), status: 'ACCEPTED', comments: 'Happy to join.' },
-    { id: 'app-12', version: 0, tripId: '1', explorerId: 'explorer-8', createdAt: new Date('2026-02-01T14:00:00.000Z'), status: 'CANCELLED', comments: 'Cannot attend anymore.' },
-  ]);
-
   readonly rejectionReasonByApplicationId = signal<Partial<Record<string, string>>>({});
   readonly rejectionErrorByApplicationId = signal<Partial<Record<string, string | null>>>({});
 
-  readonly currentManagerEmail = computed(() => this.authService.currentUser()?.email ?? null);
+  readonly currentManagerId = computed(() => this.authService.currentUser()?.uid ?? null);
 
   readonly canManageCurrentTrip = computed(() => {
     const trip = this.trip();
-    const managerEmail = this.currentManagerEmail();
-    if (!trip || !managerEmail) return false;
-    return trip.managerId === managerEmail;
+    const managerId = this.currentManagerId();
+    if (!trip || !managerId) return false;
+    return trip.managerId === managerId;
   });
 
   readonly tripApplications = computed(() => {
     const tripId = this.trip()?.id;
-    const apps = this.applications();
-    const sourceApps = apps.length > 0 ? apps : this.fallbackApplications();
+    const apps = this.applicationService.applications();
     if (!tripId) return [];
-    return sourceApps.filter((app) => app.tripId === tripId).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    return apps.filter((app) => app.tripId === tripId).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   });
 
   readonly statusConfig: Record<AppStatus, { key: string; classes: string }> = {
@@ -127,10 +111,10 @@ export class TripDisplayComponent {
   }
 
   markAsDue(applicationId: string): void {
-    this.applicationService.markApplicationAsDue(applicationId);
+    void this.applicationService.markApplicationAsDue(applicationId);
   }
 
-  reject(applicationId: string): void {
+  async reject(applicationId: string): Promise<void> {
     const reason = (this.rejectionReasonByApplicationId()[applicationId] ?? '').trim();
 
     if (!reason) {
@@ -141,7 +125,7 @@ export class TripDisplayComponent {
       return;
     }
 
-    const didReject = this.applicationService.rejectApplication(applicationId, reason);
+    const didReject = await this.applicationService.rejectApplication(applicationId, reason);
     if (!didReject) {
       this.rejectionErrorByApplicationId.update((state) => ({
         ...state,
@@ -160,16 +144,14 @@ export class TripDisplayComponent {
     }));
   }
 
-  readonly isLoadingApplications = signal(false);
-  readonly loadApplicationsError = signal<string | null>(null);
+  readonly isLoadingApplications = this.applicationService.isLoading;
+  readonly loadApplicationsError = this.applicationService.error;
 
-  readonly sampleReviews: Review[] = [
-    { id: 'r1', version: 0, tripId: '1', explorerId: 'Alice', rating: 5, comment: 'Absolutely incredible experience. The guides were professional and the scenery was breathtaking.', createdAt: new Date('2025-09-12') },
-    { id: 'r2', version: 0, tripId: '1', explorerId: 'Bob', rating: 4, comment: 'Great trip overall. A bit challenging at times but totally worth it.', createdAt: new Date('2025-10-01') },
-    { id: 'r3', version: 0, tripId: '1', explorerId: 'Carol', rating: 5, comment: 'Best trip of my life. Would book again without hesitation.', createdAt: new Date('2025-11-20') },
-    { id: 'r4', version: 0, tripId: '1', explorerId: 'explorer-1', rating: 5, comment: 'Absolutely breathtaking! The Alps exceeded all expectations.', createdAt: new Date('2026-03-15') },
-    { id: 'r5', version: 0, tripId: '1', explorerId: 'explorer-3', rating: 4, comment: 'Great trip overall, well organized.', createdAt: new Date('2026-03-20') },
-  ];
+  readonly tripReviews = computed(() => {
+    const tripId = this.trip()?.id;
+    if (!tripId) return [];
+    return this.reviewService.reviewsForTrip(tripId);
+  });
 
   readonly today = new Date();
 }
