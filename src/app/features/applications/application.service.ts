@@ -8,6 +8,7 @@ import {
   query,
   updateDoc,
   where,
+  deleteField,
 } from 'firebase/firestore';
 import { Application } from './application.model';
 import { Trip } from '../trips/trip.model';
@@ -57,7 +58,7 @@ export class ApplicationService {
       explorerId,
       createdAt: new Date(),
       status: 'PENDING',
-      comments: normalizedComments ? normalizedComments : undefined,
+      ...(normalizedComments ? { comments: normalizedComments } : {}),
     };
 
     try {
@@ -118,7 +119,7 @@ export class ApplicationService {
       if (application.status !== 'PENDING') return false;
       await updateDoc(doc(db, 'applications', applicationId), {
         status: 'DUE',
-        rejectionReason: undefined,
+        rejectionReason: deleteField(),
         version: application.version + 1,
       });
       return true;
