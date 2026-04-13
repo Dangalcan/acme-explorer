@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, HostListener, inject, Input, Outpu
 import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
-import { Trip } from '../trip.model';
+import { Trip, TRIP_CANCELLATION_VALIDATION } from '../trip.model';
 import { FechasPipe } from '../../../shared/pipes/fechas.pipe';
 import { AppCurrencyPipe } from '../../../shared/pipes/currency.pipe';
 import { DescriptionPipe } from '../../../shared/pipes/description.pipe';
@@ -14,10 +14,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { ApplicationService } from '../../applications/application.service';
+import { APPLICATION_VALIDATION } from '../../applications/application.model';
 import { TripService } from '../trip.service';
 import { WeatherWidgetComponent } from '../../../shared/weather/weather-widget.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Review } from '../review.model';
+import { Review, REVIEW_VALIDATION } from '../review.model';
 import { ReviewService } from '../review.service';
 
 @Component({
@@ -64,6 +65,13 @@ export class TripCardComponent {
 
   readonly today = new Date();
 
+  readonly reviewValidation = REVIEW_VALIDATION;
+  readonly cancellationValidation = TRIP_CANCELLATION_VALIDATION;
+  readonly ratingStars = Array.from(
+    { length: REVIEW_VALIDATION.rating.max - REVIEW_VALIDATION.rating.min + 1 },
+    (_, i) => REVIEW_VALIDATION.rating.min + i,
+  );
+
   readonly difficultyConfig = {
     EASY: 'bg-green-100 text-green-700',
     MEDIUM: 'bg-yellow-100 text-yellow-700',
@@ -74,11 +82,56 @@ export class TripCardComponent {
   readonly selectedFavouriteListId = signal('');
   readonly favouriteError = signal<string | null>(null);
 
+  // Apply panel state
+  readonly isApplyPanelOpen = signal(false);
+  readonly applyComment = signal('');
+  readonly applyError = signal<string | null>(null);
+  readonly isApplying = signal(false);
+
+  openApplyPanel(event: Event): void {
+    event.stopPropagation();
+    this.applyComment.set('');
+    this.applyError.set(null);
+    this.isApplyPanelOpen.set(true);
+  }
+
+  closeApplyPanel(event?: Event): void {
+    event?.stopPropagation();
+    this.isApplyPanelOpen.set(false);
+    this.applyComment.set('');
+    this.applyError.set(null);
+  }
+
+  async confirmApply(event: Event): Promise<void> {
+    event.stopPropagation();
+    this.isApplying.set(true);
+    const comment = this.applyComment().trim() || undefined;
+
+    if (comment && comment.length > APPLICATION_VALIDATION.comments.maxLength) {
+      this.applyError.set(this.translate.instant('applications.error.comments_max_length', { max: APPLICATION_VALIDATION.comments.maxLength }));
+      this.isApplying.set(false);
+      return;
+    }
+
+    const success = await this.applicationService.applyForTrip(this.trip, comment);
+    this.isApplying.set(false);
+    if (success) {
+      this.isApplyPanelOpen.set(false);
+      this.applyComment.set('');
+    } else {
+      this.applyError.set(this.translate.instant('trips.card.apply_failed'));
+    }
+  }
+
   // Cancel panel state
   readonly isCancelPanelOpen = signal(false);
   readonly cancelReason = signal('');
   readonly cancelReasonError = signal<string | null>(null);
   readonly isCancelling = signal(false);
+
+  canCancelTrip(): boolean {
+    return this.tripService.canCancelTrip(this.trip.id);
+  }
 
   openCancelPanel(event: Event): void {
     event.stopPropagation();
@@ -100,6 +153,11 @@ export class TripCardComponent {
 
     if (!reason) {
       this.cancelReasonError.set(this.translate.instant('trips.card.cancel_reason_required'));
+      return;
+    }
+
+    if (reason.length > TRIP_CANCELLATION_VALIDATION.reason.maxLength) {
+      this.cancelReasonError.set(this.translate.instant('trips.card.cancel_reason_max_length', { max: TRIP_CANCELLATION_VALIDATION.reason.maxLength }));
       return;
     }
 
@@ -244,7 +302,7 @@ export class TripCardComponent {
 
   async saveEditReview(reviewId: string): Promise<void> {
     const rating = this.editRating();
-    if (rating < 1 || rating > 5) {
+    if (rating < REVIEW_VALIDATION.rating.min || rating > REVIEW_VALIDATION.rating.max) {
       this.reviewActionError.set('reviews.error.rating_required');
       return;
     }
