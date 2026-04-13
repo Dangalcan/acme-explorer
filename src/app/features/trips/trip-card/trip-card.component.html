@@ -67,12 +67,14 @@
       @if (!trip.cancellation) {
         <div class="flex gap-2 pt-1">
           @if (currentRole() === 'manager') {
-            <button type="button"
-                    (click)="cancel.emit(trip); $event.stopPropagation()"
-                    class="flex-1 py-2 rounded-lg bg-red-50 hover:bg-red-100 active:scale-95
-                          text-[#b21c2b] text-sm font-semibold border border-red-200 transition-all duration-150">
-              {{ 'trips.card.cancel_trip' | translate }}
-            </button>
+            @if (!isCancelPanelOpen()) {
+              <button type="button"
+                      (click)="openCancelPanel($event)"
+                      class="flex-1 py-2 rounded-lg bg-red-50 hover:bg-red-100 active:scale-95
+                            text-[#b21c2b] text-sm font-semibold border border-red-200 transition-all duration-150">
+                {{ 'trips.card.cancel_trip' | translate }}
+              </button>
+            }
           }
 
           @if (currentRole() !== 'manager') {
@@ -135,6 +137,48 @@
             @if (favouriteError(); as error) {
               <p class="mt-2 text-sm font-medium text-red-600">{{ error }}</p>
             }
+          </div>
+        }
+
+        <!-- Inline cancel reason panel -->
+        @if (currentRole() === 'manager' && isCancelPanelOpen()) {
+          <div class="mt-3 rounded-xl border border-red-200 bg-red-50 p-3 space-y-2"
+               (click)="$event.stopPropagation()">
+            <p class="text-sm font-semibold text-red-700">{{ 'trips.card.cancel_reason_label' | translate }}</p>
+            <textarea
+              [ngModel]="cancelReason()"
+              (ngModelChange)="cancelReason.set($event); cancelReasonError.set(null)"
+              rows="3"
+              [placeholder]="'trips.card.cancel_reason_placeholder' | translate"
+              class="w-full px-3 py-2 rounded-lg border border-red-300 bg-white text-slate-800 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-red-400 resize-none"
+              [class.border-red-500]="cancelReasonError()"
+            ></textarea>
+            @if (cancelReasonError()) {
+              <p class="text-xs text-red-600">{{ cancelReasonError() }}</p>
+            }
+            <div class="flex gap-2 justify-end">
+              <button type="button"
+                      (click)="closeCancelPanel($event)"
+                      class="px-3 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-600
+                             text-xs font-semibold hover:bg-slate-50 transition-colors">
+                {{ 'common.back' | translate }}
+              </button>
+              <button type="button"
+                      (click)="confirmCancel($event)"
+                      [disabled]="isCancelling()"
+                      class="px-3 py-1.5 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723] text-white
+                             text-xs font-semibold transition-colors disabled:opacity-60">
+                @if (isCancelling()) {
+                  <svg class="animate-spin h-3.5 w-3.5 inline" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+                  </svg>
+                } @else {
+                  {{ 'trips.card.cancel_confirm' | translate }}
+                }
+              </button>
+            </div>
           </div>
         }
       }

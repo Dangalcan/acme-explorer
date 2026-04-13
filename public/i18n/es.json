@@ -229,7 +229,12 @@
       "photos": "Fotos",
       "reviews": "Reseñas",
       "no_reviews": "Aún no hay reseñas.",
-      "aria_add_to_favourites": "Añadir a favoritos"
+      "aria_add_to_favourites": "Añadir a favoritos",
+      "cancel_reason_label": "Motivo de cancelación",
+      "cancel_reason_placeholder": "Explica por qué se cancela este viaje...",
+      "cancel_reason_required": "El motivo de cancelación es obligatorio.",
+      "cancel_confirm": "Confirmar cancelación",
+      "cancel_failed": "No se pudo cancelar el viaje. Inténtalo de nuevo."
     },
     "details": {
       "back": "Volver a viajes",

@@ -61,7 +61,7 @@ export class TripService {
     if (!managerId) return null;
 
     const { totalPrice, availablePlaces, averageRating, ...rest } = data as Trip;
-    const newTrip = { ...rest, ticker: this.generateTicker(), managerId, version: 0 };
+    const newTrip = this.stripUndefined({ ...rest, ticker: this.generateTicker(), managerId, version: 0 });
 
     try {
       const ref = await addDoc(collection(db, 'trips'), newTrip);
@@ -81,7 +81,7 @@ export class TripService {
     const { totalPrice, availablePlaces, averageRating, ...rest } = data as Trip;
 
     try {
-      await updateDoc(doc(db, 'trips', tripId), { ...rest, version: trip.version + 1 });
+      await updateDoc(doc(db, 'trips', tripId), this.stripUndefined({ ...rest, version: trip.version + 1 }));
       await this.loadTrips();
       return true;
     } catch (error) {
@@ -124,14 +124,24 @@ export class TripService {
     }
   }
 
-  async cancelTrip(tripId: string): Promise<boolean> {
+  async cancelTrip(tripId: string, reason: string): Promise<boolean> {
     const trip = this.getById(tripId);
     if (!trip || trip.cancellation) return false;
+    if (!reason.trim()) return false;
+
+    // Req #8.3: cancellation requires at least one week before the start date
+    const oneWeekFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    if (new Date(trip.startDate) <= oneWeekFromNow) return false;
+
+    // Req #8.3: cannot cancel a trip that has at least one paid (ACCEPTED) application
+    if (this.applicationService.applications().some(
+      (a) => a.tripId === tripId && a.status === 'ACCEPTED',
+    )) return false;
 
     try {
       await updateDoc(doc(db, 'trips', tripId), {
         cancellation: {
-          reason: 'Cancelled by manager',
+          reason: reason.trim(),
           cancelledAt: new Date(),
         },
         version: trip.version + 1,
@@ -143,6 +153,19 @@ export class TripService {
       this.error.set('Could not cancel the trip.');
       return false;
     }
+  }
+
+  private stripUndefined(obj: Record<string, unknown>): Record<string, unknown> {
+    return Object.fromEntries(
+      Object.entries(obj)
+        .filter(([, v]) => v !== undefined)
+        .map(([k, v]) => [
+          k,
+          v !== null && typeof v === 'object' && !Array.isArray(v) && !(v instanceof Date)
+            ? this.stripUndefined(v as Record<string, unknown>)
+            : v,
+        ]),
+    );
   }
 
   private generateTicker(): string {

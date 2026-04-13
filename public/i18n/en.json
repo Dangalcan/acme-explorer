@@ -229,7 +229,12 @@
       "photos": "Photos",
       "reviews": "Reviews",
       "no_reviews": "No reviews yet.",
-      "aria_add_to_favourites": "Add to favourites"
+      "aria_add_to_favourites": "Add to favourites",
+      "cancel_reason_label": "Cancellation reason",
+      "cancel_reason_placeholder": "Explain why this trip is being cancelled...",
+      "cancel_reason_required": "A cancellation reason is required.",
+      "cancel_confirm": "Confirm cancellation",
+      "cancel_failed": "Could not cancel the trip. Please try again."
     },
     "details": {
       "back": "Back to trips",

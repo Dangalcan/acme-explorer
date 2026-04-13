@@ -24,10 +24,6 @@ export class TripListComponent {
 
   readonly openFavouriteTripId = signal<string | null>(null);
 
-  cancelTrip(trip: Trip): void {
-    void this.tripService.cancelTrip(trip.id);
-  }
-
   applyTrip(trip: Trip): void {
     void this.applicationService.applyForTrip(trip);
   }

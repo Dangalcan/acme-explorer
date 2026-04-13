@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { ApplicationService } from '../../applications/application.service';
+import { TripService } from '../trip.service';
 import { WeatherWidgetComponent } from '../../../shared/weather/weather-widget.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Review } from '../review.model';
@@ -50,6 +51,7 @@ export class TripCardComponent {
   private authService = inject(AuthService);
   private favouritesService = inject(FavouritesService);
   private applicationService = inject(ApplicationService);
+  private tripService = inject(TripService);
   private elementRef = inject(ElementRef);
   private translate = inject(TranslateService);
 
@@ -67,6 +69,47 @@ export class TripCardComponent {
   readonly isFavouritePanelOpenLocal = signal(false);
   readonly selectedFavouriteListId = signal('');
   readonly favouriteError = signal<string | null>(null);
+
+  // Cancel panel state
+  readonly isCancelPanelOpen = signal(false);
+  readonly cancelReason = signal('');
+  readonly cancelReasonError = signal<string | null>(null);
+  readonly isCancelling = signal(false);
+
+  openCancelPanel(event: Event): void {
+    event.stopPropagation();
+    this.cancelReason.set('');
+    this.cancelReasonError.set(null);
+    this.isCancelPanelOpen.set(true);
+  }
+
+  closeCancelPanel(event?: Event): void {
+    event?.stopPropagation();
+    this.isCancelPanelOpen.set(false);
+    this.cancelReason.set('');
+    this.cancelReasonError.set(null);
+  }
+
+  async confirmCancel(event: Event): Promise<void> {
+    event.stopPropagation();
+    const reason = this.cancelReason().trim();
+
+    if (!reason) {
+      this.cancelReasonError.set(this.translate.instant('trips.card.cancel_reason_required'));
+      return;
+    }
+
+    this.isCancelling.set(true);
+    const success = await this.tripService.cancelTrip(this.trip.id, reason);
+    this.isCancelling.set(false);
+
+    if (success) {
+      this.isCancelPanelOpen.set(false);
+      this.cancelReason.set('');
+    } else {
+      this.cancelReasonError.set(this.translate.instant('trips.card.cancel_failed'));
+    }
+  }
 
   getTotalPrice(trip: Trip): number {
     return trip.totalPrice ?? trip.stages.reduce((sum, s) => sum + s.price, 0);

@@ -26,6 +26,13 @@ import {
   Trip,
 } from '../trip.model';
 
+/** Rejects null, empty string, and whitespace-only strings. Returns { required: true }
+ *  so existing template checks (hasError('required')) work without any HTML changes. */
+const notBlank: ValidatorFn = (control: AbstractControl) => {
+  const value = (control.value as string) ?? '';
+  return value.trim().length > 0 ? null : { required: true };
+};
+
 export const endAfterStartValidator: ValidatorFn = (group: AbstractControl) => {
   const start = group.get('startDate')?.value as string;
   const end = group.get('endDate')?.value as string;
@@ -92,11 +99,11 @@ export class TripFormComponent implements OnChanges {
       {
         title: [
           trip?.title ?? '',
-          [Validators.required, Validators.maxLength(TRIP_VALIDATION.title.maxLength)],
+          [notBlank, Validators.maxLength(TRIP_VALIDATION.title.maxLength)],
         ],
         description: [
           trip?.description ?? '',
-          [Validators.required, Validators.maxLength(TRIP_VALIDATION.description.maxLength)],
+          [notBlank, Validators.maxLength(TRIP_VALIDATION.description.maxLength)],
         ],
         difficultyLevel: [trip?.difficultyLevel ?? ('EASY' as DifficultyLevel), Validators.required],
         maxParticipants: [
@@ -139,11 +146,11 @@ export class TripFormComponent implements OnChanges {
     return this.fb.group({
       title: [
         stage?.title ?? '',
-        [Validators.required, Validators.maxLength(STAGE_VALIDATION.title.maxLength)],
+        [notBlank, Validators.maxLength(STAGE_VALIDATION.title.maxLength)],
       ],
       description: [
         stage?.description ?? '',
-        [Validators.required, Validators.maxLength(STAGE_VALIDATION.description.maxLength)],
+        [notBlank, Validators.maxLength(STAGE_VALIDATION.description.maxLength)],
       ],
       price: [
         stage?.price ?? 0,
@@ -188,15 +195,22 @@ export class TripFormComponent implements OnChanges {
 
     const raw = this.tripForm.getRawValue();
 
+    const rawStages = raw['stages'] as { title: string; description: string; price: number }[];
+    const rawLocation = raw['location'] as { city: string; country: string };
+
     this.formSubmit.emit({
-      title: raw['title'] as string,
-      description: raw['description'] as string,
+      title: (raw['title'] as string).trim(),
+      description: (raw['description'] as string).trim(),
       difficultyLevel: raw['difficultyLevel'] as DifficultyLevel,
       maxParticipants: Number(raw['maxParticipants']),
       startDate: new Date(raw['startDate'] as string),
       endDate: new Date(raw['endDate'] as string),
-      location: raw['location'] as { city: string; country: string },
-      stages: raw['stages'] as { title: string; description: string; price: number }[],
+      location: { city: rawLocation.city.trim(), country: rawLocation.country.trim() },
+      stages: rawStages.map((s) => ({
+        title: s.title.trim(),
+        description: s.description.trim(),
+        price: s.price,
+      })),
       pictures: ((raw['pictures'] as string[]) ?? []).filter((url) => url?.trim()),
     });
   }
