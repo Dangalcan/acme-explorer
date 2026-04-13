@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { TripCardComponent } from '../trips/trip-card/trip-card.component';
 import { FavouritesService } from './favourites.service';
 import { FavouriteList, FAVOURITE_LIST_VALIDATION } from './favourite-list.model';
+import { Trip } from '../trips/trip.model';
 import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
@@ -33,6 +34,27 @@ export class FavouritesPageComponent {
   readonly addTripErrorByListId = signal<Record<string, string | null>>({});
 
   readonly hasLists = computed(() => this.favouriteLists().length > 0);
+
+  // ── Keyword filter (req 23c) ───────────────────────────────────────────────
+  readonly filterKeyword = signal('');
+
+  readonly filteredFavouriteLists = computed(() => {
+    const kw = this.filterKeyword().trim().toLowerCase();
+    if (!kw) return this.favouriteLists();
+    return this.favouriteLists().filter(l => l.name.toLowerCase().includes(kw));
+  });
+
+  // ── Trip status helpers (req 26) ──────────────────────────────────────────
+  isExpiredOrCancelled(trip: Trip): boolean {
+    return !!trip.cancellation || new Date(trip.endDate) < new Date();
+  }
+
+  isAboutToStart(trip: Trip): boolean {
+    const now = new Date();
+    const sevenDays = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const start = new Date(trip.startDate);
+    return start > now && start <= sevenDays;
+  }
 
   async createList(): Promise<void> {
     const rawName = this.newListName();

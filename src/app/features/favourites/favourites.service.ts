@@ -160,6 +160,20 @@ export class FavouritesService {
     }
   }
 
+  /** Fetches every favourite list regardless of owner — used by admin dashboard (req 24). */
+  async getAllLists(): Promise<FavouriteList[]> {
+    try {
+      const snapshot = await getDocs(this.favouriteListsCollection);
+      return snapshot.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...(docSnap.data() as Omit<FavouriteList, 'id'>),
+      }));
+    } catch (error) {
+      console.error('Error fetching all favourite lists', error);
+      return [];
+    }
+  }
+
   getTripsForList(list: FavouriteList): Trip[] {
     return list.tripIds
       .map(id => this.tripService.getById(id))
