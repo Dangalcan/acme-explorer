@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, User, onAuthStateChanged, getAuth } from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { initializeApp, deleteApp } from 'firebase/app';
 import { auth, db, firebaseConfig } from '../../infrastructure/firebase.config';
 import { AnyActor, Explorer, Manager } from '../../shared/actor.model';
@@ -62,6 +62,27 @@ export class AuthService {
     } finally {
       await deleteApp(secondaryApp);
     }
+  }
+
+  async getActorData(): Promise<Partial<AnyActor> | null> {
+    const user = this.currentUser();
+    if (!user) return null;
+    const snap = await getDoc(doc(db, 'actors', user.uid));
+    return (snap.data() as Partial<AnyActor>) ?? null;
+  }
+
+  async updateActorProfile(data: {
+    name: string;
+    surname: string;
+    phoneNumber?: string;
+    address?: string;
+  }): Promise<void> {
+    const user = this.currentUser();
+    if (!user) throw new Error('Not authenticated');
+    const cleaned = Object.fromEntries(
+      Object.entries(data).filter(([, v]) => v !== undefined && v !== '')
+    );
+    await updateDoc(doc(db, 'actors', user.uid), cleaned);
   }
 
   async logout() {

@@ -159,7 +159,10 @@
       "subtitle": "Encuentra tu próxima aventura alrededor del mundo"
     },
     "list": {
-      "create_trip": "Crear viaje"
+      "create_trip": "Crear viaje",
+      "search_placeholder": "Buscar por palabra clave (ticker, título, descripción)…",
+      "no_results": "Ningún viaje coincide con tu búsqueda.",
+      "clear_search": "Borrar búsqueda"
     },
     "form": {
       "create_title": "Crear nuevo viaje",
@@ -320,6 +323,28 @@
     "edit_errors": {
       "required": "El nombre de la lista es obligatorio.",
       "max_length": "El nombre de la lista no puede superar {{max}} caracteres."
+    }
+  },
+  "settings": {
+    "title": "Mi perfil",
+    "subtitle": "Actualiza tu información personal",
+    "email_label": "Correo electrónico",
+    "email_readonly_hint": "El correo electrónico no se puede cambiar aquí",
+    "name": "Nombre",
+    "surname": "Apellido",
+    "phone": "Número de teléfono",
+    "address": "Dirección",
+    "save": "Guardar cambios",
+    "saving": "Guardando…",
+    "success": "Perfil actualizado correctamente.",
+    "error": {
+      "name_required": "El nombre es obligatorio",
+      "name_max": "El nombre no puede superar {{max}} caracteres",
+      "surname_required": "El apellido es obligatorio",
+      "surname_max": "El apellido no puede superar {{max}} caracteres",
+      "phone_invalid": "Formato de número de teléfono no válido",
+      "address_max": "La dirección no puede superar {{max}} caracteres",
+      "save_failed": "No se pudo guardar el perfil. Inténtalo de nuevo."
     }
   },
   "roles": {
