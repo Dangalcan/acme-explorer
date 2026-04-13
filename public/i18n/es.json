@@ -137,6 +137,13 @@
       "no_application_data": "No hay datos de solicitudes disponibles.",
       "revenue_per_month": "Ingresos totales por mes ({{year}})",
       "applications_per_trip": "Solicitudes por viaje",
+      "top5_by_rating": "Top 5 viajes por valoración media",
+      "no_rating_data": "Aún no se ha valorado ningún viaje.",
+      "trips_next7days_title": "Viajes que comienzan en los próximos 7 días",
+      "trips_next7days": "Viajes",
+      "trips_per_month_title": "Número de viajes por mes ({{year}})",
+      "top3_by_favourites": "Top 3 viajes más guardados en favoritos",
+      "no_favourites_data": "Aún no se ha guardado ningún viaje en favoritos.",
       "months": {
         "0": "Enero",
         "1": "Febrero",
@@ -232,6 +239,7 @@
       "photos": "Fotos",
       "reviews": "Reseñas",
       "no_reviews": "Aún no hay reseñas.",
+      "average_rating": "Valoración media",
       "aria_add_to_favourites": "Añadir a favoritos",
       "cancel_reason_label": "Motivo de cancelación",
       "cancel_reason_placeholder": "Explica por qué se cancela este viaje...",
@@ -288,6 +296,10 @@
     "create_list": "Crear una nueva lista",
     "placeholder": "Planes de verano, Aventuras soñadas, Escapadas de fin de semana...",
     "create_button": "Crear lista",
+    "filter_placeholder": "Filtrar listas por nombre...",
+    "no_results": "Ninguna lista coincide con tu búsqueda.",
+    "trip_cancelled": "Cancelado",
+    "trip_expired": "Expirado",
     "no_lists": "Aún no tienes listas de favoritos",
     "no_lists_hint": "Crea tu primera lista para empezar a guardar viajes.",
     "save": "Guardar",
@@ -323,6 +335,23 @@
     "edit_errors": {
       "required": "El nombre de la lista es obligatorio.",
       "max_length": "El nombre de la lista no puede superar {{max}} caracteres."
+    }
+  },
+  "reviews": {
+    "submit_title": "Escribir una reseña",
+    "edit_title": "Editar reseña",
+    "comment_placeholder": "Comparte tu experiencia (opcional)",
+    "submit_button": "Enviar reseña",
+    "edit_button": "Editar",
+    "delete_button": "Eliminar",
+    "save_button": "Guardar",
+    "cancel_button": "Cancelar",
+    "success": "Tu reseña se ha enviado correctamente.",
+    "error": {
+      "rating_required": "Por favor selecciona una valoración entre 1 y 5.",
+      "submit_failed": "No se ha podido enviar la reseña. Por favor, inténtalo de nuevo.",
+      "edit_failed": "No se pudo actualizar la reseña. Inténtalo de nuevo.",
+      "delete_failed": "No se pudo eliminar la reseña. Inténtalo de nuevo."
     }
   },
   "settings": {

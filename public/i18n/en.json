@@ -137,6 +137,13 @@
       "no_application_data": "No application data available.",
       "revenue_per_month": "Total Revenue per Month ({{year}})",
       "applications_per_trip": "Applications per Trip",
+      "top5_by_rating": "Top 5 Trips by Average Rating",
+      "no_rating_data": "No trips have been rated yet.",
+      "trips_next7days_title": "Trips Starting in the Next 7 Days",
+      "trips_next7days": "Trips",
+      "trips_per_month_title": "Number of Trips per Month ({{year}})",
+      "top3_by_favourites": "Top 3 Most Favourited Trips",
+      "no_favourites_data": "No trips have been saved to favourites yet.",
       "months": {
         "0": "January",
         "1": "February",
@@ -232,6 +239,7 @@
       "photos": "Photos",
       "reviews": "Reviews",
       "no_reviews": "No reviews yet.",
+      "average_rating": "Average Rating",
       "aria_add_to_favourites": "Add to favourites",
       "cancel_reason_label": "Cancellation reason",
       "cancel_reason_placeholder": "Explain why this trip is being cancelled...",
@@ -288,6 +296,10 @@
     "create_list": "Create a new list",
     "placeholder": "Summer plans, Dream adventures, Weekend escapes...",
     "create_button": "Create list",
+    "filter_placeholder": "Filter lists by name...",
+    "no_results": "No lists match your search.",
+    "trip_cancelled": "Cancelled",
+    "trip_expired": "Expired",
     "no_lists": "No favourite lists yet",
     "no_lists_hint": "Create your first list to start saving trips.",
     "save": "Save",
@@ -323,6 +335,23 @@
     "edit_errors": {
       "required": "List name is required.",
       "max_length": "List name cannot exceed {{max}} characters."
+    }
+  },
+  "reviews": {
+    "submit_title": "Write a Review",
+    "edit_title": "Edit Review",
+    "comment_placeholder": "Share your experience (optional)",
+    "submit_button": "Submit Review",
+    "edit_button": "Edit",
+    "delete_button": "Delete",
+    "save_button": "Save",
+    "cancel_button": "Cancel",
+    "success": "Your review was submitted successfully.",
+    "error": {
+      "rating_required": "Please select a rating between 1 and 5.",
+      "submit_failed": "Could not submit your review. Please try again.",
+      "edit_failed": "Could not update your review. Please try again.",
+      "delete_failed": "Could not delete your review. Please try again."
     }
   },
   "settings": {

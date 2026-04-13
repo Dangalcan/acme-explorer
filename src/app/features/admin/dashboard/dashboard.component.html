@@ -104,4 +104,71 @@
       <p class="text-gray-500">{{ 'admin.dashboard.no_application_data' | translate }}</p>
     }
   </div>
+
+  <!-- ── A-level stats ────────────────────────────────────────────────────── -->
+
+  <!-- Trips starting in the next 7 days -->
+  <div>
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">{{ 'admin.dashboard.trips_next7days_title' | translate }}</h2>
+    <div class="bg-white rounded-xl shadow p-6 inline-block text-center min-w-40">
+      <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ 'admin.dashboard.trips_next7days' | translate }}</p>
+      <p class="mt-2 text-4xl font-bold text-gray-800">{{ tripsStartingNext7Days() }}</p>
+    </div>
+  </div>
+
+  <!-- Number of trips per month (current year) -->
+  <div>
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">
+      {{ 'admin.dashboard.trips_per_month_title' | translate: { year: currentYear } }}
+    </h2>
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+      @for (item of tripsPerMonthCurrentYear(); track item.month) {
+        <div class="flex items-center justify-between px-6 py-3 border-b border-gray-100 last:border-0">
+          <span class="text-sm font-medium text-gray-700 w-24">{{ monthKeys[item.month] | translate }}</span>
+          <div class="flex items-center gap-4 flex-1">
+            <div class="flex-1 bg-gray-100 rounded-full h-2">
+              <div class="bg-violet-500 h-2 rounded-full"
+                   [style.width]="item.max > 0 ? (item.count / item.max * 100) + '%' : '0%'"></div>
+            </div>
+            <span class="text-sm font-semibold text-gray-800 w-8 text-right">{{ item.count }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Top 5 trips by average rating -->
+  <div>
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">{{ 'admin.dashboard.top5_by_rating' | translate }}</h2>
+    @if (top5TripsByRating().length === 0) {
+      <p class="text-gray-500">{{ 'admin.dashboard.no_rating_data' | translate }}</p>
+    } @else {
+      <div class="bg-white rounded-xl shadow overflow-hidden">
+        @for (trip of top5TripsByRating(); track trip.id; let i = $index) {
+          <div class="flex items-center justify-between px-6 py-3 border-b border-gray-100 last:border-0">
+            <span class="text-sm font-medium text-gray-700">{{ i + 1 }}. {{ trip.title }}</span>
+            <span class="text-sm font-bold text-amber-500">★ {{ trip.averageRating | number:'1.1-1' }}</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Top 3 most favourited trips -->
+  <div>
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">{{ 'admin.dashboard.top3_by_favourites' | translate }}</h2>
+    @if (top3TripsByFavourites().length === 0) {
+      <p class="text-gray-500">{{ 'admin.dashboard.no_favourites_data' | translate }}</p>
+    } @else {
+      <div class="bg-white rounded-xl shadow overflow-hidden">
+        @for (item of top3TripsByFavourites(); track item.trip.id; let i = $index) {
+          <div class="flex items-center justify-between px-6 py-3 border-b border-gray-100 last:border-0">
+            <span class="text-sm font-medium text-gray-700">{{ i + 1 }}. {{ item.trip.title }}</span>
+            <span class="text-sm font-bold text-indigo-500">♥ {{ item.count }}</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
 </section>

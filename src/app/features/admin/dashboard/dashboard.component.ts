@@ -1,9 +1,11 @@
-import { Component, computed, inject } from '@angular/core';
-import { CurrencyPipe, DecimalPipe, PercentPipe } from '@angular/common';
+import { Component, PLATFORM_ID, computed, inject, signal } from '@angular/core';
+import { CurrencyPipe, DecimalPipe, PercentPipe, isPlatformBrowser } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TripService } from '../../trips/trip.service';
 import { ApplicationService } from '../../applications/application.service';
 import { AppStatus } from '../../applications/application.model';
+import { FavouritesService } from '../../favourites/favourites.service';
+import { FavouriteList } from '../../favourites/favourite-list.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +15,17 @@ import { AppStatus } from '../../applications/application.model';
 export class DashboardComponent {
   private readonly tripService = inject(TripService);
   private readonly applicationService = inject(ApplicationService);
+  private readonly favouritesService = inject(FavouritesService);
+  private readonly platformId = inject(PLATFORM_ID);
+
+  // All favourite lists fetched from json-server for admin stats
+  private readonly allFavouriteLists = signal<FavouriteList[]>([]);
+
+  constructor() {
+    if (isPlatformBrowser(this.platformId)) {
+      void this.favouritesService.getAllLists().then(lists => this.allFavouriteLists.set(lists));
+    }
+  }
 
   readonly tripsPerManagerStats = computed(() => {
     const counts = new Map<string, number>();
@@ -88,6 +101,53 @@ export class DashboardComponent {
 
     const max = Math.max(...revenue);
     return revenue.map((amount, i) => ({ month: i, amount, max }));
+  });
+
+  // ── A-level stats (req 24) ─────────────────────────────────────────────────
+
+  /** Top 5 trips sorted by averageRating descending */
+  readonly top5TripsByRating = computed(() =>
+    [...this.tripService.trips()]
+      .filter(t => t.averageRating !== undefined)
+      .sort((a, b) => (b.averageRating ?? 0) - (a.averageRating ?? 0))
+      .slice(0, 5),
+  );
+
+  /** Count of trips whose startDate falls within the next 7 days */
+  readonly tripsStartingNext7Days = computed(() => {
+    const now = new Date();
+    const in7 = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    return this.tripService.trips().filter(t => {
+      const s = new Date(t.startDate);
+      return s > now && s <= in7;
+    }).length;
+  });
+
+  /** Number of trips starting each month in the current year */
+  readonly tripsPerMonthCurrentYear = computed(() => {
+    const year = new Date().getFullYear();
+    const counts = new Array(12).fill(0) as number[];
+    for (const trip of this.tripService.trips()) {
+      const sd = new Date(trip.startDate);
+      if (sd.getFullYear() === year) counts[sd.getMonth()]++;
+    }
+    const max = Math.max(...counts, 1);
+    return counts.map((count, month) => ({ month, count, max }));
+  });
+
+  /** Top 3 trip IDs that appear in the most favourite lists */
+  readonly top3TripsByFavourites = computed(() => {
+    const counts = new Map<string, number>();
+    for (const list of this.allFavouriteLists()) {
+      for (const tripId of list.tripIds) {
+        counts.set(tripId, (counts.get(tripId) ?? 0) + 1);
+      }
+    }
+    return [...counts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([tripId, count]) => ({ trip: this.tripService.getById(tripId), count }))
+      .filter((item): item is { trip: NonNullable<typeof item.trip>; count: number } => !!item.trip);
   });
 
   private computeStats(values: number[]) {
