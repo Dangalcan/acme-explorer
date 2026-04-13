@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, HostListener, inject, Input, Output, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { Trip } from '../trip.model';
@@ -17,10 +18,12 @@ import { TripService } from '../trip.service';
 import { WeatherWidgetComponent } from '../../../shared/weather/weather-widget.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Review } from '../review.model';
+import { ReviewService } from '../review.service';
 
 @Component({
   selector: 'app-trip-card',
   imports: [
+    DecimalPipe,
     FormsModule,
     FechasPipe,
     AppCurrencyPipe,
@@ -52,6 +55,7 @@ export class TripCardComponent {
   private favouritesService = inject(FavouritesService);
   private applicationService = inject(ApplicationService);
   private tripService = inject(TripService);
+  private reviewService = inject(ReviewService);
   private elementRef = inject(ElementRef);
   private translate = inject(TranslateService);
 
@@ -207,5 +211,63 @@ export class TripCardComponent {
     if (!this.favouritePanelOpen) return;
     const clickedInside = this.elementRef.nativeElement.contains(event.target);
     if (!clickedInside) this.closeFavouritePanel();
+  }
+
+  // ── Review edit / delete ────────────────────────────────────────────────────
+
+  readonly editingReviewId  = signal<string | null>(null);
+  readonly editRating       = signal(0);
+  readonly editComment      = signal('');
+  readonly isSavingReview   = signal(false);
+  readonly isDeletingReview = signal(false);
+  readonly reviewActionError = signal<string | null>(null);
+
+  canModifyReview(review: Review): boolean {
+    return this.reviewService.canModifyReview(review.id);
+  }
+
+  startEditReview(review: Review): void {
+    this.editingReviewId.set(review.id);
+    this.editRating.set(review.rating);
+    this.editComment.set(review.comment ?? '');
+    this.reviewActionError.set(null);
+  }
+
+  cancelEditReview(): void {
+    this.editingReviewId.set(null);
+    this.reviewActionError.set(null);
+  }
+
+  setEditRating(star: number): void {
+    this.editRating.set(star);
+  }
+
+  async saveEditReview(reviewId: string): Promise<void> {
+    const rating = this.editRating();
+    if (rating < 1 || rating > 5) {
+      this.reviewActionError.set('reviews.error.rating_required');
+      return;
+    }
+    this.isSavingReview.set(true);
+    this.reviewActionError.set(null);
+    const ok = await this.reviewService.updateReview(
+      reviewId, rating, this.editComment().trim() || undefined,
+    );
+    this.isSavingReview.set(false);
+    if (ok) {
+      this.editingReviewId.set(null);
+    } else {
+      this.reviewActionError.set('reviews.error.edit_failed');
+    }
+  }
+
+  async deleteReview(reviewId: string): Promise<void> {
+    this.isDeletingReview.set(true);
+    this.reviewActionError.set(null);
+    const ok = await this.reviewService.deleteReview(reviewId);
+    this.isDeletingReview.set(false);
+    if (!ok) {
+      this.reviewActionError.set('reviews.error.delete_failed');
+    }
   }
 }
