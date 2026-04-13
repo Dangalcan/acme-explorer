@@ -10,7 +10,8 @@
     "test:coverage": "ng test --coverage",
     "serve:ssr:acme-explorer": "node dist/acme-explorer/server/server.mjs",
     "i18n:extract": "ng extract-i18n --output-path src/locale",
-    "seed:firestore": "node scripts/seed-firestore.mjs"
+    "seed:firestore": "node scripts/seed-firestore.mjs",
+    "json-server": "json-server --watch mock-api/db.json --port 3000"
   },
   "private": true,
   "packageManager": "npm@11.6.2",
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "@angular/build": "^21.2.0",
+    "json-server": "^1.0.0-beta.13",
     "@angular/cli": "^21.2.0",
     "@angular/compiler-cli": "^21.2.0",
     "@angular/localize": "21.2.5",
