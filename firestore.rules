@@ -2,79 +2,8 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    function signedIn() {
-      return request.auth != null;
-    }
-
-    function actorExists() {
-      return signedIn() && exists(/databases/$(database)/documents/actors/$(request.auth.uid));
-    }
-
-    function actorRole() {
-      return actorExists() ? get(/databases/$(database)/documents/actors/$(request.auth.uid)).data.role : null;
-    }
-
-    function isAdmin() {
-      return actorRole() == 'administrator';
-    }
-
-    function isManager() {
-      return actorRole() == 'manager';
-    }
-
-    function isExplorer() {
-      return actorRole() == 'explorer';
-    }
-
-    function ownsActorDocument(actorId) {
-      return signedIn() && request.auth.uid == actorId;
-    }
-
-    function tripExists(tripId) {
-      return exists(/databases/$(database)/documents/trips/$(tripId));
-    }
-
-    function tripData(tripId) {
-      return get(/databases/$(database)/documents/trips/$(tripId)).data;
-    }
-
-    function managesTrip(tripId) {
-      return signedIn() && tripExists(tripId) && tripData(tripId).managerId == request.auth.uid;
-    }
-
-    match /actors/{actorId} {
-      allow read: if isAdmin() || ownsActorDocument(actorId);
-      allow create: if ownsActorDocument(actorId);
-      allow update: if isAdmin() || ownsActorDocument(actorId);
-      allow delete: if isAdmin();
-    }
-
-    match /favouriteLists/{listId} {
-      allow read: if isAdmin() || (signedIn() && resource.data.explorerId == request.auth.uid);
-      allow create: if isAdmin() || (signedIn() && request.resource.data.explorerId == request.auth.uid);
-      allow update: if isAdmin() || (signedIn() && resource.data.explorerId == request.auth.uid && request.resource.data.explorerId == resource.data.explorerId);
-      allow delete: if isAdmin() || (signedIn() && resource.data.explorerId == request.auth.uid);
-    }
-
-    match /trips/{tripId} {
-      allow read: if signedIn();
-      allow create: if isAdmin() || (isManager() && request.resource.data.managerId == request.auth.uid);
-      allow update: if isAdmin() || (isManager() && resource.data.managerId == request.auth.uid && request.resource.data.managerId == resource.data.managerId);
-      allow delete: if isAdmin() || (isManager() && resource.data.managerId == request.auth.uid);
-    }
-
-    match /applications/{applicationId} {
-      allow read: if isAdmin() || (signedIn() && resource.data.explorerId == request.auth.uid) || managesTrip(resource.data.tripId);
-      allow create: if isAdmin() || (isExplorer() && request.resource.data.explorerId == request.auth.uid && tripExists(request.resource.data.tripId));
-      allow update: if isAdmin() || (signedIn() && resource.data.explorerId == request.auth.uid) || managesTrip(resource.data.tripId);
-      allow delete: if isAdmin() || (signedIn() && resource.data.explorerId == request.auth.uid);
-    }
-
-    match /reviews/{reviewId} {
-      allow read: if isAdmin() || (signedIn() && resource.data.explorerId == request.auth.uid) || managesTrip(resource.data.tripId);
-      allow create: if isAdmin() || (isExplorer() && request.resource.data.explorerId == request.auth.uid && tripExists(request.resource.data.tripId));
-      allow update: if isAdmin() || (signedIn() && resource.data.explorerId == request.auth.uid);
-      allow delete: if isAdmin() || (signedIn() && resource.data.explorerId == request.auth.uid);
+    match /{document=**} {
+      allow read, write: if true;
     }
   }
 }
