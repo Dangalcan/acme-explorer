@@ -94,7 +94,8 @@ Acme Explorer, Inc. is a company that organises adventurous trips around the wor
 25. The system must compute and display the average rating of each trip whenever the trip details are shown.  
 26. Whenever an explorer displays his or her favourite lists, the trips that are not available anymore either because they have been expired or cancelled, should been displayed as disabled. If the trip is about to take place, they must be somehow highlighted.  
 27. Favourite lists is a prospective feature in Acme Explorer, but it is not clear if it will be finally deployed. Thus, this requirement should be implemented using JSON-server as a mockup back-end server for the time being. This change will not be propagated to the actual back-end until Acme Explorer has tested and the feature approved.
-## **A+ Tasks**
+
+# **A+ Tasks**
 
 Contact your lecturers to propose an A+ task that your group wish to develop. They should be related to other technologies that are not learnt during the course of the subject and must be related to the deliverable being devised. It is required to include a document explaining your choice and how the task was carried out.
 
@@ -123,3 +124,15 @@ build, ng test), and other diagnostic tools.
 5. ~~Implement lazy loading to improve application performance by loading modules only when they are required.~~ ***DONE***
 
 6. ~~Use a library to support dynamic language switching at runtime.~~ ***DONE***
+
+### DO3
+
+1. Use a different Maps API component.
+
+2. Implement Virtual Scrolling (a performance improvement over infinite scrolling).
+
+3. Use a third-party library to generate a PDF invoice that users can download once they have paid for a trip.
+
+4. Progressive Web App (PWA) Features: add offline support or push notifications to enhance the user experience.
+
+5. Accessibility improvements: implementing accessibility best practices using Angular's built-in tools and ARIA roles
