@@ -51,6 +51,7 @@ describe('TripCreateComponent', () => {
     getById: vi.fn().mockReturnValue(undefined),
     canEditTrip: vi.fn().mockReturnValue(false),
     canDeleteTrip: vi.fn().mockReturnValue(false),
+    canCancelTrip: vi.fn().mockReturnValue(false),
     cancelTrip: vi.fn(),
     updateTrip: vi.fn(),
     deleteTrip: vi.fn(),

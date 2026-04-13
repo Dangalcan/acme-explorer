@@ -75,6 +75,7 @@ describe('TripEditComponent', () => {
     refresh: vi.fn().mockResolvedValue(undefined),
     canEditTrip: vi.fn().mockReturnValue(true),
     canDeleteTrip: vi.fn().mockReturnValue(false),
+    canCancelTrip: vi.fn().mockReturnValue(false),
     cancelTrip: vi.fn(),
     deleteTrip: vi.fn(),
     createTrip: vi.fn(),
