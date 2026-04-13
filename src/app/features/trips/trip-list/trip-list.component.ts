@@ -21,11 +21,11 @@ export class TripListComponent {
   readonly openFavouriteTripId = signal<string | null>(null);
 
   cancelTrip(trip: Trip): void {
-    this.tripService.cancelTrip(trip.id);
+    void this.tripService.cancelTrip(trip.id);
   }
 
   applyTrip(trip: Trip): void {
-    this.applicationService.applyForTrip(trip);
+    void this.applicationService.applyForTrip(trip);
   }
 
   viewTrip(trip: Trip): void {

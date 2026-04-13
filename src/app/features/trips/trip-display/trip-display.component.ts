@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -6,8 +6,11 @@ import { map } from 'rxjs';
 import { TripService } from '../trip.service';
 import { TripCardComponent } from '../trip-card/trip-card.component';
 import { AuthService } from '../../../core/services/auth.service';
-import { Application, AppStatus } from '../../applications/application.model';
+import { AppStatus } from '../../applications/application.model';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ApplicationService } from '../../applications/application.service';
+import { ReviewService } from '../review.service';
+
 
 @Component({
   selector: 'app-trip-display',
@@ -19,6 +22,8 @@ export class TripDisplayComponent {
   private route = inject(ActivatedRoute);
   private tripService = inject(TripService);
   private authService = inject(AuthService);
+  private applicationService = inject(ApplicationService);
+  private reviewService = inject(ReviewService);
 
   private id = toSignal(this.route.paramMap.pipe(map(p => p.get('id') ?? '')));
 
@@ -26,24 +31,21 @@ export class TripDisplayComponent {
 
   readonly currentRole = this.authService.currentRole;
 
-  readonly applications = signal<Application[]>([
-    { id: 'app-1', version: 0, tripId: '1', explorerId: 'explorer-1', createdAt: new Date('2026-01-10T09:00:00.000Z'), status: 'ACCEPTED', comments: 'Very excited about the Alps trip!' },
-    { id: 'app-2', version: 0, tripId: '3', explorerId: 'explorer-1', createdAt: new Date('2026-01-15T11:30:00.000Z'), status: 'PENDING', comments: 'Huge fan of Japanese culture.' },
-    { id: 'app-3', version: 0, tripId: '2', explorerId: 'explorer-2', createdAt: new Date('2026-02-01T08:00:00.000Z'), status: 'ACCEPTED' },
-    { id: 'app-4', version: 0, tripId: '4', explorerId: 'explorer-2', createdAt: new Date('2026-02-20T14:00:00.000Z'), status: 'REJECTED', comments: 'Interested in Amazon wildlife.', rejectionReason: 'Trip is fully booked.' },
-    { id: 'app-5', version: 0, tripId: '3', explorerId: 'explorer-3', createdAt: new Date('2026-01-20T10:00:00.000Z'), status: 'ACCEPTED' },
-    { id: 'app-6', version: 0, tripId: '4', explorerId: 'explorer-3', createdAt: new Date('2026-03-01T09:30:00.000Z'), status: 'PENDING', comments: 'I have jungle survival training.' },
-    { id: 'app-7', version: 0, tripId: '1', explorerId: 'explorer-2', createdAt: new Date('2026-01-25T16:00:00.000Z'), status: 'CANCELLED', comments: 'Schedule conflict, unfortunately.' },
-    { id: 'app-8', version: 0, tripId: '1', explorerId: 'explorer-4', createdAt: new Date('2026-01-28T10:00:00.000Z'), status: 'PENDING', comments: 'Looking forward to this trip.' },
-    { id: 'app-9', version: 0, tripId: '1', explorerId: 'explorer-5', createdAt: new Date('2026-01-29T09:15:00.000Z'), status: 'DUE', comments: 'Please confirm payment instructions.' },
-    { id: 'app-10', version: 0, tripId: '1', explorerId: 'explorer-6', createdAt: new Date('2026-01-30T12:45:00.000Z'), status: 'REJECTED', rejectionReason: 'No seats available.' },
-    { id: 'app-11', version: 0, tripId: '1', explorerId: 'explorer-7', createdAt: new Date('2026-01-31T08:20:00.000Z'), status: 'ACCEPTED', comments: 'Happy to join.' },
-    { id: 'app-12', version: 0, tripId: '1', explorerId: 'explorer-8', createdAt: new Date('2026-02-01T14:00:00.000Z'), status: 'CANCELLED', comments: 'Cannot attend anymore.' },
-  ]);
+  readonly rejectionReasonByApplicationId = signal<Partial<Record<string, string>>>({});
+  readonly rejectionErrorByApplicationId = signal<Partial<Record<string, string | null>>>({});
+
+  readonly currentManagerId = computed(() => this.authService.currentUser()?.uid ?? null);
+
+  readonly canManageCurrentTrip = computed(() => {
+    const trip = this.trip();
+    const managerId = this.currentManagerId();
+    if (!trip || !managerId) return false;
+    return trip.managerId === managerId;
+  });
 
   readonly tripApplications = computed(() => {
     const tripId = this.trip()?.id;
-    const apps = this.applications();
+    const apps = this.applicationService.applications();
     if (!tripId) return [];
     return apps.filter((app) => app.tripId === tripId).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   });
@@ -62,33 +64,94 @@ export class TripDisplayComponent {
 
   readonly totalApplications = computed(() => this.tripApplications().length);
   readonly totalPages = computed(() => Math.max(1, Math.ceil(this.totalApplications() / this.pageSize())));
-  readonly pageStartItem = computed(() => this.currentPage() * this.pageSize() + 1);
-  readonly pageEndItem = computed(() => Math.min((this.currentPage() + 1) * this.pageSize(), this.totalApplications()));
   readonly paginatedTripApplications = computed(() => {
     const start = this.currentPage() * this.pageSize();
     return this.tripApplications().slice(start, start + this.pageSize());
   });
 
-  readonly isLoadingApplications = signal(false);
-  readonly loadApplicationsError = signal<string | null>(null);
+  readonly pageStartItem = computed(() => {
+    if (this.totalApplications() === 0) return 0;
+    return this.currentPage() * this.pageSize() + 1;
+  });
 
-  readonly sampleReviews: any[] = [
-    { id: 'r1', explorerId: 'explorer-1', rating: 5, comment: 'Absolutely breathtaking! The Alps exceeded all expectations.', createdAt: new Date('2026-03-15') },
-    { id: 'r2', explorerId: 'explorer-3', rating: 4, comment: 'Great trip overall, well organized.', createdAt: new Date('2026-03-20') },
-  ];
-
-  readonly today = new Date();
-
-  nextPage(): void {
-    if (this.currentPage() < this.totalPages() - 1) this.currentPage.update(p => p + 1);
-  }
+  readonly pageEndItem = computed(() => {
+    return Math.min(
+      (this.currentPage() + 1) * this.pageSize(),
+      this.totalApplications()
+    );
+  });
 
   previousPage(): void {
-    if (this.currentPage() > 0) this.currentPage.update(p => p - 1);
+    if (this.currentPage() > 0) {
+      this.currentPage.update(page => page - 1);
+    }
   }
 
-  changePageSize(value: string): void {
-    this.pageSize.set(Number(value));
+  nextPage(): void {
+    if (this.currentPage() < this.totalPages() - 1) {
+      this.currentPage.update(page => page + 1);
+    }
+  }
+
+  changePageSize(size: string): void {
+    this.pageSize.set(Number(size));
     this.currentPage.set(0);
   }
+
+  updateRejectionReason(applicationId: string, reason: string): void {
+    this.rejectionReasonByApplicationId.update((state) => ({
+      ...state,
+      [applicationId]: reason,
+    }));
+
+    this.rejectionErrorByApplicationId.update((state) => ({
+      ...state,
+      [applicationId]: null,
+    }));
+  }
+
+  markAsDue(applicationId: string): void {
+    void this.applicationService.markApplicationAsDue(applicationId);
+  }
+
+  async reject(applicationId: string): Promise<void> {
+    const reason = (this.rejectionReasonByApplicationId()[applicationId] ?? '').trim();
+
+    if (!reason) {
+      this.rejectionErrorByApplicationId.update((state) => ({
+        ...state,
+        [applicationId]: $localize`:@@trip.manager.rejectReason.required:Rejection reason is required.`,
+      }));
+      return;
+    }
+
+    const didReject = await this.applicationService.rejectApplication(applicationId, reason);
+    if (!didReject) {
+      this.rejectionErrorByApplicationId.update((state) => ({
+        ...state,
+        [applicationId]: $localize`:@@trip.manager.rejectReason.invalid:Could not reject the application.`,
+      }));
+      return;
+    }
+
+    this.rejectionReasonByApplicationId.update((state) => ({
+      ...state,
+      [applicationId]: '',
+    }));
+    this.rejectionErrorByApplicationId.update((state) => ({
+      ...state,
+      [applicationId]: null,
+    }));
+  }
+
+  readonly isLoadingApplications = this.applicationService.isLoading;
+  readonly loadApplicationsError = this.applicationService.error;
+
+  readonly tripReviews = computed(() => {
+    const tripId = this.trip()?.id;
+    if (!tripId) return [];
+    return this.reviewService.reviewsForTrip(tripId);
+  });
+
+  readonly today = new Date();
 }

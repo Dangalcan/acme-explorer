@@ -1,1 +1,0 @@
-json-server --watch mock-api/db.json --port 3000

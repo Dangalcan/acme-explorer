@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ApplicationService } from '../../applications/application.service';
 import { WeatherWidgetComponent } from '../../../shared/weather/weather-widget.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Review } from '../review.model';
 
 @Component({
   selector: 'app-trip-card',
@@ -36,7 +37,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 export class TripCardComponent {
   @Input({ required: true }) trip!: Trip;
   @Input() mode: 'list' | 'details' = 'list';
-  @Input() reviews: any[] = [];
+  @Input() reviews: Review[] = [];
   @Input() enableFavouriteControls = false;
   @Input() favouritePanelOpen = false;
 
@@ -142,14 +143,14 @@ export class TripCardComponent {
     this.favouriteError.set(null);
   }
 
-  saveToFavouriteList(event: Event): void {
+  async saveToFavouriteList(event: Event): Promise<void> {
     event.stopPropagation();
     const listId = this.selectedFavouriteListId();
     if (!listId) {
       this.favouriteError.set(this.translate.instant('favourites.errors.select_list'));
       return;
     }
-    this.favouritesService.addTripToList(listId, this.trip.id);
+    await this.favouritesService.addTripToList(listId, this.trip.id);
     this.closeFavouritePanel();
   }
 
