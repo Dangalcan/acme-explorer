@@ -207,8 +207,10 @@
         "end_before_start": "La fecha de fin debe ser posterior a la fecha de inicio",
         "stages_required": "Se requiere al menos una etapa",
         "stage_title_required": "El título de la etapa es obligatorio",
+        "stage_title_max": "El título de la etapa no puede superar {{max}} caracteres",
         "stage_description_required": "La descripción de la etapa es obligatoria",
-        "stage_price_min": "El precio debe ser 0 o mayor",
+        "stage_description_max": "La descripción de la etapa no puede superar {{max}} caracteres",
+        "stage_price_min": "El precio debe ser {{min}} o mayor",
         "picture_invalid_url": "Debe ser una URL válida que empiece por http:// o https://",
         "create_failed": "No se pudo crear el viaje. Inténtalo de nuevo.",
         "update_failed": "No se pudo actualizar el viaje. Inténtalo de nuevo."
@@ -245,7 +247,12 @@
       "cancel_reason_placeholder": "Explica por qué se cancela este viaje...",
       "cancel_reason_required": "El motivo de cancelación es obligatorio.",
       "cancel_confirm": "Confirmar cancelación",
-      "cancel_failed": "No se pudo cancelar el viaje. Inténtalo de nuevo."
+      "cancel_failed": "No se pudo cancelar el viaje. Inténtalo de nuevo.",
+      "cancel_reason_max_length": "El motivo de cancelación no puede superar los {{max}} caracteres.",
+      "apply_comment_label": "Añade un comentario (opcional)",
+      "apply_comment_placeholder": "Explica al gestor por qué quieres unirte a este viaje...",
+      "apply_confirm": "Confirmar solicitud",
+      "apply_failed": "No se pudo enviar tu solicitud. Inténtalo de nuevo."
     },
     "details": {
       "back": "Volver a viajes",
@@ -287,6 +294,9 @@
       "due": "Pendiente de pago",
       "accepted": "Aceptada",
       "cancelled": "Cancelada"
+    },
+    "error": {
+      "comments_max_length": "Los comentarios no pueden superar los {{max}} caracteres."
     }
   },
   "favourites": {

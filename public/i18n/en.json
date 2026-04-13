@@ -207,8 +207,10 @@
         "end_before_start": "End date must be after start date",
         "stages_required": "At least one stage is required",
         "stage_title_required": "Stage title is required",
+        "stage_title_max": "Stage title must be at most {{max}} characters",
         "stage_description_required": "Stage description is required",
-        "stage_price_min": "Price must be 0 or greater",
+        "stage_description_max": "Stage description must be at most {{max}} characters",
+        "stage_price_min": "Price must be {{min}} or greater",
         "picture_invalid_url": "Must be a valid URL starting with http:// or https://",
         "create_failed": "Could not create the trip. Please try again.",
         "update_failed": "Could not update the trip. Please try again."
@@ -245,7 +247,12 @@
       "cancel_reason_placeholder": "Explain why this trip is being cancelled...",
       "cancel_reason_required": "A cancellation reason is required.",
       "cancel_confirm": "Confirm cancellation",
-      "cancel_failed": "Could not cancel the trip. Please try again."
+      "cancel_failed": "Could not cancel the trip. Please try again.",
+      "cancel_reason_max_length": "Cancellation reason must be at most {{max}} characters.",
+      "apply_comment_label": "Add a comment (optional)",
+      "apply_comment_placeholder": "Tell the manager why you want to join this trip...",
+      "apply_confirm": "Confirm application",
+      "apply_failed": "Could not submit your application. Please try again."
     },
     "details": {
       "back": "Back to trips",
@@ -287,6 +294,9 @@
       "due": "Due",
       "accepted": "Accepted",
       "cancelled": "Cancelled"
+    },
+    "error": {
+      "comments_max_length": "Comments must be at most {{max}} characters."
     }
   },
   "favourites": {
