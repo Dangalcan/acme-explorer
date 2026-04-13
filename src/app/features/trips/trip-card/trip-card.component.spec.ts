@@ -18,6 +18,7 @@ describe('TripCardComponent', () => {
   let component: TripCardComponent;
 
   const authServiceMock = {
+    currentUser: signal<{ uid: string } | null>(null),
     currentRole: signal<'explorer' | 'manager' | 'admin' | null>('explorer'),
   };
 
@@ -179,7 +180,7 @@ describe('TripCardComponent', () => {
     expect(favouritesServiceMock.addTripToList).not.toHaveBeenCalled();
   });
 
-  it('adds the trip to the selected favourite list and closes the panel', () => {
+  it('adds the trip to the selected favourite list and closes the panel', async () => {
     const closeSpy = vi.spyOn(component.favouritePanelClose, 'emit');
     const event = { stopPropagation: vi.fn() } as unknown as Event;
 
@@ -196,7 +197,7 @@ describe('TripCardComponent', () => {
     component.selectedFavouriteListId.set('list-1');
     component.favouriteError.set('old error');
 
-    component.saveToFavouriteList(event);
+    await component.saveToFavouriteList(event);
 
     expect(event.stopPropagation).toHaveBeenCalled();
     expect(favouritesServiceMock.addTripToList).toHaveBeenCalledWith('list-1', 'trip-1');
