@@ -75,9 +75,9 @@ export class TripService {
   }
 
   async updateTrip(tripId: string, data: Partial<Omit<Trip, 'id' | 'ticker' | 'managerId'>>): Promise<boolean> {
-    const trip = this.getById(tripId);
-    if (!trip || trip.managerId !== this.authService.currentUser()?.uid) return false;
+    if (!this.canEditTrip(tripId)) return false;
 
+    const trip = this.getById(tripId)!;
     const { totalPrice, availablePlaces, averageRating, ...rest } = data as Trip;
 
     try {
@@ -94,7 +94,14 @@ export class TripService {
   canEditTrip(tripId: string): boolean {
     const trip = this.getById(tripId);
     const uid = this.authService.currentUser()?.uid;
-    return !!trip && !!uid && trip.managerId === uid;
+    if (!trip || !uid || trip.managerId !== uid) return false;
+
+    const fiveDaysFromNow = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
+    if (new Date(trip.startDate) <= fiveDaysFromNow) return false;
+
+    return !this.applicationService.applications().some(
+      (a) => a.tripId === tripId && a.status === 'ACCEPTED',
+    );
   }
 
   canDeleteTrip(tripId: string): boolean {
@@ -124,19 +131,25 @@ export class TripService {
     }
   }
 
-  async cancelTrip(tripId: string, reason: string): Promise<boolean> {
+  canCancelTrip(tripId: string): boolean {
     const trip = this.getById(tripId);
-    if (!trip || trip.cancellation) return false;
-    if (!reason.trim()) return false;
+    const uid = this.authService.currentUser()?.uid;
+    if (!trip || trip.managerId !== uid) return false;
+    if (trip.cancellation) return false;
 
-    // Req #8.3: cancellation requires at least one week before the start date
     const oneWeekFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     if (new Date(trip.startDate) <= oneWeekFromNow) return false;
 
-    // Req #8.3: cannot cancel a trip that has at least one paid (ACCEPTED) application
-    if (this.applicationService.applications().some(
+    return !this.applicationService.applications().some(
       (a) => a.tripId === tripId && a.status === 'ACCEPTED',
-    )) return false;
+    );
+  }
+
+  async cancelTrip(tripId: string, reason: string): Promise<boolean> {
+    if (!this.canCancelTrip(tripId)) return false;
+    if (!reason.trim()) return false;
+
+    const trip = this.getById(tripId)!
 
     try {
       await updateDoc(doc(db, 'trips', tripId), {
