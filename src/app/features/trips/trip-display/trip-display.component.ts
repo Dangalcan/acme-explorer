@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { TripService } from '../trip.service';
@@ -15,7 +16,7 @@ import { ReviewService } from '../review.service';
 @Component({
   selector: 'app-trip-display',
   standalone: true,
-  imports: [RouterLink, TripCardComponent, DatePipe, TranslatePipe],
+  imports: [RouterLink, FormsModule, TripCardComponent, DatePipe, TranslatePipe],
   templateUrl: './trip-display.component.html',
 })
 export class TripDisplayComponent {
@@ -177,4 +178,56 @@ export class TripDisplayComponent {
   });
 
   readonly today = new Date();
+
+  // ── Review submission (req 23b) ────────────────────────────────────────────
+
+  readonly reviewRating = signal<number>(0);
+  readonly reviewComment = signal('');
+  readonly isSubmittingReview = signal(false);
+  readonly reviewError = signal<string | null>(null);
+  readonly reviewSuccess = signal(false);
+
+  /** True when the explorer has an ACCEPTED application and the trip is finished,
+   *  and has not yet reviewed this trip. */
+  readonly canReview = computed(() => {
+    const trip = this.trip();
+    const uid = this.authService.currentUser()?.uid;
+    if (!trip || this.authService.currentRole() !== 'explorer' || !uid) return false;
+    if (new Date(trip.endDate) >= new Date()) return false; // trip must have finished
+    const hasAccepted = this.applicationService
+      .applications()
+      .some((a) => a.tripId === trip.id && a.explorerId === uid && a.status === 'ACCEPTED');
+    if (!hasAccepted) return false;
+    return !this.tripReviews().some((r) => r.explorerId === uid); // not yet reviewed
+  });
+
+  async submitReview(): Promise<void> {
+    const rating = this.reviewRating();
+    if (rating < 1 || rating > 5) {
+      this.reviewError.set('reviews.error.rating_required');
+      return;
+    }
+    this.isSubmittingReview.set(true);
+    this.reviewError.set(null);
+    const tripId = this.trip()?.id;
+    if (!tripId) { this.isSubmittingReview.set(false); return; }
+    const ok = await this.reviewService.createReview(
+      tripId,
+      rating,
+      this.reviewComment().trim() || undefined,
+    );
+    this.isSubmittingReview.set(false);
+    if (ok) {
+      this.reviewSuccess.set(true);
+      this.reviewRating.set(0);
+      this.reviewComment.set('');
+    } else {
+      this.reviewError.set('reviews.error.submit_failed');
+    }
+  }
+
+  setReviewRating(star: number): void {
+    this.reviewRating.set(star);
+    this.reviewError.set(null);
+  }
 }
