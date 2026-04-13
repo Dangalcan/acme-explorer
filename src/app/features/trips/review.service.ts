@@ -1,7 +1,8 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Injectable, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { AuthService } from '../../core/services/auth.service';
+import { ApplicationService } from '../applications/application.service';
 import { db } from '../../infrastructure/firebase.config';
 import { Review } from './review.model';
 
@@ -9,6 +10,7 @@ import { Review } from './review.model';
 export class ReviewService {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly authService = inject(AuthService);
+  private readonly applicationService = inject(ApplicationService);
   private readonly allReviews = signal<Review[]>([]);
   private readonly reviewsCollection = collection(db, 'reviews');
   private readonly tripsCollection = collection(db, 'trips');
@@ -32,6 +34,72 @@ export class ReviewService {
     return this.reviews()
       .filter((review) => review.tripId === tripId)
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+
+  async createReview(tripId: string, rating: number, comment?: string): Promise<boolean> {
+    const user = this.authService.currentUser();
+    const role = this.authService.currentRole();
+    if (!user || role !== 'explorer') return false;
+
+    // Enforce one review per explorer per trip
+    const alreadyExists = this.reviews().some(
+      (r) => r.tripId === tripId && r.explorerId === user.uid,
+    );
+    if (alreadyExists) return false;
+
+    try {
+      await addDoc(this.reviewsCollection, {
+        tripId,
+        explorerId: user.uid,
+        rating,
+        comment: comment ?? null,
+        createdAt: new Date(),
+        version: 0,
+      });
+      await this.loadReviews();
+      return true;
+    } catch (err) {
+      console.error('Error creating review', err);
+      return false;
+    }
+  }
+
+  canModifyReview(reviewId: string): boolean {
+    const uid = this.authService.currentUser()?.uid;
+    const review = this.reviews().find((r) => r.id === reviewId);
+    if (!uid || !review || review.explorerId !== uid) return false;
+    return this.applicationService
+      .applications()
+      .some((a) => a.tripId === review.tripId && a.explorerId === uid && a.status === 'ACCEPTED');
+  }
+
+  async deleteReview(reviewId: string): Promise<boolean> {
+    if (!this.canModifyReview(reviewId)) return false;
+    try {
+      await deleteDoc(doc(db, 'reviews', reviewId));
+      await this.loadReviews();
+      return true;
+    } catch (err) {
+      console.error('Error deleting review', err);
+      return false;
+    }
+  }
+
+  async updateReview(reviewId: string, rating: number, comment?: string): Promise<boolean> {
+    if (!this.canModifyReview(reviewId)) return false;
+    const review = this.reviews().find((r) => r.id === reviewId)!;
+    try {
+      await updateDoc(doc(db, 'reviews', reviewId), {
+        rating,
+        comment: comment ?? null,
+        version: review.version + 1,
+      });
+      await this.loadReviews();
+      return true;
+    } catch (err) {
+      console.error('Error updating review', err);
+      return false;
+    }
   }
 
   private async loadReviews(): Promise<void> {
