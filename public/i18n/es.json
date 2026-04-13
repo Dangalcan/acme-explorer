@@ -158,6 +158,52 @@
       "title": "Explorar viajes",
       "subtitle": "Encuentra tu próxima aventura alrededor del mundo"
     },
+    "list": {
+      "create_trip": "Crear viaje"
+    },
+    "form": {
+      "create_title": "Crear nuevo viaje",
+      "edit_title": "Editar viaje",
+      "title": "Título",
+      "description": "Descripción",
+      "difficulty": "Dificultad",
+      "max_participants": "Máx. participantes",
+      "start_date": "Fecha de inicio",
+      "end_date": "Fecha de fin",
+      "location": "Ubicación",
+      "city": "Ciudad",
+      "country": "País",
+      "stages": "Etapas",
+      "stage": "Etapa",
+      "stage_title": "Título de la etapa",
+      "stage_description": "Descripción de la etapa",
+      "stage_price": "Precio (€)",
+      "add_stage": "Añadir etapa",
+      "remove_stage": "Eliminar",
+      "pictures": "Fotos",
+      "picture_url_placeholder": "https://ejemplo.com/imagen.jpg",
+      "add_picture": "Añadir URL de foto",
+      "submit": "Guardar viaje",
+      "submitting": "Guardando...",
+      "error": {
+        "title_required": "El título es obligatorio",
+        "title_max": "El título no puede superar {{max}} caracteres",
+        "description_required": "La descripción es obligatoria",
+        "description_max": "La descripción no puede superar {{max}} caracteres",
+        "max_participants_required": "El máximo de participantes es obligatorio",
+        "max_participants_min": "Debe ser al menos 1",
+        "start_date_required": "La fecha de inicio es obligatoria",
+        "end_date_required": "La fecha de fin es obligatoria",
+        "end_before_start": "La fecha de fin debe ser posterior a la fecha de inicio",
+        "stages_required": "Se requiere al menos una etapa",
+        "stage_title_required": "El título de la etapa es obligatorio",
+        "stage_description_required": "La descripción de la etapa es obligatoria",
+        "stage_price_min": "El precio debe ser 0 o mayor",
+        "picture_invalid_url": "Debe ser una URL válida que empiece por http:// o https://",
+        "create_failed": "No se pudo crear el viaje. Inténtalo de nuevo.",
+        "update_failed": "No se pudo actualizar el viaje. Inténtalo de nuevo."
+      }
+    },
     "card": {
       "cancelled": "Cancelado",
       "max_participants": "Máx. {{count}} participantes",
@@ -199,7 +245,10 @@
       "prev": "Anterior",
       "next": "Siguiente",
       "not_found": "Viaje no encontrado.",
-      "browse_all": "Ver todos los viajes"
+      "browse_all": "Ver todos los viajes",
+      "edit": "Editar viaje",
+      "delete": "Eliminar viaje",
+      "delete_error": "No se pudo eliminar el viaje."
     }
   },
   "applications": {

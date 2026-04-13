@@ -1,0 +1,344 @@
+<form
+  [formGroup]="tripForm"
+  (ngSubmit)="submit()"
+  novalidate
+  class="space-y-6 bg-white rounded-2xl shadow-sm border border-slate-100 p-8 max-w-2xl mx-auto"
+>
+  <!-- Title -->
+  <div>
+    <label for="title" class="block text-sm font-medium text-slate-700 mb-1.5">
+      {{ 'trips.form.title' | translate }} <span class="text-red-500">*</span>
+    </label>
+    <input
+      id="title"
+      type="text"
+      formControlName="title"
+      class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+             focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
+      [class.border-red-500]="tripForm.get('title')?.invalid && tripForm.get('title')?.touched"
+    />
+    @if (tripForm.get('title')?.hasError('required') && tripForm.get('title')?.touched) {
+      <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.title_required' | translate }}</p>
+    }
+    @if (tripForm.get('title')?.hasError('maxlength') && tripForm.get('title')?.touched) {
+      <p class="mt-1 text-xs text-red-600">
+        {{ 'trips.form.error.title_max' | translate: { max: validation.title.maxLength } }}
+      </p>
+    }
+  </div>
+
+  <!-- Description -->
+  <div>
+    <label for="description" class="block text-sm font-medium text-slate-700 mb-1.5">
+      {{ 'trips.form.description' | translate }} <span class="text-red-500">*</span>
+    </label>
+    <textarea
+      id="description"
+      formControlName="description"
+      rows="4"
+      class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+             focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors resize-none"
+      [class.border-red-500]="tripForm.get('description')?.invalid && tripForm.get('description')?.touched"
+    ></textarea>
+    @if (tripForm.get('description')?.hasError('required') && tripForm.get('description')?.touched) {
+      <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.description_required' | translate }}</p>
+    }
+    @if (tripForm.get('description')?.hasError('maxlength') && tripForm.get('description')?.touched) {
+      <p class="mt-1 text-xs text-red-600">
+        {{ 'trips.form.error.description_max' | translate: { max: validation.description.maxLength } }}
+      </p>
+    }
+  </div>
+
+  <!-- Difficulty + Max Participants -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <label for="difficultyLevel" class="block text-sm font-medium text-slate-700 mb-1.5">
+        {{ 'trips.form.difficulty' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <select
+        id="difficultyLevel"
+        formControlName="difficultyLevel"
+        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+               focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
+      >
+        @for (level of difficultyLevels; track level) {
+          <option [value]="level">{{ level }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label for="maxParticipants" class="block text-sm font-medium text-slate-700 mb-1.5">
+        {{ 'trips.form.max_participants' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        id="maxParticipants"
+        type="number"
+        formControlName="maxParticipants"
+        min="1"
+        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+               focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
+        [class.border-red-500]="tripForm.get('maxParticipants')?.invalid && tripForm.get('maxParticipants')?.touched"
+      />
+      @if (tripForm.get('maxParticipants')?.hasError('min') && tripForm.get('maxParticipants')?.touched) {
+        <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.max_participants_min' | translate }}</p>
+      }
+    </div>
+  </div>
+
+  <!-- Start Date + End Date -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <label for="startDate" class="block text-sm font-medium text-slate-700 mb-1.5">
+        {{ 'trips.form.start_date' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        id="startDate"
+        type="date"
+        formControlName="startDate"
+        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+               focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
+        [class.border-red-500]="
+          (tripForm.get('startDate')?.invalid && tripForm.get('startDate')?.touched) ||
+          (tripForm.errors?.['endBeforeStart'] && tripForm.get('startDate')?.touched)
+        "
+      />
+      @if (tripForm.get('startDate')?.hasError('required') && tripForm.get('startDate')?.touched) {
+        <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.start_date_required' | translate }}</p>
+      }
+    </div>
+
+    <div>
+      <label for="endDate" class="block text-sm font-medium text-slate-700 mb-1.5">
+        {{ 'trips.form.end_date' | translate }} <span class="text-red-500">*</span>
+      </label>
+      <input
+        id="endDate"
+        type="date"
+        formControlName="endDate"
+        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+               focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
+        [class.border-red-500]="
+          (tripForm.get('endDate')?.invalid && tripForm.get('endDate')?.touched) ||
+          (tripForm.errors?.['endBeforeStart'] && tripForm.get('endDate')?.touched)
+        "
+      />
+      @if (tripForm.get('endDate')?.hasError('required') && tripForm.get('endDate')?.touched) {
+        <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.end_date_required' | translate }}</p>
+      }
+    </div>
+  </div>
+
+  @if (
+    tripForm.errors?.['endBeforeStart'] &&
+    (tripForm.get('startDate')?.touched || tripForm.get('endDate')?.touched)
+  ) {
+    <p class="text-xs text-red-600 -mt-3">
+      {{ 'trips.form.error.end_before_start' | translate }}
+    </p>
+  }
+
+  <!-- Location (optional) -->
+  <fieldset formGroupName="location" class="border border-slate-200 rounded-xl p-4 space-y-4">
+    <legend class="text-sm font-semibold text-slate-700 px-1">
+      {{ 'trips.form.location' | translate }}
+      <span class="text-slate-400 font-normal text-xs ml-1">{{ 'common.optional' | translate }}</span>
+    </legend>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label for="city" class="block text-xs font-medium text-slate-600 mb-1">
+          {{ 'trips.form.city' | translate }}
+        </label>
+        <input
+          id="city"
+          type="text"
+          formControlName="city"
+          class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+                 focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
+        />
+      </div>
+      <div>
+        <label for="country" class="block text-xs font-medium text-slate-600 mb-1">
+          {{ 'trips.form.country' | translate }}
+        </label>
+        <input
+          id="country"
+          type="text"
+          formControlName="country"
+          class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+                 focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
+        />
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- Stages (FormArray) -->
+  <fieldset class="border border-slate-200 rounded-xl p-4 space-y-4">
+    <legend class="text-sm font-semibold text-slate-700 px-1">
+      {{ 'trips.form.stages' | translate }} <span class="text-red-500">*</span>
+    </legend>
+
+    <div formArrayName="stages" class="space-y-4">
+      @for (stageCtrl of stagesArray.controls; track $index; let i = $index) {
+        <div
+          [formGroupName]="i"
+          class="border border-slate-100 rounded-lg p-4 bg-slate-50 space-y-3"
+        >
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+              {{ 'trips.form.stage' | translate }} {{ i + 1 }}
+            </span>
+            @if (stagesArray.length > 1) {
+              <button
+                type="button"
+                (click)="removeStage(i)"
+                class="text-xs text-red-500 hover:text-red-700 font-medium transition-colors"
+              >
+                {{ 'trips.form.remove_stage' | translate }}
+              </button>
+            }
+          </div>
+
+          <!-- Stage Title -->
+          <div>
+            <input
+              type="text"
+              formControlName="title"
+              [placeholder]="'trips.form.stage_title' | translate"
+              class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
+              [class.border-red-500]="getStageGroup(i).get('title')?.invalid && getStageGroup(i).get('title')?.touched"
+            />
+            @if (getStageGroup(i).get('title')?.hasError('required') && getStageGroup(i).get('title')?.touched) {
+              <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.stage_title_required' | translate }}</p>
+            }
+          </div>
+
+          <!-- Stage Description -->
+          <div>
+            <textarea
+              formControlName="description"
+              rows="2"
+              [placeholder]="'trips.form.stage_description' | translate"
+              class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors resize-none"
+              [class.border-red-500]="getStageGroup(i).get('description')?.invalid && getStageGroup(i).get('description')?.touched"
+            ></textarea>
+            @if (getStageGroup(i).get('description')?.hasError('required') && getStageGroup(i).get('description')?.touched) {
+              <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.stage_description_required' | translate }}</p>
+            }
+          </div>
+
+          <!-- Stage Price -->
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1">
+              {{ 'trips.form.stage_price' | translate }}
+            </label>
+            <input
+              type="number"
+              formControlName="price"
+              min="0"
+              step="0.01"
+              class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
+              [class.border-red-500]="getStageGroup(i).get('price')?.invalid && getStageGroup(i).get('price')?.touched"
+            />
+            @if (getStageGroup(i).get('price')?.hasError('min') && getStageGroup(i).get('price')?.touched) {
+              <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.stage_price_min' | translate }}</p>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <button
+      type="button"
+      (click)="addStage()"
+      class="w-full py-2.5 rounded-lg border border-dashed border-slate-300 text-slate-500 text-sm
+             hover:bg-slate-50 hover:border-slate-400 transition-colors font-medium"
+    >
+      + {{ 'trips.form.add_stage' | translate }}
+    </button>
+
+    @if (stagesArray.errors?.['minlength'] && stagesArray.touched) {
+      <p class="text-xs text-red-600">{{ 'trips.form.error.stages_required' | translate }}</p>
+    }
+  </fieldset>
+
+  <!-- Pictures (FormArray of URL strings) -->
+  <fieldset class="border border-slate-200 rounded-xl p-4 space-y-3">
+    <legend class="text-sm font-semibold text-slate-700 px-1">
+      {{ 'trips.form.pictures' | translate }}
+      <span class="text-slate-400 font-normal text-xs ml-1">{{ 'common.optional' | translate }}</span>
+    </legend>
+
+    <div formArrayName="pictures" class="space-y-2">
+      @for (picCtrl of picturesArray.controls; track $index; let i = $index) {
+        <div class="flex gap-2 items-start">
+          <div class="flex-1">
+            <input
+              type="url"
+              [formControlName]="i"
+              [placeholder]="'trips.form.picture_url_placeholder' | translate"
+              class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
+              [class.border-red-500]="getPictureControl(i).hasError('pattern') && getPictureControl(i).touched"
+            />
+            @if (getPictureControl(i).hasError('pattern') && getPictureControl(i).touched) {
+              <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.picture_invalid_url' | translate }}</p>
+            }
+          </div>
+          <button
+            type="button"
+            (click)="removePicture(i)"
+            class="mt-0.5 p-2 text-slate-400 hover:text-red-500 rounded-lg hover:bg-red-50 transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      }
+    </div>
+
+    <button
+      type="button"
+      (click)="addPicture()"
+      class="text-sm text-indigo-600 hover:text-indigo-800 font-medium transition-colors"
+    >
+      + {{ 'trips.form.add_picture' | translate }}
+    </button>
+  </fieldset>
+
+  <!-- Submit / Cancel -->
+  <div class="flex gap-3 pt-2">
+    <button
+      type="button"
+      (click)="cancelled.emit()"
+      class="flex-1 py-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700
+             font-semibold text-sm transition-colors"
+    >
+      {{ 'common.back' | translate }}
+    </button>
+
+    <button
+      type="submit"
+      [disabled]="isLoading"
+      class="flex-1 py-2.5 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723] text-white font-bold text-sm
+             transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+    >
+      @if (isLoading) {
+        <span class="inline-flex items-center gap-2 justify-center">
+          <svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+          </svg>
+          {{ 'trips.form.submitting' | translate }}
+        </span>
+      } @else {
+        {{ 'trips.form.submit' | translate }}
+      }
+    </button>
+  </div>
+</form>

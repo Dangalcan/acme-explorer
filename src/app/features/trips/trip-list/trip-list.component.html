@@ -6,6 +6,20 @@
     <div class="mb-10 text-center animate-slide-up">
       <h1 class="text-4xl font-bold text-slate-800 tracking-tight">{{ 'trips.explore.title' | translate }}</h1>
       <p class="text-slate-500 mt-2 text-base">{{ 'trips.explore.subtitle' | translate }}</p>
+      @if (currentRole() === 'manager') {
+        <div class="mt-5">
+          <a
+            routerLink="/trips/create"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723]
+                   text-white font-semibold text-sm transition-colors active:scale-95 shadow-sm"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            {{ 'trips.list.create_trip' | translate }}
+          </a>
+        </div>
+      }
     </div>
 
     <!-- Cards grid -->

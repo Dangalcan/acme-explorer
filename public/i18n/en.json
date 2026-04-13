@@ -158,6 +158,52 @@
       "title": "Explore Trips",
       "subtitle": "Find your next adventure around the world"
     },
+    "list": {
+      "create_trip": "Create Trip"
+    },
+    "form": {
+      "create_title": "Create New Trip",
+      "edit_title": "Edit Trip",
+      "title": "Title",
+      "description": "Description",
+      "difficulty": "Difficulty",
+      "max_participants": "Max Participants",
+      "start_date": "Start Date",
+      "end_date": "End Date",
+      "location": "Location",
+      "city": "City",
+      "country": "Country",
+      "stages": "Stages",
+      "stage": "Stage",
+      "stage_title": "Stage title",
+      "stage_description": "Stage description",
+      "stage_price": "Price (€)",
+      "add_stage": "Add stage",
+      "remove_stage": "Remove",
+      "pictures": "Pictures",
+      "picture_url_placeholder": "https://example.com/image.jpg",
+      "add_picture": "Add picture URL",
+      "submit": "Save Trip",
+      "submitting": "Saving...",
+      "error": {
+        "title_required": "Title is required",
+        "title_max": "Title must be at most {{max}} characters",
+        "description_required": "Description is required",
+        "description_max": "Description must be at most {{max}} characters",
+        "max_participants_required": "Max participants is required",
+        "max_participants_min": "Must be at least 1",
+        "start_date_required": "Start date is required",
+        "end_date_required": "End date is required",
+        "end_before_start": "End date must be after start date",
+        "stages_required": "At least one stage is required",
+        "stage_title_required": "Stage title is required",
+        "stage_description_required": "Stage description is required",
+        "stage_price_min": "Price must be 0 or greater",
+        "picture_invalid_url": "Must be a valid URL starting with http:// or https://",
+        "create_failed": "Could not create the trip. Please try again.",
+        "update_failed": "Could not update the trip. Please try again."
+      }
+    },
     "card": {
       "cancelled": "Cancelled",
       "max_participants": "Max {{count}} participants",
@@ -199,7 +245,10 @@
       "prev": "Prev",
       "next": "Next",
       "not_found": "Trip not found.",
-      "browse_all": "Browse all trips"
+      "browse_all": "Browse all trips",
+      "edit": "Edit Trip",
+      "delete": "Delete Trip",
+      "delete_error": "Could not delete the trip."
     }
   },
   "applications": {

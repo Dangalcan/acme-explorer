@@ -1,7 +1,8 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Injectable, PLATFORM_ID, computed, inject, signal } from '@angular/core';
-import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../infrastructure/firebase.config';
+import { AuthService } from '../../core/services/auth.service';
 import { ApplicationService } from '../applications/application.service';
 import { ReviewService } from './review.service';
 import { Trip } from './trip.model';
@@ -9,6 +10,7 @@ import { Trip } from './trip.model';
 @Injectable({ providedIn: 'root' })
 export class TripService {
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly authService = inject(AuthService);
   private readonly applicationService = inject(ApplicationService);
   private readonly reviewService = inject(ReviewService);
 
@@ -54,6 +56,74 @@ export class TripService {
     return this.trips().find((trip) => trip.id === id);
   }
 
+  async createTrip(data: Omit<Trip, 'id' | 'version' | 'ticker' | 'managerId'>): Promise<string | null> {
+    const managerId = this.authService.currentUser()?.uid;
+    if (!managerId) return null;
+
+    const { totalPrice, availablePlaces, averageRating, ...rest } = data as Trip;
+    const newTrip = { ...rest, ticker: this.generateTicker(), managerId, version: 0 };
+
+    try {
+      const ref = await addDoc(collection(db, 'trips'), newTrip);
+      await this.loadTrips();
+      return ref.id;
+    } catch (error) {
+      console.error('Error creating trip', error);
+      this.error.set('Could not create the trip.');
+      return null;
+    }
+  }
+
+  async updateTrip(tripId: string, data: Partial<Omit<Trip, 'id' | 'ticker' | 'managerId'>>): Promise<boolean> {
+    const trip = this.getById(tripId);
+    if (!trip || trip.managerId !== this.authService.currentUser()?.uid) return false;
+
+    const { totalPrice, availablePlaces, averageRating, ...rest } = data as Trip;
+
+    try {
+      await updateDoc(doc(db, 'trips', tripId), { ...rest, version: trip.version + 1 });
+      await this.loadTrips();
+      return true;
+    } catch (error) {
+      console.error('Error updating trip', error);
+      this.error.set('Could not update the trip.');
+      return false;
+    }
+  }
+
+  canEditTrip(tripId: string): boolean {
+    const trip = this.getById(tripId);
+    const uid = this.authService.currentUser()?.uid;
+    return !!trip && !!uid && trip.managerId === uid;
+  }
+
+  canDeleteTrip(tripId: string): boolean {
+    const trip = this.getById(tripId);
+    const uid = this.authService.currentUser()?.uid;
+    if (!trip || trip.managerId !== uid) return false;
+
+    const fiveDaysFromNow = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
+    if (new Date(trip.startDate) <= fiveDaysFromNow) return false;
+
+    return !this.applicationService.applications().some(
+      (a) => a.tripId === tripId && a.status === 'ACCEPTED',
+    );
+  }
+
+  async deleteTrip(tripId: string): Promise<boolean> {
+    if (!this.canDeleteTrip(tripId)) return false;
+
+    try {
+      await deleteDoc(doc(db, 'trips', tripId));
+      await this.loadTrips();
+      return true;
+    } catch (error) {
+      console.error('Error deleting trip', error);
+      this.error.set('Could not delete the trip.');
+      return false;
+    }
+  }
+
   async cancelTrip(tripId: string): Promise<boolean> {
     const trip = this.getById(tripId);
     if (!trip || trip.cancellation) return false;
@@ -73,6 +143,17 @@ export class TripService {
       this.error.set('Could not cancel the trip.');
       return false;
     }
+  }
+
+  private generateTicker(): string {
+    const now = new Date();
+    const yy = String(now.getFullYear()).slice(-2);
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const letters = Array.from({ length: 4 }, () =>
+      String.fromCharCode(65 + Math.floor(Math.random() * 26)),
+    ).join('');
+    return `${yy}${mm}${dd}-${letters}`;
   }
 
   private async loadTrips(): Promise<void> {

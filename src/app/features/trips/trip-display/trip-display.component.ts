@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -20,6 +20,7 @@ import { ReviewService } from '../review.service';
 })
 export class TripDisplayComponent {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private tripService = inject(TripService);
   private authService = inject(AuthService);
   private applicationService = inject(ApplicationService);
@@ -42,6 +43,28 @@ export class TripDisplayComponent {
     if (!trip || !managerId) return false;
     return trip.managerId === managerId;
   });
+
+  readonly canEdit = computed(() => this.tripService.canEditTrip(this.trip()?.id ?? ''));
+  readonly canDelete = computed(() => this.tripService.canDeleteTrip(this.trip()?.id ?? ''));
+  readonly isDeleting = signal(false);
+  readonly deleteError = signal<string | null>(null);
+
+  async onDelete(): Promise<void> {
+    const tripId = this.trip()?.id;
+    if (!tripId) return;
+
+    this.isDeleting.set(true);
+    this.deleteError.set(null);
+
+    const success = await this.tripService.deleteTrip(tripId);
+    this.isDeleting.set(false);
+
+    if (success) {
+      void this.router.navigate(['/trips']);
+    } else {
+      this.deleteError.set('trips.details.delete_error');
+    }
+  }
 
   readonly tripApplications = computed(() => {
     const tripId = this.trip()?.id;

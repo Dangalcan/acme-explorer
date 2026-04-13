@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { adminGuard } from './core/guards/admin-guard';
 import { explorerGuard } from './core/guards/explorer-guard';
 import { authGuard } from './core/guards/auth-guard';
+import { managerGuard } from './core/guards/manager-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/trips', pathMatch: 'full' },
@@ -14,6 +15,22 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/trips/trip-list/trip-list.component').then(
             (m) => m.TripListComponent,
+          ),
+      },
+      {
+        path: 'create',
+        canActivate: [managerGuard],
+        loadComponent: () =>
+          import('./features/trips/trip-create/trip-create.component').then(
+            (m) => m.TripCreateComponent,
+          ),
+      },
+      {
+        path: ':id/edit',
+        canActivate: [managerGuard],
+        loadComponent: () =>
+          import('./features/trips/trip-edit/trip-edit.component').then(
+            (m) => m.TripEditComponent,
           ),
       },
       {
