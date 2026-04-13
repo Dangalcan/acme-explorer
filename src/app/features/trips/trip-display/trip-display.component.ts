@@ -7,10 +7,11 @@ import { map } from 'rxjs';
 import { TripService } from '../trip.service';
 import { TripCardComponent } from '../trip-card/trip-card.component';
 import { AuthService } from '../../../core/services/auth.service';
-import { AppStatus } from '../../applications/application.model';
+import { AppStatus, APPLICATION_VALIDATION } from '../../applications/application.model';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ApplicationService } from '../../applications/application.service';
 import { ReviewService } from '../review.service';
+import { REVIEW_VALIDATION } from '../review.model';
 
 
 @Component({
@@ -149,6 +150,14 @@ export class TripDisplayComponent {
       return;
     }
 
+    if (reason.length > this.applicationValidation.rejectionReason.maxLength) {
+      this.rejectionErrorByApplicationId.update((state) => ({
+        ...state,
+        [applicationId]: $localize`:@@trip.manager.rejectReason.maxLength:Rejection reason must be at most ${this.applicationValidation.rejectionReason.maxLength} characters.`,
+      }));
+      return;
+    }
+
     const didReject = await this.applicationService.rejectApplication(applicationId, reason);
     if (!didReject) {
       this.rejectionErrorByApplicationId.update((state) => ({
@@ -179,6 +188,13 @@ export class TripDisplayComponent {
 
   readonly today = new Date();
 
+  readonly reviewValidation = REVIEW_VALIDATION;
+  readonly applicationValidation = APPLICATION_VALIDATION;
+  readonly ratingStars = Array.from(
+    { length: REVIEW_VALIDATION.rating.max - REVIEW_VALIDATION.rating.min + 1 },
+    (_, i) => REVIEW_VALIDATION.rating.min + i,
+  );
+
   // ── Review submission (req 23b) ────────────────────────────────────────────
 
   readonly reviewRating = signal<number>(0);
@@ -193,6 +209,7 @@ export class TripDisplayComponent {
     const trip = this.trip();
     const uid = this.authService.currentUser()?.uid;
     if (!trip || this.authService.currentRole() !== 'explorer' || !uid) return false;
+    if (trip.cancellation) return false; // cancelled trips cannot be reviewed
     if (new Date(trip.endDate) >= new Date()) return false; // trip must have finished
     const hasAccepted = this.applicationService
       .applications()
@@ -203,7 +220,7 @@ export class TripDisplayComponent {
 
   async submitReview(): Promise<void> {
     const rating = this.reviewRating();
-    if (rating < 1 || rating > 5) {
+    if (rating < REVIEW_VALIDATION.rating.min || rating > REVIEW_VALIDATION.rating.max) {
       this.reviewError.set('reviews.error.rating_required');
       return;
     }

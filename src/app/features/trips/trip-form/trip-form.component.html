@@ -76,7 +76,7 @@
         id="maxParticipants"
         type="number"
         formControlName="maxParticipants"
-        min="1"
+        [min]="validation.maxParticipants.min"
         class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
                focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
         [class.border-red-500]="tripForm.get('maxParticipants')?.invalid && tripForm.get('maxParticipants')?.touched"
@@ -213,6 +213,11 @@
             @if (getStageGroup(i).get('title')?.hasError('required') && getStageGroup(i).get('title')?.touched) {
               <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.stage_title_required' | translate }}</p>
             }
+            @if (getStageGroup(i).get('title')?.hasError('maxlength') && getStageGroup(i).get('title')?.touched) {
+              <p class="mt-1 text-xs text-red-600">
+                {{ 'trips.form.error.stage_title_max' | translate: { max: stageValidation.title.maxLength } }}
+              </p>
+            }
           </div>
 
           <!-- Stage Description -->
@@ -228,6 +233,11 @@
             @if (getStageGroup(i).get('description')?.hasError('required') && getStageGroup(i).get('description')?.touched) {
               <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.stage_description_required' | translate }}</p>
             }
+            @if (getStageGroup(i).get('description')?.hasError('maxlength') && getStageGroup(i).get('description')?.touched) {
+              <p class="mt-1 text-xs text-red-600">
+                {{ 'trips.form.error.stage_description_max' | translate: { max: stageValidation.description.maxLength } }}
+              </p>
+            }
           </div>
 
           <!-- Stage Price -->
@@ -238,14 +248,16 @@
             <input
               type="number"
               formControlName="price"
-              min="0"
+              [min]="stageValidation.price.min"
               step="0.01"
               class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
                      focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
               [class.border-red-500]="getStageGroup(i).get('price')?.invalid && getStageGroup(i).get('price')?.touched"
             />
             @if (getStageGroup(i).get('price')?.hasError('min') && getStageGroup(i).get('price')?.touched) {
-              <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.stage_price_min' | translate }}</p>
+              <p class="mt-1 text-xs text-red-600">
+                {{ 'trips.form.error.stage_price_min' | translate: { min: stageValidation.price.min } }}
+              </p>
             }
           </div>
         </div>

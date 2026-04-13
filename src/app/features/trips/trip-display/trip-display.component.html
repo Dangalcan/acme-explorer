@@ -25,7 +25,7 @@
 
         <!-- Star picker -->
         <div class="flex gap-1 mb-4">
-          @for (star of [1,2,3,4,5]; track star) {
+          @for (star of ratingStars; track star) {
             <button
               type="button"
               (click)="setReviewRating(star)"
@@ -46,6 +46,7 @@
           (ngModelChange)="reviewComment.set($event)"
           rows="3"
           [placeholder]="'reviews.comment_placeholder' | translate"
+          [maxlength]="reviewValidation.comment.maxLength"
           class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-200 resize-none mb-3"
         ></textarea>
 
@@ -206,6 +207,7 @@
                             class="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-700"
                             [value]="rejectionReasonByApplicationId()[app.id] ?? ''"
                             (input)="updateRejectionReason(app.id, $any($event.target).value)"
+                            [attr.maxlength]="applicationValidation.rejectionReason.maxLength"
                             i18n-placeholder
                             placeholder="Reason for rejection"
                           />
