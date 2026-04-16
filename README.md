@@ -96,6 +96,14 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 ## Running with Docker
 
+Just use the official image
+
+```bash
+docker pull megamagolas/acme-explorer:latest
+```
+
+Or you can just the image locally by yourself
+
 ```bash
 docker build -t acme-explorer .
 docker run --name acme-explorer -p 4200:4200 -p 3000:3000 acme-explorer
