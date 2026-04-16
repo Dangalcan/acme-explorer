@@ -137,4 +137,4 @@ build, ng test), and other diagnostic tools.
 
 5. Accessibility improvements: implementing accessibility best practices using Angular's built-in tools and ARIA roles
 
-6. Implement a basic CI/CD workflow and upload a Docker image of the project (previously talked with the teachers)
+6. ~~Implement a basic CI/CD workflow and upload a Docker image of the project (previously talked with the teachers)~~ ***DONE***

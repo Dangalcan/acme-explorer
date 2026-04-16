@@ -2,9 +2,7 @@
 
 ### DO2
 
-1. ~~Integrate a third-party API providing weather information, so that when a forthcoming
-trip is displayed, the application shows the weather forecast for the corresponding
-location and date.~~ DONE: Integrated the **Open-Meteo** API (free, no API key required) to display a weather forecast widget on the trip detail page for forthcoming trips.
+1. ~~Integrate a third-party API providing weather information, so that when a forthcoming trip is displayed, the application shows the weather forecast for the corresponding location and date.~~ ***DONE***: Integrated the **Open-Meteo** API (free, no API key required) to display a weather forecast widget on the trip detail page for forthcoming trips.
 
    **How it works:**
 
@@ -26,7 +24,7 @@ nearby trips.
 Angular application using developer tools, Angular CLI commands (e.g., ng serve, ng
 build, ng test), and other diagnostic tools.
 
-5. ~~Implement lazy loading to improve application performance by loading modules only when they are required.~~ DONE: All route components were converted from eager static imports to lazy-loaded standalone components using Angular's `loadComponent` API. Before this change, `app.routes.ts` imported every component at the top of the file (e.g. `import { DashboardComponent } from './features/admin/dashboard/dashboard.component'`), which caused the entire application to be bundled into a single chunk downloaded on the first page load. After the change, every route entry uses a dynamic import instead:
+5. ~~Implement lazy loading to improve application performance by loading modules only when they are required.~~ ***DONE***: All route components were converted from eager static imports to lazy-loaded standalone components using Angular's `loadComponent` API. Before this change, `app.routes.ts` imported every component at the top of the file (e.g. `import { DashboardComponent } from './features/admin/dashboard/dashboard.component'`), which caused the entire application to be bundled into a single chunk downloaded on the first page load. After the change, every route entry uses a dynamic import instead:
 
    ```ts
    {
@@ -39,7 +37,7 @@ build, ng test), and other diagnostic tools.
 
    Angular's build pipeline now emits a separate JavaScript chunk per component (e.g. `dashboard-component-HASH.js`, `trip-list-component-HASH.js`). Each chunk is only fetched from the server the first time the user navigates to the corresponding route. The three route guards (`adminGuard`, `explorerGuard`, `authGuard`) were kept as synchronous imports because they are tiny functions that must resolve before a component is even requested, so deferring them would add latency without reducing the initial bundle. The full list of lazy-loaded routes covers: `TripListComponent`, `TripDisplayComponent`, `ApplicationsComponent`, `FinderComponent`, `FavouritesPageComponent`, `SettingsComponent`, `DashboardComponent`, `CreateManagerComponent`, `UsersListComponent`, `LoginComponent`, `RegisterComponent`, `ForbiddenComponent`, and `NotFoundComponent`.
 
-6. ~~Use a library to support dynamic language switching at runtime.~~ DONE: Replaced the static Angular build-time i18n system (`@angular/localize` / XLIFF) with **`@ngx-translate/core` v17** (`@ngx-translate/http-loader` v17), which loads translation JSON files at runtime and allows the user to switch language without a page reload or a separate build per locale.
+6. ~~Use a library to support dynamic language switching at runtime.~~ ***DONE***: Replaced the static Angular build-time i18n system (`@angular/localize` / XLIFF) with **`@ngx-translate/core` v17** (`@ngx-translate/http-loader` v17), which loads translation JSON files at runtime and allows the user to switch language without a page reload or a separate build per locale.
 
    **How it works:**
 
