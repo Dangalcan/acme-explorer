@@ -1,21 +1,10 @@
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-  arrayUnion,
-  arrayRemove,
-} from 'firebase/firestore';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { FavouriteList } from './favourite-list.model';
 import { AuthService } from '../../core/services/auth.service';
 import { TripService } from '../trips/trip.service';
 import { Trip } from '../trips/trip.model';
-import { db } from '../../infrastructure/firebase.config';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
@@ -25,8 +14,9 @@ export class FavouritesService {
   private readonly authService = inject(AuthService);
   private readonly tripService = inject(TripService);
   private readonly translate = inject(TranslateService);
+  private readonly http = inject(HttpClient);
 
-  private readonly favouriteListsCollection = collection(db, 'favouriteLists');
+  private readonly apiUrl = 'http://localhost:3000/favouriteLists';
 
   private readonly allLists = signal<FavouriteList[]>([]);
   readonly isLoading = signal(false);
@@ -63,13 +53,11 @@ export class FavouritesService {
     this.error.set(null);
 
     try {
-      const listsQuery = query(this.favouriteListsCollection, where('explorerId', '==', explorerId));
-      const snapshot = await getDocs(listsQuery);
-      const lists = snapshot.docs.map(docSnap => ({
-        id: docSnap.id,
-        ...(docSnap.data() as Omit<FavouriteList, 'id'>),
-      }));
-      this.allLists.set(lists);
+      const lists = await firstValueFrom(
+        this.http.get<FavouriteList[]>(`${this.apiUrl}?explorerId=${explorerId}`)
+      );
+
+      this.allLists.set(lists ?? []);
     } catch (error) {
       console.error('Error loading favourite lists', error);
       this.error.set(this.translate.instant('favourites.errors.load'));
@@ -86,11 +74,21 @@ export class FavouritesService {
   async createList(name: string): Promise<void> {
     const explorerId = this.currentExplorerId();
     const normalizedName = name.trim();
+
     if (!explorerId || !normalizedName) return;
 
     this.error.set(null);
+
     try {
-      await addDoc(this.favouriteListsCollection, { explorerId, name: normalizedName, tripIds: [], version: 0 });
+      const payload: FavouriteList = {
+        id: crypto.randomUUID(),
+        explorerId,
+        name: normalizedName,
+        tripIds: [],
+        version: 0,
+      };
+
+      await firstValueFrom(this.http.post<FavouriteList>(this.apiUrl, payload));
       await this.refresh();
     } catch (error) {
       console.error('Error creating favourite list', error);
@@ -107,8 +105,15 @@ export class FavouritesService {
     if (!currentList) return;
 
     this.error.set(null);
+
     try {
-      await updateDoc(doc(db, 'favouriteLists', listId), { name: normalizedName, version: currentList.version + 1 });
+      await firstValueFrom(
+        this.http.patch<FavouriteList>(`${this.apiUrl}/${listId}`, {
+          name: normalizedName,
+          version: currentList.version + 1,
+        })
+      );
+
       await this.refresh();
     } catch (error) {
       console.error('Error updating favourite list', error);
@@ -119,8 +124,9 @@ export class FavouritesService {
 
   async deleteList(listId: string): Promise<void> {
     this.error.set(null);
+
     try {
-      await deleteDoc(doc(db, 'favouriteLists', listId));
+      await firstValueFrom(this.http.delete<void>(`${this.apiUrl}/${listId}`));
       await this.refresh();
     } catch (error) {
       console.error('Error deleting favourite list', error);
@@ -135,8 +141,15 @@ export class FavouritesService {
     if (currentList.tripIds.includes(tripId)) return;
 
     this.error.set(null);
+
     try {
-      await updateDoc(doc(db, 'favouriteLists', listId), { tripIds: arrayUnion(tripId), version: currentList.version + 1 });
+      await firstValueFrom(
+        this.http.patch<FavouriteList>(`${this.apiUrl}/${listId}`, {
+          tripIds: [...currentList.tripIds, tripId],
+          version: currentList.version + 1,
+        })
+      );
+
       await this.refresh();
     } catch (error) {
       console.error('Error adding trip to favourite list', error);
@@ -150,8 +163,15 @@ export class FavouritesService {
     if (!currentList) return;
 
     this.error.set(null);
+
     try {
-      await updateDoc(doc(db, 'favouriteLists', listId), { tripIds: arrayRemove(tripId), version: currentList.version + 1 });
+      await firstValueFrom(
+        this.http.patch<FavouriteList>(`${this.apiUrl}/${listId}`, {
+          tripIds: currentList.tripIds.filter(id => id !== tripId),
+          version: currentList.version + 1,
+        })
+      );
+
       await this.refresh();
     } catch (error) {
       console.error('Error removing trip from favourite list', error);
@@ -160,14 +180,10 @@ export class FavouritesService {
     }
   }
 
-  /** Fetches every favourite list regardless of owner — used by admin dashboard (req 24). */
   async getAllLists(): Promise<FavouriteList[]> {
     try {
-      const snapshot = await getDocs(this.favouriteListsCollection);
-      return snapshot.docs.map(docSnap => ({
-        id: docSnap.id,
-        ...(docSnap.data() as Omit<FavouriteList, 'id'>),
-      }));
+      const lists = await firstValueFrom(this.http.get<FavouriteList[]>(this.apiUrl));
+      return lists ?? [];
     } catch (error) {
       console.error('Error fetching all favourite lists', error);
       return [];
