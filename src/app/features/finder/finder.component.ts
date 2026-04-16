@@ -15,10 +15,12 @@ export class FinderComponent {
 
   readonly finder = this.finderService.finder;
   readonly results = this.finderService.results;
+  readonly dateRangeError = this.finderService.dateRangeError;
 
   readonly difficulties: DifficultyLevel[] = ['EASY', 'MEDIUM', 'HARD'];
 
   readonly hasResults = computed(() => this.results().length > 0);
+  readonly hasValidationError = computed(() => !!this.dateRangeError());
 
   constructor() {
     this.finderService.syncExplorerId();
@@ -65,6 +67,12 @@ export class FinderComponent {
   }
 
   toDateInputValue(date?: Date): string {
-    return date ? date.toISOString().slice(0, 10) : '';
+    if (!date) return '';
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
   }
 }

@@ -33,6 +33,15 @@ export class FinderService {
     cachedAt: undefined,
   });
 
+  readonly dateRangeError = computed(() => {
+    const { startDate, endDate } = this.finder();
+
+    if (!startDate || !endDate) return null;
+    if (startDate <= endDate) return null;
+
+    return 'Start date must be before or equal to end date.';
+  });
+
   readonly results = computed(() => {
     const explorerId = this.currentExplorerId();
     const finder = this.finder();
@@ -116,8 +125,22 @@ export class FinderService {
   private matchesDateRange(trip: Trip, startDate?: Date, endDate?: Date): boolean {
     const tripStart = new Date(trip.startDate);
 
-    if (startDate && tripStart < startDate) return false;
-    if (endDate && tripStart > endDate) return false;
+    const normalizedTripStart = new Date(
+        tripStart.getFullYear(),
+        tripStart.getMonth(),
+        tripStart.getDate()
+    );
+
+    const normalizedStartDate = startDate
+        ? new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())
+        : undefined;
+
+    const normalizedEndDate = endDate
+        ? new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate())
+        : undefined;
+
+    if (normalizedStartDate && normalizedTripStart < normalizedStartDate) return false;
+    if (normalizedEndDate && normalizedTripStart > normalizedEndDate) return false;
 
     return true;
   }
