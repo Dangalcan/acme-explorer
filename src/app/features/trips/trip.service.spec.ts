@@ -95,6 +95,7 @@ describe('TripService', () => {
   const currentRoleSignal = signal<string | null>(null);
   const applicationsSignal = signal<Application[]>([]);
   const reviewsSignal = signal<Review[]>([]);
+  const publicAcceptedCountsSignal = signal<Record<string, number>>({});
 
   const authServiceMock = {
     currentUser: currentUserSignal,
@@ -103,6 +104,7 @@ describe('TripService', () => {
 
   const applicationServiceMock = {
     applications: applicationsSignal,
+    publicAcceptedCounts: publicAcceptedCountsSignal,
   };
 
   const reviewServiceMock = {
@@ -116,6 +118,7 @@ describe('TripService', () => {
     currentRoleSignal.set(null);
     applicationsSignal.set([]);
     reviewsSignal.set([]);
+    publicAcceptedCountsSignal.set({});
 
     // Prevent constructor from throwing on empty load
     (getDocs as ReturnType<typeof vi.fn>).mockResolvedValue(makeSnapshot([]));
@@ -170,11 +173,9 @@ describe('TripService', () => {
       );
       await service.refresh();
 
-      applicationsSignal.set([
-        { id: 'a1', version: 0, tripId: 'trip-1', explorerId: 'e1', createdAt: new Date(), status: 'ACCEPTED' },
-        { id: 'a2', version: 0, tripId: 'trip-1', explorerId: 'e2', createdAt: new Date(), status: 'ACCEPTED' },
-        { id: 'a3', version: 0, tripId: 'trip-1', explorerId: 'e3', createdAt: new Date(), status: 'PENDING' },
-      ]);
+      publicAcceptedCountsSignal.set({
+        'trip-1': 2,
+      });
 
       expect(service.trips()[0].availablePlaces).toBe(3);
     });
@@ -185,10 +186,9 @@ describe('TripService', () => {
       );
       await service.refresh();
 
-      applicationsSignal.set([
-        { id: 'a1', version: 0, tripId: 'trip-1', explorerId: 'e1', createdAt: new Date(), status: 'ACCEPTED' },
-        { id: 'a2', version: 0, tripId: 'trip-1', explorerId: 'e2', createdAt: new Date(), status: 'ACCEPTED' },
-      ]);
+      publicAcceptedCountsSignal.set({
+        'trip-1': 2,
+      });
 
       expect(service.trips()[0].availablePlaces).toBe(0);
     });
@@ -227,9 +227,10 @@ describe('TripService', () => {
       );
       await service.refresh();
 
-      applicationsSignal.set([
-        { id: 'a1', version: 0, tripId: 'trip-1', explorerId: 'e1', createdAt: new Date(), status: 'ACCEPTED' },
-      ]);
+      publicAcceptedCountsSignal.set({
+        'trip-1': 1,
+        'trip-2': 0,
+      });
 
       const [t1, t2] = service.trips();
       expect(t1.availablePlaces).toBe(9);
