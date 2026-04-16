@@ -1,18 +1,17 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Injectable, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
+import { Injectable, Injector, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { AuthService } from '../../core/services/auth.service';
 import { ApplicationService } from '../applications/application.service';
 import { db } from '../../infrastructure/firebase.config';
 import { Review } from './review.model';
-import { TripService } from './trip.service';
 
 @Injectable({ providedIn: 'root' })
 export class ReviewService {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly authService = inject(AuthService);
   private readonly applicationService = inject(ApplicationService);
-  private readonly tripService = inject(TripService);
+  private readonly injector = inject(Injector);
   private readonly allReviews = signal<Review[]>([]);
   private readonly reviewsCollection = collection(db, 'reviews');
 
@@ -42,7 +41,9 @@ export class ReviewService {
     const role = this.authService.currentRole();
     if (!user || role !== 'explorer') return false;
 
-    const trip = this.tripService.getById(tripId);
+    const { TripService } = await import('./trip.service');
+    const tripService = this.injector.get(TripService);
+    const trip = tripService.getById(tripId);
     if (!trip || trip.cancellation) return false;
     if (new Date(trip.endDate) >= new Date()) return false;
 
