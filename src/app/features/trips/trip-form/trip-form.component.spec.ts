@@ -6,7 +6,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { TripFormComponent, endAfterStartValidator } from './trip-form.component';
+import { TripFormComponent, endAfterStartValidator, startDateInFutureValidator } from './trip-form.component';
 import { Trip } from '../trip.model';
 
 // ---------------------------------------------------------------------------
@@ -31,9 +31,9 @@ describe('endAfterStartValidator (pure function)', () => {
     expect(endAfterStartValidator(control)).toBeNull();
   });
 
-  it('returns { endBeforeStart: true } when endDate equals startDate', () => {
+  it('returns null when endDate equals startDate (single-day trip)', () => {
     const control = makeGroup('2026-07-01', '2026-07-01');
-    expect(endAfterStartValidator(control)).toEqual({ endBeforeStart: true });
+    expect(endAfterStartValidator(control)).toBeNull();
   });
 
   it('returns { endBeforeStart: true } when endDate is before startDate', () => {
@@ -49,6 +49,44 @@ describe('endAfterStartValidator (pure function)', () => {
   it('returns null when endDate is absent', () => {
     const control = makeGroup('2026-07-01', '');
     expect(endAfterStartValidator(control)).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// startDateInFutureValidator — pure function, no TestBed needed
+// ---------------------------------------------------------------------------
+describe('startDateInFutureValidator (pure function)', () => {
+  function makeGroup(start: string): AbstractControl {
+    return {
+      get: (key: string) => (key === 'startDate' ? { value: start } : null),
+    } as unknown as AbstractControl;
+  }
+
+  function toInputDate(date: Date): string {
+    return date.toISOString().substring(0, 10);
+  }
+
+  it('returns null when startDate is absent', () => {
+    expect(startDateInFutureValidator(makeGroup(''))).toBeNull();
+  });
+
+  it('returns { startDateNotInFuture: true } when startDate is today', () => {
+    const today = toInputDate(new Date());
+    expect(startDateInFutureValidator(makeGroup(today))).toEqual({ startDateNotInFuture: true });
+  });
+
+  it('returns { startDateNotInFuture: true } when startDate is in the past', () => {
+    expect(startDateInFutureValidator(makeGroup('2020-01-01'))).toEqual({ startDateNotInFuture: true });
+  });
+
+  it('returns null when startDate is tomorrow', () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    expect(startDateInFutureValidator(makeGroup(toInputDate(tomorrow)))).toBeNull();
+  });
+
+  it('returns null when startDate is in the future', () => {
+    expect(startDateInFutureValidator(makeGroup('2099-12-31'))).toBeNull();
   });
 });
 

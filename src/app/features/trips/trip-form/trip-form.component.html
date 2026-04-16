@@ -101,11 +101,15 @@
                focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
         [class.border-red-500]="
           (tripForm.get('startDate')?.invalid && tripForm.get('startDate')?.touched) ||
-          (tripForm.errors?.['endBeforeStart'] && tripForm.get('startDate')?.touched)
+          (tripForm.errors?.['endBeforeStart'] && tripForm.get('startDate')?.touched) ||
+          (tripForm.errors?.['startDateNotInFuture'] && tripForm.get('startDate')?.touched)
         "
       />
       @if (tripForm.get('startDate')?.hasError('required') && tripForm.get('startDate')?.touched) {
         <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.start_date_required' | translate }}</p>
+      }
+      @if (tripForm.errors?.['startDateNotInFuture'] && tripForm.get('startDate')?.touched) {
+        <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.start_date_not_in_future' | translate }}</p>
       }
     </div>
 

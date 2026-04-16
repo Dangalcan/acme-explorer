@@ -37,7 +37,17 @@ export const endAfterStartValidator: ValidatorFn = (group: AbstractControl) => {
   const start = group.get('startDate')?.value as string;
   const end = group.get('endDate')?.value as string;
   if (!start || !end) return null;
-  return new Date(end) > new Date(start) ? null : { endBeforeStart: true };
+  return new Date(end) >= new Date(start) ? null : { endBeforeStart: true };
+};
+
+export const startDateInFutureValidator: ValidatorFn = (group: AbstractControl) => {
+  const start = group.get('startDate')?.value as string;
+  if (!start) return null;
+  const [year, month, day] = start.split('-').map(Number);
+  const startCalendar = new Date(year, month - 1, day);
+  const today = new Date();
+  const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  return startCalendar > todayMidnight ? null : { startDateNotInFuture: true };
 };
 
 function toInputDate(date: Date): string {
@@ -132,7 +142,7 @@ export class TripFormComponent implements OnChanges {
           ),
         ),
       },
-      { validators: endAfterStartValidator },
+      { validators: [endAfterStartValidator, startDateInFutureValidator] },
     );
 
     if (!trip) {
