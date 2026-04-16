@@ -5,12 +5,14 @@ import { AuthService } from '../../core/services/auth.service';
 import { ApplicationService } from '../applications/application.service';
 import { db } from '../../infrastructure/firebase.config';
 import { Review } from './review.model';
+import { TripService } from './trip.service';
 
 @Injectable({ providedIn: 'root' })
 export class ReviewService {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly authService = inject(AuthService);
   private readonly applicationService = inject(ApplicationService);
+  private readonly tripService = inject(TripService);
   private readonly allReviews = signal<Review[]>([]);
   private readonly reviewsCollection = collection(db, 'reviews');
 
@@ -39,6 +41,15 @@ export class ReviewService {
     const user = this.authService.currentUser();
     const role = this.authService.currentRole();
     if (!user || role !== 'explorer') return false;
+
+    const trip = this.tripService.getById(tripId);
+    if (!trip || trip.cancellation) return false;
+    if (new Date(trip.endDate) >= new Date()) return false;
+
+    const hasAcceptedApplication = this.applicationService
+      .applications()
+      .some((a) => a.tripId === tripId && a.explorerId === user.uid && a.status === 'ACCEPTED');
+    if (!hasAcceptedApplication) return false;
 
     // Enforce one review per explorer per trip
     const alreadyExists = this.reviews().some(
