@@ -4,6 +4,7 @@ import {
   addDoc,
   collection,
   doc,
+  documentId,
   getDocs,
   query,
   updateDoc,
@@ -145,6 +146,57 @@ export class ApplicationService {
     return new Date(trip.startDate).getTime() <= Date.now();
   }
 
+  private hasTripAlreadyStarted(startDate: Date): boolean {
+    const start = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    const today = new Date();
+    const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    return start <= todayMidnight;
+  }
+
+  private async autoRejectApplicationsForStartedTrips(applications: Application[]): Promise<Application[]> {
+    const pendingOrDue = applications.filter(
+      (app) => app.status === 'PENDING' || app.status === 'DUE',
+    );
+    if (pendingOrDue.length === 0) return applications;
+
+    const uniqueTripIds = [...new Set(pendingOrDue.map((app) => app.tripId))];
+    const chunks = this.chunk(uniqueTripIds, 10);
+    const tripSnapshots = await Promise.all(
+      chunks.map((ids) => getDocs(query(this.tripsCollection, where(documentId(), 'in', ids)))),
+    );
+
+    const startedTripIds = new Set<string>();
+    for (const snapshot of tripSnapshots) {
+      for (const tripDoc of snapshot.docs) {
+        const startDate = this.toDate(tripDoc.data()['startDate']);
+        if (this.hasTripAlreadyStarted(startDate)) {
+          startedTripIds.add(tripDoc.id);
+        }
+      }
+    }
+    if (startedTripIds.size === 0) return applications;
+
+    const toReject = pendingOrDue.filter((app) => startedTripIds.has(app.tripId));
+    if (toReject.length === 0) return applications;
+
+    await Promise.all(
+      toReject.map((app) =>
+        updateDoc(doc(db, 'applications', app.id), {
+          status: 'REJECTED',
+          rejectionReason: 'Trip has already started',
+          version: app.version + 1,
+        }),
+      ),
+    );
+
+    const rejectedIds = new Set(toReject.map((app) => app.id));
+    return applications.map((app) =>
+      rejectedIds.has(app.id)
+        ? { ...app, status: 'REJECTED' as const, rejectionReason: 'Trip has already started' }
+        : app,
+    );
+  }
+
   private isTripSoldOut(trip: Trip): boolean {
     return trip.availablePlaces !== undefined && trip.availablePlaces <= 0;
   }
@@ -208,34 +260,29 @@ export class ApplicationService {
         return;
       }
 
+      let applications: Application[] = [];
+
       if (role === 'administrator') {
         const snapshot = await getDocs(query(this.applicationsCollection));
-        this.allApplications.set(snapshot.docs.map((applicationDoc) => this.toApplication(applicationDoc.id, applicationDoc.data())));
-        return;
-      }
-
-      if (role === 'explorer') {
+        applications = snapshot.docs.map((applicationDoc) => this.toApplication(applicationDoc.id, applicationDoc.data()));
+      } else if (role === 'explorer') {
         const snapshot = await getDocs(query(this.applicationsCollection, where('explorerId', '==', user.uid)));
-        this.allApplications.set(snapshot.docs.map((applicationDoc) => this.toApplication(applicationDoc.id, applicationDoc.data())));
-        return;
+        applications = snapshot.docs.map((applicationDoc) => this.toApplication(applicationDoc.id, applicationDoc.data()));
+      } else {
+        const managedTripIds = await this.getManagedTripIds(user.uid);
+        if (managedTripIds.length > 0) {
+          const chunks = this.chunk(managedTripIds, 10);
+          const snapshots = await Promise.all(
+            chunks.map((tripIds) => getDocs(query(this.applicationsCollection, where('tripId', 'in', tripIds)))),
+          );
+          applications = snapshots
+            .flatMap((snapshot) => snapshot.docs)
+            .map((applicationDoc) => this.toApplication(applicationDoc.id, applicationDoc.data()));
+        }
       }
 
-      const managedTripIds = await this.getManagedTripIds(user.uid);
-      if (managedTripIds.length === 0) {
-        this.allApplications.set([]);
-        return;
-      }
-
-      const chunks = this.chunk(managedTripIds, 10);
-      const snapshots = await Promise.all(
-        chunks.map((tripIds) => getDocs(query(this.applicationsCollection, where('tripId', 'in', tripIds)))),
-      );
-
-      const mapped = snapshots
-        .flatMap((snapshot) => snapshot.docs)
-        .map((applicationDoc) => this.toApplication(applicationDoc.id, applicationDoc.data()));
-
-      this.allApplications.set(mapped);
+      applications = await this.autoRejectApplicationsForStartedTrips(applications);
+      this.allApplications.set(applications);
     } catch (error) {
       console.error('Error loading applications', error);
       this.error.set('Could not load applications from Firestore.');
