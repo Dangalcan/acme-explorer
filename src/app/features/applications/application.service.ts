@@ -22,6 +22,7 @@ export class ApplicationService {
   private readonly platformId = inject(PLATFORM_ID);
 
   private readonly allApplications = signal<Application[]>([]);
+  private readonly acceptedCountsByTrip = signal<Record<string, number>>({});
   private readonly applicationsCollection = collection(db, 'applications');
   private readonly tripsCollection = collection(db, 'trips');
 
@@ -29,11 +30,13 @@ export class ApplicationService {
   readonly error = signal<string | null>(null);
 
   readonly applications = computed(() => this.allApplications());
+  readonly publicAcceptedCounts = computed(() => this.acceptedCountsByTrip());
 
   readonly currentExplorerId = computed(() => this.getCurrentUserUid());
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
+      void this.loadAcceptedCounts();
       effect(() => {
         this.authService.currentUser();
         this.authService.currentRole();
@@ -43,7 +46,7 @@ export class ApplicationService {
   }
 
   async refresh(): Promise<void> {
-    await this.loadApplications();
+    await Promise.all([this.loadApplications(), this.loadAcceptedCounts()]);
   }
 
   async applyForTrip(trip: Trip, comments?: string): Promise<boolean> {
@@ -247,6 +250,22 @@ export class ApplicationService {
     return null;
   }
 
+  private async loadAcceptedCounts(): Promise<void> {
+    try {
+      const snapshot = await getDocs(
+        query(this.applicationsCollection, where('status', '==', 'ACCEPTED')),
+      );
+      const counts: Record<string, number> = {};
+      for (const applicationDoc of snapshot.docs) {
+        const tripId = String(applicationDoc.data()['tripId'] ?? '');
+        if (tripId) counts[tripId] = (counts[tripId] ?? 0) + 1;
+      }
+      this.acceptedCountsByTrip.set(counts);
+    } catch (error) {
+      console.error('Error loading accepted counts', error);
+    }
+  }
+
   private async loadApplications(): Promise<void> {
     this.isLoading.set(true);
     this.error.set(null);
@@ -257,6 +276,7 @@ export class ApplicationService {
 
       if (!user || !role) {
         this.allApplications.set([]);
+        await this.loadAcceptedCounts();
         return;
       }
 
@@ -283,6 +303,7 @@ export class ApplicationService {
 
       applications = await this.autoRejectApplicationsForStartedTrips(applications);
       this.allApplications.set(applications);
+      await this.loadAcceptedCounts();
     } catch (error) {
       console.error('Error loading applications', error);
       this.error.set('Could not load applications from Firestore.');

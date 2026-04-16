@@ -19,13 +19,11 @@ export class TripService {
   readonly error = signal<string | null>(null);
 
   readonly trips = computed(() => {
-    const applications = this.applicationService.applications();
+    const acceptedCounts = this.applicationService.publicAcceptedCounts();
     const reviews = this.reviewService.reviews();
 
     return this.allTrips().map((trip) => {
-      const acceptedApplications = applications.filter(
-        (application) => application.tripId === trip.id && application.status === 'ACCEPTED',
-      ).length;
+      const acceptedApplications = acceptedCounts[trip.id] ?? 0;
 
       const tripReviews = reviews.filter((review) => review.tripId === trip.id);
       const totalPrice = trip.stages.reduce((sum, stage) => sum + stage.price, 0);
