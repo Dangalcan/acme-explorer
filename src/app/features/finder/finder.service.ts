@@ -42,12 +42,23 @@ export class FinderService {
     return 'Start date must be before or equal to end date.';
   });
 
+  readonly priceRangeError = computed(() => {
+    const { minPrice, maxPrice } = this.finder();
+
+    if (minPrice === undefined || maxPrice === undefined) return null;
+    if (minPrice <= maxPrice) return null;
+
+    return 'Min price must be less than or equal to max price.';
+  });
+
   readonly results = computed(() => {
     const explorerId = this.currentExplorerId();
     const finder = this.finder();
     const trips = this.tripService.trips();
 
     if (!explorerId) return [];
+    if (this.dateRangeError()) return [];
+    if (this.priceRangeError()) return [];
 
     const keyword = finder.keyword?.trim().toLowerCase();
     const minPrice = finder.minPrice;

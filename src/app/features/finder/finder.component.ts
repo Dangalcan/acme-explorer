@@ -16,12 +16,13 @@ export class FinderComponent {
   readonly finder = this.finderService.finder;
   readonly results = this.finderService.results;
   readonly dateRangeError = this.finderService.dateRangeError;
+  readonly priceRangeError = this.finderService.priceRangeError;
 
   readonly difficulties: DifficultyLevel[] = ['EASY', 'MEDIUM', 'HARD'];
 
   readonly hasResults = computed(() => this.results().length > 0);
-  readonly hasValidationError = computed(() => !!this.dateRangeError());
-
+  readonly hasValidationError = computed(() => !!this.dateRangeError() || !!this.priceRangeError());
+  
   constructor() {
     this.finderService.syncExplorerId();
   }
@@ -32,15 +33,15 @@ export class FinderComponent {
     });
   }
 
-  onMinPriceChange(value: string): void {
+  onMinPriceChange(value: string | number | null): void {
     this.finderService.updateFinder({
-      minPrice: value === '' ? undefined : Number(value),
+      minPrice: value === '' || value === null ? undefined : Number(value),
     });
   }
 
-  onMaxPriceChange(value: string): void {
+  onMaxPriceChange(value: string | number | null): void {
     this.finderService.updateFinder({
-      maxPrice: value === '' ? undefined : Number(value),
+      maxPrice: value === '' || value === null ? undefined : Number(value),
     });
   }
 

@@ -23,9 +23,13 @@
         <input
           type="number"
           min="0"
-          class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm"
+          class="w-full rounded-xl border px-4 py-3 text-sm"
+          [class.border-slate-300]="!priceRangeError()"
+          [class.border-red-300]="!!priceRangeError()"
+          [class.bg-red-50]="!!priceRangeError()"
           [ngModel]="finder().minPrice ?? ''"
           (ngModelChange)="onMinPriceChange($event)"
+          [max]="finder().maxPrice ?? null"
         />
       </div>
 
@@ -34,9 +38,13 @@
         <input
           type="number"
           min="0"
-          class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm"
+          class="w-full rounded-xl border px-4 py-3 text-sm"
+          [class.border-slate-300]="!priceRangeError()"
+          [class.border-red-300]="!!priceRangeError()"
+          [class.bg-red-50]="!!priceRangeError()"
           [ngModel]="finder().maxPrice ?? ''"
           (ngModelChange)="onMaxPriceChange($event)"
+          [min]="finder().minPrice ?? 0"
         />
       </div>
 
@@ -84,6 +92,12 @@
     </div>
 
     @if (dateRangeError(); as error) {
+      <div class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+        <p class="text-sm font-medium text-red-700">{{ error }}</p>
+      </div>
+    }
+
+    @if (priceRangeError(); as error) {
       <div class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
         <p class="text-sm font-medium text-red-700">{{ error }}</p>
       </div>
