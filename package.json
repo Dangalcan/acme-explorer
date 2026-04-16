@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "concurrently \"json-server --watch mock-api/db.json --port 3000\" \"ng serve --host 0.0.0.0\"",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@angular/build": "^21.2.0",
+    "concurrently": "^9.1.2",
     "json-server": "^1.0.0-beta.13",
     "@angular/cli": "^21.2.0",
     "@angular/compiler-cli": "^21.2.0",
