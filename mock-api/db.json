@@ -1,0 +1,54 @@
+{
+  "favouriteLists": [
+    {
+      "id": "fav-1",
+      "explorerId": "dALmY94uwtRtkt4jnWywUMV5Rz82",
+      "name": "dream adventures",
+      "tripIds": [
+        "1",
+        "4"
+      ],
+      "version": 2
+    },
+    {
+      "id": "fav-2",
+      "explorerId": "dALmY94uwtRtkt4jnWywUMV5Rz82",
+      "name": "asia bucket list",
+      "tripIds": [
+        "3"
+      ],
+      "version": 2
+    },
+    {
+      "id": "fav-3",
+      "explorerId": "dALmY94uwtRtkt4jnWywUMV5Rz82",
+      "name": "extreme trips",
+      "tripIds": [
+        "2",
+        "4"
+      ],
+      "version": 2
+    },
+    {
+      "id": "fav-4",
+      "explorerId": "dALmY94uwtRtkt4jnWywUMV5Rz82",
+      "name": "my wishlist",
+      "tripIds": [
+        "2",
+        "3"
+      ],
+      "version": 3
+    },
+    {
+      "id": "aFzTo5NlNdI",
+      "explorerId": "dALmY94uwtRtkt4jnWywUMV5Rz82",
+      "name": "summer escapes",
+      "tripIds": [
+        "2",
+        "4"
+      ],
+      "version": 4
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

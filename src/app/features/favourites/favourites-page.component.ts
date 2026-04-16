@@ -21,7 +21,7 @@ export class FavouritesPageComponent {
   readonly favouriteLists = this.favouritesService.favouriteLists;
   readonly maxNameLength = FAVOURITE_LIST_VALIDATION.name.maxLength;
   readonly isLoading = this.favouritesService.isLoading;
-  readonly firebaseError = this.favouritesService.error;
+  readonly favouritesError = this.favouritesService.error;
 
   newListName = signal('');
   editingListId = signal<string | null>(null);
