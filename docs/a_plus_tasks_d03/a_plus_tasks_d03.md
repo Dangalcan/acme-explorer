@@ -14,3 +14,5 @@ deliverable being devised. It is required to include a document explaining your 
 4. Progressive Web App (PWA) Features: add offline support or push notifications to enhance the user experience.
 
 5. Accessibility improvements: implementing accessibility best practices using Angular's built-in tools and ARIA roles
+
+6. Implement a basic CI/CD workflow and upload a Docker image of the project (previously talked with the teachers)
