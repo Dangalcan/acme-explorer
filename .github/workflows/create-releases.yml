@@ -116,10 +116,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git checkout main
+          git checkout master
           git add CHANGELOG.md .version
           git commit -m "chore: update CHANGELOG and .version for $TAG_NAME" || echo "No changes to commit"
-          git push origin main
+          git push origin master
 
           # Recreate tag pointing to the latest commit
           git tag -d "$TAG_NAME" || true
