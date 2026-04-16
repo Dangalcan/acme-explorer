@@ -10,6 +10,7 @@ import { Trip } from '../trips/trip.model';
 export class FinderService {
   private readonly authService = inject(AuthService);
   private readonly tripService = inject(TripService);
+  private readonly storageKeyPrefix = 'acme-explorer.finder';
 
   readonly currentExplorerId = computed(() => {
     const user = this.authService.currentUser();
@@ -79,39 +80,42 @@ export class FinderService {
     const explorerId = this.currentExplorerId();
     if (!explorerId) return;
 
-    this.finder.update((finder) => ({
-      ...finder,
-      explorerId,
-    }));
+    if (this.finder().explorerId === explorerId) return;
+
+    this.loadFromLocalStorage();
   }
 
   updateFinder(patch: Partial<Finder>): void {
     this.syncExplorerId();
 
     this.finder.update((finder) => ({
-      ...finder,
-      ...patch,
-      version: finder.version + 1,
+        ...finder,
+        ...patch,
+        version: finder.version + 1,
     }));
+
+    this.saveToLocalStorage();
   }
 
   resetFinder(): void {
     const explorerId = this.currentExplorerId() ?? '';
 
     this.finder.set({
-      id: 'finder-current',
-      version: 0,
-      explorerId,
-      keyword: undefined,
-      minPrice: undefined,
-      maxPrice: undefined,
-      startDate: undefined,
-      endDate: undefined,
-      difficulty: undefined,
-      cacheTimeHours: FINDER_DEFAULTS.cacheTimeHours,
-      maxResults: FINDER_DEFAULTS.maxResults,
-      cachedAt: undefined,
+        id: 'finder-current',
+        version: 0,
+        explorerId,
+        keyword: undefined,
+        minPrice: undefined,
+        maxPrice: undefined,
+        startDate: undefined,
+        endDate: undefined,
+        difficulty: undefined,
+        cacheTimeHours: FINDER_DEFAULTS.cacheTimeHours,
+        maxResults: FINDER_DEFAULTS.maxResults,
+        cachedAt: undefined,
     });
+
+    this.saveToLocalStorage();
   }
 
   private matchesKeyword(trip: Trip, keyword?: string): boolean {
@@ -160,4 +164,63 @@ export class FinderService {
     if (!difficulty) return true;
     return trip.difficultyLevel === difficulty;
   }
+
+  private getStorageKey(explorerId: string): string {
+    return `${this.storageKeyPrefix}.${explorerId}`;
+  }
+
+  private saveToLocalStorage(): void {
+    const explorerId = this.currentExplorerId();
+    if (!explorerId || typeof localStorage === 'undefined') return;
+
+    const finder = this.finder();
+
+    const payload = {
+        ...finder,
+        startDate: finder.startDate ? finder.startDate.toISOString() : undefined,
+        endDate: finder.endDate ? finder.endDate.toISOString() : undefined,
+        cachedAt: finder.cachedAt ? finder.cachedAt.toISOString() : undefined,
+    };
+
+    localStorage.setItem(this.getStorageKey(explorerId), JSON.stringify(payload));
+  }
+
+  private loadFromLocalStorage(): void {
+    const explorerId = this.currentExplorerId();
+    if (!explorerId || typeof localStorage === 'undefined') return;
+
+    const raw = localStorage.getItem(this.getStorageKey(explorerId));
+    if (!raw) {
+        this.resetFinder();
+        return;
+    }
+
+    try {
+        const parsed = JSON.parse(raw) as Partial<Finder>;
+
+        this.finder.set({
+        id: 'finder-current',
+        version: typeof parsed.version === 'number' ? parsed.version : 0,
+        explorerId,
+        keyword: parsed.keyword ?? undefined,
+        minPrice: parsed.minPrice ?? undefined,
+        maxPrice: parsed.maxPrice ?? undefined,
+        startDate: parsed.startDate ? new Date(parsed.startDate) : undefined,
+        endDate: parsed.endDate ? new Date(parsed.endDate) : undefined,
+        difficulty: parsed.difficulty ?? undefined,
+        cacheTimeHours:
+            typeof parsed.cacheTimeHours === 'number'
+            ? parsed.cacheTimeHours
+            : FINDER_DEFAULTS.cacheTimeHours,
+        cachedAt: parsed.cachedAt ? new Date(parsed.cachedAt) : undefined,
+        maxResults:
+            typeof parsed.maxResults === 'number'
+            ? parsed.maxResults
+            : FINDER_DEFAULTS.maxResults,
+        });
+    } catch {
+        this.resetFinder();
+    }
+  }
+
 }
