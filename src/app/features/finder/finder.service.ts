@@ -1,4 +1,4 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { TripService } from '../trips/trip.service';
 import { FINDER_DEFAULTS, Finder } from './finder.model';
@@ -11,6 +11,8 @@ export class FinderService {
   private readonly authService = inject(AuthService);
   private readonly tripService = inject(TripService);
   private readonly storageKeyPrefix = 'acme-explorer.finder';
+  private readonly resultsCacheKeyPrefix = 'acme-explorer.finder.results';
+  private readonly cachedResults = signal<Trip[]>([]);
 
   readonly currentExplorerId = computed(() => {
     const user = this.authService.currentUser();
@@ -52,29 +54,33 @@ export class FinderService {
     return 'Min price must be less than or equal to max price.';
   });
 
-  readonly results = computed(() => {
-    const explorerId = this.currentExplorerId();
-    const finder = this.finder();
-    const trips = this.tripService.trips();
+  readonly results = computed(() => this.cachedResults());
 
-    if (!explorerId) return [];
-    if (this.dateRangeError()) return [];
-    if (this.priceRangeError()) return [];
+  constructor() {
+    effect(() => {
+      const explorerId = this.currentExplorerId();
+      const finder = this.finder();
+      const trips = this.tripService.trips();
+      const dateError = this.dateRangeError();
+      const priceError = this.priceRangeError();
 
-    const keyword = finder.keyword?.trim().toLowerCase();
-    const minPrice = finder.minPrice;
-    const maxPrice = finder.maxPrice;
-    const startDate = finder.startDate;
-    const endDate = finder.endDate;
-    const difficulty = finder.difficulty;
+      if (!explorerId || dateError || priceError) {
+        this.cachedResults.set([]);
+        return;
+      }
 
-    return trips
-      .filter((trip) => this.matchesKeyword(trip, keyword))
-      .filter((trip) => this.matchesPrice(trip, minPrice, maxPrice))
-      .filter((trip) => this.matchesDateRange(trip, startDate, endDate))
-      .filter((trip) => this.matchesDifficulty(trip, difficulty))
-      .slice(0, finder.maxResults);
-  });
+      const cached = this.loadResultsCache(explorerId, finder);
+      if (cached) {
+        this.cachedResults.set(cached);
+        return;
+      }
+
+      const freshResults = this.computeResults(trips, finder);
+      this.cachedResults.set(freshResults);
+      console.log('Computing and caching fresh finder results');
+      this.saveResultsCache(explorerId, finder, freshResults);
+    });
+  }
 
   syncExplorerId(): void {
     const explorerId = this.currentExplorerId();
@@ -89,9 +95,9 @@ export class FinderService {
     this.syncExplorerId();
 
     this.finder.update((finder) => ({
-        ...finder,
-        ...patch,
-        version: finder.version + 1,
+      ...finder,
+      ...patch,
+      version: finder.version + 1,
     }));
 
     this.saveToLocalStorage();
@@ -101,18 +107,18 @@ export class FinderService {
     const explorerId = this.currentExplorerId() ?? '';
 
     this.finder.set({
-        id: 'finder-current',
-        version: 0,
-        explorerId,
-        keyword: undefined,
-        minPrice: undefined,
-        maxPrice: undefined,
-        startDate: undefined,
-        endDate: undefined,
-        difficulty: undefined,
-        cacheTimeHours: FINDER_DEFAULTS.cacheTimeHours,
-        maxResults: FINDER_DEFAULTS.maxResults,
-        cachedAt: undefined,
+      id: 'finder-current',
+      version: 0,
+      explorerId,
+      keyword: undefined,
+      minPrice: undefined,
+      maxPrice: undefined,
+      startDate: undefined,
+      endDate: undefined,
+      difficulty: undefined,
+      cacheTimeHours: FINDER_DEFAULTS.cacheTimeHours,
+      maxResults: FINDER_DEFAULTS.maxResults,
+      cachedAt: undefined,
     });
 
     this.saveToLocalStorage();
@@ -141,18 +147,18 @@ export class FinderService {
     const tripStart = new Date(trip.startDate);
 
     const normalizedTripStart = new Date(
-        tripStart.getFullYear(),
-        tripStart.getMonth(),
-        tripStart.getDate()
+      tripStart.getFullYear(),
+      tripStart.getMonth(),
+      tripStart.getDate(),
     );
 
     const normalizedStartDate = startDate
-        ? new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())
-        : undefined;
+      ? new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())
+      : undefined;
 
     const normalizedEndDate = endDate
-        ? new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate())
-        : undefined;
+      ? new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate())
+      : undefined;
 
     if (normalizedStartDate && normalizedTripStart < normalizedStartDate) return false;
     if (normalizedEndDate && normalizedTripStart > normalizedEndDate) return false;
@@ -176,10 +182,10 @@ export class FinderService {
     const finder = this.finder();
 
     const payload = {
-        ...finder,
-        startDate: finder.startDate ? finder.startDate.toISOString() : undefined,
-        endDate: finder.endDate ? finder.endDate.toISOString() : undefined,
-        cachedAt: finder.cachedAt ? finder.cachedAt.toISOString() : undefined,
+      ...finder,
+      startDate: finder.startDate ? finder.startDate.toISOString() : undefined,
+      endDate: finder.endDate ? finder.endDate.toISOString() : undefined,
+      cachedAt: finder.cachedAt ? finder.cachedAt.toISOString() : undefined,
     };
 
     localStorage.setItem(this.getStorageKey(explorerId), JSON.stringify(payload));
@@ -191,14 +197,14 @@ export class FinderService {
 
     const raw = localStorage.getItem(this.getStorageKey(explorerId));
     if (!raw) {
-        this.resetFinder();
-        return;
+      this.resetFinder();
+      return;
     }
 
     try {
-        const parsed = JSON.parse(raw) as Partial<Finder>;
+      const parsed = JSON.parse(raw) as Partial<Finder>;
 
-        this.finder.set({
+      this.finder.set({
         id: 'finder-current',
         version: typeof parsed.version === 'number' ? parsed.version : 0,
         explorerId,
@@ -209,18 +215,128 @@ export class FinderService {
         endDate: parsed.endDate ? new Date(parsed.endDate) : undefined,
         difficulty: parsed.difficulty ?? undefined,
         cacheTimeHours:
-            typeof parsed.cacheTimeHours === 'number'
+          typeof parsed.cacheTimeHours === 'number'
             ? parsed.cacheTimeHours
             : FINDER_DEFAULTS.cacheTimeHours,
         cachedAt: parsed.cachedAt ? new Date(parsed.cachedAt) : undefined,
         maxResults:
-            typeof parsed.maxResults === 'number'
-            ? parsed.maxResults
-            : FINDER_DEFAULTS.maxResults,
-        });
+          typeof parsed.maxResults === 'number' ? parsed.maxResults : FINDER_DEFAULTS.maxResults,
+      });
     } catch {
-        this.resetFinder();
+      this.resetFinder();
     }
   }
 
+  private getResultsCacheKey(explorerId: string): string {
+    return `${this.resultsCacheKeyPrefix}.${explorerId}`;
+  }
+
+  private getCriteriaSignature(finder: Finder): string {
+    return JSON.stringify({
+      keyword: finder.keyword ?? null,
+      minPrice: finder.minPrice ?? null,
+      maxPrice: finder.maxPrice ?? null,
+      startDate: finder.startDate ? this.toDateOnlyString(finder.startDate) : null,
+      endDate: finder.endDate ? this.toDateOnlyString(finder.endDate) : null,
+      difficulty: finder.difficulty ?? null,
+      maxResults: finder.maxResults,
+    });
+  }
+
+  private toDateOnlyString(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  private computeResults(trips: Trip[], finder: Finder): Trip[] {
+    const keyword = finder.keyword?.trim().toLowerCase();
+    const minPrice = finder.minPrice;
+    const maxPrice = finder.maxPrice;
+    const startDate = finder.startDate;
+    const endDate = finder.endDate;
+    const difficulty = finder.difficulty;
+
+    return trips
+      .filter((trip) => this.matchesKeyword(trip, keyword))
+      .filter((trip) => this.matchesPrice(trip, minPrice, maxPrice))
+      .filter((trip) => this.matchesDateRange(trip, startDate, endDate))
+      .filter((trip) => this.matchesDifficulty(trip, difficulty))
+      .slice(0, finder.maxResults);
+  }
+
+  private saveResultsCache(explorerId: string, finder: Finder, results: Trip[]): void {
+    if (typeof localStorage === 'undefined') return;
+
+    const payload = {
+      criteriaSignature: this.getCriteriaSignature(finder),
+      cachedAt: new Date().toISOString(),
+      results: results.map((trip) => ({
+        ...trip,
+        startDate: trip.startDate.toISOString(),
+        endDate: trip.endDate.toISOString(),
+        cancellation: trip.cancellation
+          ? {
+              ...trip.cancellation,
+              cancelledAt: trip.cancellation.cancelledAt.toISOString(),
+            }
+          : undefined,
+      })),
+    };
+
+    localStorage.setItem(this.getResultsCacheKey(explorerId), JSON.stringify(payload));
+  }
+
+  private loadResultsCache(explorerId: string, finder: Finder): Trip[] | null {
+    if (typeof localStorage === 'undefined') return null;
+
+    const raw = localStorage.getItem(this.getResultsCacheKey(explorerId));
+    if (!raw) return null;
+
+    try {
+      const parsed = JSON.parse(raw) as {
+        criteriaSignature?: string;
+        cachedAt?: string;
+        results?: Array<Record<string, unknown>>;
+      };
+
+      if (!parsed.criteriaSignature || !parsed.cachedAt || !Array.isArray(parsed.results)) {
+        return null;
+      }
+
+      if (parsed.criteriaSignature !== this.getCriteriaSignature(finder)) {
+        return null;
+      }
+
+      const cachedAt = new Date(parsed.cachedAt);
+      const ttlMs = finder.cacheTimeHours * 60 * 60 * 1000;
+      const expired = Date.now() - cachedAt.getTime() > ttlMs;
+
+      if (expired) {
+        return null;
+      }
+      console.log('Using cached finder results');
+      return parsed.results.map((trip) => {
+        const cancellationRaw =
+          trip['cancellation'] && typeof trip['cancellation'] === 'object'
+            ? (trip['cancellation'] as Record<string, unknown>)
+            : null;
+
+        return {
+          ...(trip as unknown as Trip),
+          startDate: new Date(trip['startDate'] as string),
+          endDate: new Date(trip['endDate'] as string),
+          cancellation: cancellationRaw
+            ? {
+                reason: String(cancellationRaw['reason'] ?? ''),
+                cancelledAt: new Date(String(cancellationRaw['cancelledAt'] ?? '')),
+              }
+            : undefined,
+        };
+      });
+    } catch {
+      return null;
+    }
+  }
 }
