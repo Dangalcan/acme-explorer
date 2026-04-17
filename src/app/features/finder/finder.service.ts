@@ -77,7 +77,7 @@ export class FinderService {
 
       const freshResults = this.computeResults(trips, finder);
       this.cachedResults.set(freshResults);
-      
+
       this.saveResultsCache(explorerId, finder, freshResults);
     });
   }
@@ -104,11 +104,11 @@ export class FinderService {
   }
 
   resetFinder(): void {
-    const explorerId = this.currentExplorerId() ?? '';
+    const current = this.finder();
+    const explorerId = this.currentExplorerId() ?? current.explorerId;
 
     this.finder.set({
-      id: 'finder-current',
-      version: 0,
+      ...current,
       explorerId,
       keyword: undefined,
       minPrice: undefined,
@@ -116,9 +116,8 @@ export class FinderService {
       startDate: undefined,
       endDate: undefined,
       difficulty: undefined,
-      cacheTimeHours: FINDER_DEFAULTS.cacheTimeHours,
-      maxResults: FINDER_DEFAULTS.maxResults,
       cachedAt: undefined,
+      version: current.version + 1,
     });
 
     this.saveToLocalStorage();
@@ -316,7 +315,7 @@ export class FinderService {
       if (expired) {
         return null;
       }
-      
+
       return parsed.results.map((trip) => {
         const cancellationRaw =
           trip['cancellation'] && typeof trip['cancellation'] === 'object'
