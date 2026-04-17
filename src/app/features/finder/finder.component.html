@@ -114,7 +114,15 @@
     </div>
   </div>
 
-  <div class="mb-4 text-sm text-slate-500">{{ results().length }} result(s)</div>
+  <div class="mb-4 text-sm text-slate-500 space-y-1">
+    <div>{{ results().length }} result(s)</div>
+
+    @if (isLimited()) {
+      <div class="text-xs text-slate-400">
+        Showing up to {{ maxResults() }} result(s) based on your finder preferences.
+      </div>
+    }
+  </div>
 
   @if (hasValidationError()) {
     <div class="bg-white rounded-2xl shadow-sm border border-red-100 p-10 text-center text-red-600">

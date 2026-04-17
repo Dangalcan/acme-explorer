@@ -22,7 +22,13 @@ export class FinderComponent {
 
   readonly hasResults = computed(() => this.results().length > 0);
   readonly hasValidationError = computed(() => !!this.dateRangeError() || !!this.priceRangeError());
-  
+
+  readonly maxResults = computed(() => this.finder().maxResults);
+  readonly isLimited = computed(() => {
+    const results = this.results();
+    return results.length === this.finder().maxResults;
+  });
+
   constructor() {
     this.finderService.syncExplorerId();
   }
