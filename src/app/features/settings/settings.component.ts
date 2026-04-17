@@ -39,6 +39,7 @@ export class SettingsComponent {
   errorMessage = signal('');
 
   constructor() {
+    this.finderService.syncExplorerId();
     void this.loadActorData();
 
     effect(() => {
