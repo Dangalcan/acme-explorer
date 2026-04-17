@@ -114,16 +114,16 @@
     </div>
   </div>
 
-  <div class="mb-4 text-sm text-slate-500">
-    {{ results().length }} result(s)
-  </div>
+  <div class="mb-4 text-sm text-slate-500">{{ results().length }} result(s)</div>
 
   @if (hasValidationError()) {
     <div class="bg-white rounded-2xl shadow-sm border border-red-100 p-10 text-center text-red-600">
-      Please fix the invalid date range to see results.
+      Please fix the invalid filters to see results.
     </div>
   } @else if (!hasResults()) {
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-10 text-center text-slate-500">
+    <div
+      class="bg-white rounded-2xl shadow-sm border border-slate-100 p-10 text-center text-slate-500"
+    >
       No trips found.
     </div>
   } @else {

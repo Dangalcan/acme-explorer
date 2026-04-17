@@ -77,7 +77,7 @@ export class FinderService {
 
       const freshResults = this.computeResults(trips, finder);
       this.cachedResults.set(freshResults);
-      console.log('Computing and caching fresh finder results');
+      
       this.saveResultsCache(explorerId, finder, freshResults);
     });
   }
@@ -316,7 +316,7 @@ export class FinderService {
       if (expired) {
         return null;
       }
-      console.log('Using cached finder results');
+      
       return parsed.results.map((trip) => {
         const cancellationRaw =
           trip['cancellation'] && typeof trip['cancellation'] === 'object'
