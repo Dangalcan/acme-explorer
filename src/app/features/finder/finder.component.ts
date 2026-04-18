@@ -1,5 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { FinderService } from './finder.service';
 import { TripCardComponent } from '../trips/trip-card/trip-card.component';
 import { DifficultyLevel } from '../trips/trip.model';
@@ -7,7 +8,7 @@ import { DifficultyLevel } from '../trips/trip.model';
 @Component({
   selector: 'app-finder',
   standalone: true,
-  imports: [FormsModule, TripCardComponent],
+  imports: [FormsModule, TripCardComponent, TranslatePipe],
   templateUrl: './finder.component.html',
 })
 export class FinderComponent {

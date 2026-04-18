@@ -365,6 +365,33 @@
       "delete_failed": "Could not delete your review. Please try again."
     }
   },
+  "finder": {
+    "title": "Trip Finder",
+    "subtitle": "Search trips using optional filters.",
+    "keyword": "Keyword",
+    "keyword_placeholder": "Ticker, title or description",
+    "min_price": "Min price",
+    "max_price": "Max price",
+    "start_date": "Start date",
+    "end_date": "End date",
+    "difficulty": "Difficulty",
+    "all": "All",
+    "reset_filters": "Reset filters",
+    "results_count_one": "1 result",
+    "results_count": "{{count}} results",
+    "limited_results": "Showing up to {{max}} results based on your finder preferences.",
+    "invalid_filters": "Please fix the invalid filters to see results.",
+    "no_results": "No trips found.",
+    "difficulty_levels": {
+      "EASY": "Easy",
+      "MEDIUM": "Medium",
+      "HARD": "Hard"
+    },
+    "error": {
+      "invalid_date_range": "Start date cannot be after end date.",
+      "invalid_price_range": "Min price cannot be greater than max price."
+    }
+  },
   "settings": {
     "title": "My Profile",
     "subtitle": "Update your personal information",
@@ -385,7 +412,28 @@
       "phone_invalid": "Invalid phone number format",
       "address_max": "Address must be at most {{max}} characters",
       "save_failed": "Could not save profile. Please try again."
-    }
+    },
+    "finder_preferences": {
+      "title": "Finder preferences",
+      "subtitle": "Adjust finder performance on your device.",
+      "cache_time": "Cache time",
+      "cache_time_hint": "Value between {{min}} and {{max}}.",
+      "hour": "hour",
+      "hours": "hours",
+      "max_results": "Max results",
+      "max_results_hint": "Value between {{min}} and {{max}}.",
+      "result": "result",
+      "results": "results",
+      "saving_preferences": "Saving...",
+      "save_preferences": "Save finder preferences",
+      "success": "Finder preferences saved successfully.",
+      "error": {
+        "cache_time_range": "Cache time must be between {{min}} and {{max}} hours.",
+        "max_results_range": "Max results must be between {{min}} and {{max}}.",
+        "save_failed": "Could not save finder preferences."
+      }
+    },
+    "loading": "Loading..."
   },
   "roles": {
     "administrator": "Administrator",

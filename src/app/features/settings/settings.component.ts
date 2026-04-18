@@ -140,7 +140,10 @@ export class SettingsComponent {
       cacheTime > FINDER_VALIDATION.cacheTimeHours.max
     ) {
       this.finderPreferencesError.set(
-        `Cache time must be between ${FINDER_VALIDATION.cacheTimeHours.min} and ${FINDER_VALIDATION.cacheTimeHours.max} hours.`,
+        this.translate.instant('settings.finder_preferences.error.cache_time_range', {
+          min: FINDER_VALIDATION.cacheTimeHours.min,
+          max: FINDER_VALIDATION.cacheTimeHours.max,
+        }),
       );
       return;
     }
@@ -151,7 +154,10 @@ export class SettingsComponent {
       maxResults > FINDER_VALIDATION.maxResults.max
     ) {
       this.finderPreferencesError.set(
-        `Max results must be between ${FINDER_VALIDATION.maxResults.min} and ${FINDER_VALIDATION.maxResults.max}.`,
+        this.translate.instant('settings.finder_preferences.error.max_results_range', {
+          min: FINDER_VALIDATION.maxResults.min,
+          max: FINDER_VALIDATION.maxResults.max,
+        }),
       );
       return;
     }
@@ -164,9 +170,13 @@ export class SettingsComponent {
         maxResults,
       });
 
-      this.finderPreferencesSuccess.set('Finder preferences saved successfully.');
+      this.finderPreferencesSuccess.set(
+        this.translate.instant('settings.finder_preferences.success'),
+      );
     } catch {
-      this.finderPreferencesError.set('Could not save finder preferences.');
+      this.finderPreferencesError.set(
+        this.translate.instant('settings.finder_preferences.error.save_failed'),
+      );
     } finally {
       this.isSavingFinderPreferences.set(false);
     }

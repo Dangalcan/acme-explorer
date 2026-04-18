@@ -365,6 +365,33 @@
       "delete_failed": "No se pudo eliminar la reseña. Inténtalo de nuevo."
     }
   },
+  "finder": {
+    "title": "Buscador de viajes",
+    "subtitle": "Busca viajes usando filtros opcionales.",
+    "keyword": "Palabra clave",
+    "keyword_placeholder": "Ticker, título o descripción",
+    "min_price": "Precio mínimo",
+    "max_price": "Precio máximo",
+    "start_date": "Fecha de inicio",
+    "end_date": "Fecha de fin",
+    "difficulty": "Dificultad",
+    "all": "Todas",
+    "reset_filters": "Restablecer filtros",
+    "results_count_one": "1 resultado",
+    "results_count": "{{count}} resultados",
+    "limited_results": "Mostrando hasta {{max}} resultados según tus preferencias del buscador.",
+    "invalid_filters": "Corrige los filtros inválidos para ver resultados.",
+    "no_results": "No se encontraron viajes.",
+    "difficulty_levels": {
+      "EASY": "Fácil",
+      "MEDIUM": "Media",
+      "HARD": "Difícil"
+    },
+    "error": {
+      "invalid_date_range": "La fecha de inicio no puede ser posterior a la fecha de fin.",
+      "invalid_price_range": "El precio mínimo no puede ser mayor que el precio máximo."
+    }
+  },
   "settings": {
     "title": "Mi perfil",
     "subtitle": "Actualiza tu información personal",
@@ -385,7 +412,28 @@
       "phone_invalid": "Formato de número de teléfono no válido",
       "address_max": "La dirección no puede superar {{max}} caracteres",
       "save_failed": "No se pudo guardar el perfil. Inténtalo de nuevo."
-    }
+    },
+    "finder_preferences": {
+      "title": "Preferencias del buscador",
+      "subtitle": "Ajusta el rendimiento del buscador en tu dispositivo.",
+      "cache_time": "Tiempo de caché",
+      "cache_time_hint": "Valor entre {{min}} y {{max}}.",
+      "hour": "hora",
+      "hours": "horas",
+      "max_results": "Máximo de resultados",
+      "max_results_hint": "Valor entre {{min}} y {{max}}.",
+      "result": "resultado",
+      "results": "resultados",
+      "saving_preferences": "Guardando...",
+      "save_preferences": "Guardar preferencias del buscador",
+      "success": "Preferencias del buscador guardadas correctamente.",
+      "error": {
+        "cache_time_range": "El tiempo de caché debe estar entre {{min}} y {{max}} horas.",
+        "max_results_range": "El máximo de resultados debe estar entre {{min}} y {{max}}.",
+        "save_failed": "No se pudieron guardar las preferencias del buscador."
+      }
+    },
+    "loading": "Cargando..."
   },
   "roles": {
     "administrator": "Administrador",

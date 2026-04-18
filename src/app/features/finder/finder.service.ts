@@ -1,4 +1,5 @@
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth.service';
 import { TripService } from '../trips/trip.service';
 import { FINDER_DEFAULTS, Finder } from './finder.model';
@@ -10,6 +11,7 @@ import { Trip } from '../trips/trip.model';
 export class FinderService {
   private readonly authService = inject(AuthService);
   private readonly tripService = inject(TripService);
+  private readonly translate = inject(TranslateService);
   private readonly storageKeyPrefix = 'acme-explorer.finder';
   private readonly resultsCacheKeyPrefix = 'acme-explorer.finder.results';
   private readonly cachedResults = signal<Trip[]>([]);
@@ -42,7 +44,7 @@ export class FinderService {
     if (!startDate || !endDate) return null;
     if (startDate <= endDate) return null;
 
-    return 'Start date must be before or equal to end date.';
+    return this.translate.instant('finder.error.invalid_date_range');
   });
 
   readonly priceRangeError = computed(() => {
@@ -51,7 +53,7 @@ export class FinderService {
     if (minPrice === undefined || maxPrice === undefined) return null;
     if (minPrice <= maxPrice) return null;
 
-    return 'Min price must be less than or equal to max price.';
+    return this.translate.instant('finder.error.invalid_price_range');
   });
 
   readonly results = computed(() => this.cachedResults());
