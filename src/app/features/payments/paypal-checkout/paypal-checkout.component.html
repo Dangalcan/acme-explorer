@@ -1,0 +1,14 @@
+<section class="paypal-checkout">
+  <h2>PayPal Checkout</h2>
+  <p>Amount to pay: {{ amount() | currency: 'EUR' }}</p>
+
+  @if (errorMessage()) {
+    <p class="error-message">{{ errorMessage() }}</p>
+  }
+
+  @if (status() === 'success') {
+    <p class="success-message">Payment completed in sandbox mode</p>
+  }
+
+  <div #paypalButtons class="paypal-buttons"></div>
+</section>
