@@ -118,6 +118,7 @@
           {{ isLoading() ? ('settings.saving' | translate) : ('settings.save' | translate) }}
         </button>
       </div>
+      @if (currentRole() === 'explorer') {
       <div
         class="bg-white rounded-xl shadow-sm border border-slate-100 p-8 space-y-5 animate-slide-up mt-6"
       >
@@ -224,6 +225,7 @@
           }}
         </button>
       </div>
+      }
     }
   </div>
 </div>

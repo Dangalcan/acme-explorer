@@ -14,6 +14,7 @@ import { FINDER_VALIDATION } from '../finder/finder.model';
 })
 export class SettingsComponent {
   private authService = inject(AuthService);
+  readonly currentRole = this.authService.currentRole;
   private router = inject(Router);
   private translate = inject(TranslateService);
   private finderService = inject(FinderService);
