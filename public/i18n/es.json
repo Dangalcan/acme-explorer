@@ -377,6 +377,9 @@
     "difficulty": "Dificultad",
     "all": "Todas",
     "reset_filters": "Restablecer filtros",
+    "save_filters": "Guardar filtros",
+    "saving_filters": "Guardando...",
+    "save_success": "Filtros guardados correctamente.",
     "results_count_one": "1 resultado",
     "results_count": "{{count}} resultados",
     "limited_results": "Mostrando hasta {{max}} resultados según tus preferencias del buscador.",
@@ -389,7 +392,10 @@
     },
     "error": {
       "invalid_date_range": "La fecha de inicio no puede ser posterior a la fecha de fin.",
-      "invalid_price_range": "El precio mínimo no puede ser mayor que el precio máximo."
+      "invalid_price_range": "El precio mínimo no puede ser mayor que el precio máximo.",
+      "min_price_negative": "El precio mínimo no puede ser negativo.",
+      "max_price_negative": "El precio máximo no puede ser negativo.",
+      "save_failed": "No se pudieron guardar los filtros. Inténtalo de nuevo."
     }
   },
   "settings": {

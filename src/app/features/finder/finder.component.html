@@ -28,13 +28,16 @@
           type="number"
           min="0"
           class="w-full rounded-xl border px-4 py-3 text-sm"
-          [class.border-slate-300]="!priceRangeError()"
-          [class.border-red-300]="!!priceRangeError()"
-          [class.bg-red-50]="!!priceRangeError()"
+          [class.border-slate-300]="!priceRangeError() && !minPriceError()"
+          [class.border-red-300]="!!priceRangeError() || !!minPriceError()"
+          [class.bg-red-50]="!!priceRangeError() || !!minPriceError()"
           [ngModel]="finder().minPrice ?? ''"
           (ngModelChange)="onMinPriceChange($event)"
           [max]="finder().maxPrice ?? null"
         />
+        @if (minPriceError(); as error) {
+          <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+        }
       </div>
 
       <div>
@@ -45,13 +48,16 @@
           type="number"
           min="0"
           class="w-full rounded-xl border px-4 py-3 text-sm"
-          [class.border-slate-300]="!priceRangeError()"
-          [class.border-red-300]="!!priceRangeError()"
-          [class.bg-red-50]="!!priceRangeError()"
+          [class.border-slate-300]="!priceRangeError() && !maxPriceError()"
+          [class.border-red-300]="!!priceRangeError() || !!maxPriceError()"
+          [class.bg-red-50]="!!priceRangeError() || !!maxPriceError()"
           [ngModel]="finder().maxPrice ?? ''"
           (ngModelChange)="onMaxPriceChange($event)"
           [min]="finder().minPrice ?? 0"
         />
+        @if (maxPriceError(); as error) {
+          <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+        }
       </div>
 
       <div>
@@ -117,13 +123,33 @@
       </div>
     }
 
-    <div class="mt-6 flex justify-end">
+    @if (saveSuccess()) {
+      <div class="mt-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3">
+        <p class="text-sm font-medium text-green-700">{{ saveSuccess() }}</p>
+      </div>
+    }
+
+    @if (saveError()) {
+      <div class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+        <p class="text-sm font-medium text-red-700">{{ saveError() }}</p>
+      </div>
+    }
+
+    <div class="mt-6 flex justify-end gap-3">
       <button
         type="button"
         class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700"
         (click)="reset()"
       >
         {{ 'finder.reset_filters' | translate }}
+      </button>
+      <button
+        type="button"
+        class="rounded-xl bg-slate-800 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+        [disabled]="isSaving() || hasValidationError()"
+        (click)="save()"
+      >
+        {{ isSaving() ? ('finder.saving_filters' | translate) : ('finder.save_filters' | translate) }}
       </button>
     </div>
   </div>
