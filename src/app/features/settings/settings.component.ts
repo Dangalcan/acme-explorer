@@ -127,7 +127,7 @@ export class SettingsComponent {
     }
   }
 
-  saveFinderPreferences() {
+  async saveFinderPreferences(): Promise<void> {
     this.finderPreferencesSuccess.set('');
     this.finderPreferencesError.set('');
 
@@ -165,11 +165,8 @@ export class SettingsComponent {
     this.isSavingFinderPreferences.set(true);
 
     try {
-      this.finderService.updateFinder({
-        cacheTimeHours: cacheTime,
-        maxResults,
-      });
-
+      this.finderService.updateFinder({ cacheTimeHours: cacheTime, maxResults });
+      await this.finderService.persistFinder();
       this.finderPreferencesSuccess.set(
         this.translate.instant('settings.finder_preferences.success'),
       );
