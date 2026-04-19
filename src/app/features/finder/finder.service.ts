@@ -1,6 +1,6 @@
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, getDocs, collection } from 'firebase/firestore';
 import { db } from '../../infrastructure/firebase.config';
 import { AuthService } from '../../core/services/auth.service';
 import { TripService } from '../trips/trip.service';
@@ -155,6 +155,31 @@ export class FinderService {
 
   async persistFinder(): Promise<void> {
     return this.saveToFirestore();
+  }
+
+  async getAllFinders(): Promise<Finder[]> {
+    try {
+      const snap = await getDocs(collection(db, 'finders'));
+      return snap.docs.map(d => {
+        const parsed = d.data() as Partial<Finder & { startDate?: string; endDate?: string }>;
+        return {
+          id: d.id,
+          version: typeof parsed.version === 'number' ? parsed.version : 0,
+          explorerId: parsed.explorerId ?? d.id,
+          keyword: parsed.keyword ?? undefined,
+          minPrice: parsed.minPrice ?? undefined,
+          maxPrice: parsed.maxPrice ?? undefined,
+          startDate: parsed.startDate ? new Date(parsed.startDate) : undefined,
+          endDate: parsed.endDate ? new Date(parsed.endDate) : undefined,
+          difficulty: parsed.difficulty ?? undefined,
+          cacheTimeHours: typeof parsed.cacheTimeHours === 'number' ? parsed.cacheTimeHours : FINDER_DEFAULTS.cacheTimeHours,
+          maxResults: typeof parsed.maxResults === 'number' ? parsed.maxResults : FINDER_DEFAULTS.maxResults,
+          cachedAt: undefined,
+        };
+      });
+    } catch {
+      return [];
+    }
   }
 
   private matchesKeyword(trip: Trip, keyword?: string): boolean {

@@ -105,6 +105,48 @@
     }
   </div>
 
+  <!-- ── B-level stats (req B16.1) ────────────────────────────────────────── -->
+
+  <!-- Average price range from finders -->
+  <div>
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">{{ 'admin.dashboard.finder_avg_price_range_title' | translate }}</h2>
+    @if (finderAvgPriceRange(); as range) {
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl shadow p-6 text-center">
+          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ 'admin.dashboard.finder_avg_min_price' | translate }}</p>
+          <p class="mt-2 text-3xl font-bold text-gray-800">
+            {{ range.avgMin !== null ? (range.avgMin | currency:'EUR':'symbol':'1.0-0') : '—' }}
+          </p>
+        </div>
+        <div class="bg-white rounded-xl shadow p-6 text-center">
+          <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">{{ 'admin.dashboard.finder_avg_max_price' | translate }}</p>
+          <p class="mt-2 text-3xl font-bold text-gray-800">
+            {{ range.avgMax !== null ? (range.avgMax | currency:'EUR':'symbol':'1.0-0') : '—' }}
+          </p>
+        </div>
+      </div>
+    } @else {
+      <p class="text-gray-500">{{ 'admin.dashboard.no_finder_price_data' | translate }}</p>
+    }
+  </div>
+
+  <!-- Top 10 keywords from finders -->
+  <div>
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">{{ 'admin.dashboard.finder_top10_keywords_title' | translate }}</h2>
+    @if (finderTop10Keywords().length === 0) {
+      <p class="text-gray-500">{{ 'admin.dashboard.no_finder_keyword_data' | translate }}</p>
+    } @else {
+      <div class="bg-white rounded-xl shadow overflow-hidden">
+        @for (item of finderTop10Keywords(); track item.keyword; let i = $index) {
+          <div class="flex items-center justify-between px-6 py-3 border-b border-gray-100 last:border-0">
+            <span class="text-sm font-medium text-gray-700">{{ i + 1 }}. {{ item.keyword }}</span>
+            <span class="text-sm font-semibold text-indigo-600">×{{ item.count }}</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
   <!-- ── A-level stats ────────────────────────────────────────────────────── -->
 
   <!-- Trips starting in the next 7 days -->

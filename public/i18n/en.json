@@ -144,6 +144,12 @@
       "trips_per_month_title": "Number of Trips per Month ({{year}})",
       "top3_by_favourites": "Top 3 Most Favourited Trips",
       "no_favourites_data": "No trips have been saved to favourites yet.",
+      "finder_avg_price_range_title": "Average Price Range from Explorer Finders",
+      "finder_avg_min_price": "Avg Min Price",
+      "finder_avg_max_price": "Avg Max Price",
+      "no_finder_price_data": "No explorers have set a price range in their finders yet.",
+      "finder_top10_keywords_title": "Top 10 Keywords from Explorer Finders",
+      "no_finder_keyword_data": "No explorers have set a keyword in their finders yet.",
       "months": {
         "0": "January",
         "1": "February",
@@ -253,7 +259,8 @@
       "apply_comment_label": "Add a comment (optional)",
       "apply_comment_placeholder": "Tell the manager why you want to join this trip...",
       "apply_confirm": "Confirm application",
-      "apply_failed": "Could not submit your application. Please try again."
+      "apply_failed": "Could not submit your application. Please try again.",
+      "starting_soon": "Starting soon!"
     },
     "details": {
       "back": "Back to trips",
@@ -272,7 +279,11 @@
       "browse_all": "Browse all trips",
       "edit": "Edit Trip",
       "delete": "Delete Trip",
-      "delete_error": "Could not delete the trip."
+      "delete_error": "Could not delete the trip.",
+      "countdown_title": "Trip starts in",
+      "countdown_days": "days",
+      "countdown_hours": "hours",
+      "countdown_minutes": "minutes"
     }
   },
   "applications": {

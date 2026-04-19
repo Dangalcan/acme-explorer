@@ -144,6 +144,12 @@
       "trips_per_month_title": "Número de viajes por mes ({{year}})",
       "top3_by_favourites": "Top 3 viajes más guardados en favoritos",
       "no_favourites_data": "Aún no se ha guardado ningún viaje en favoritos.",
+      "finder_avg_price_range_title": "Rango de precio medio de los buscadores de exploradores",
+      "finder_avg_min_price": "Precio mín. medio",
+      "finder_avg_max_price": "Precio máx. medio",
+      "no_finder_price_data": "Aún ningún explorador ha establecido un rango de precio en su buscador.",
+      "finder_top10_keywords_title": "Top 10 palabras clave de los buscadores de exploradores",
+      "no_finder_keyword_data": "Aún ningún explorador ha establecido una palabra clave en su buscador.",
       "months": {
         "0": "Enero",
         "1": "Febrero",
@@ -253,7 +259,8 @@
       "apply_comment_label": "Añade un comentario (opcional)",
       "apply_comment_placeholder": "Explica al gestor por qué quieres unirte a este viaje...",
       "apply_confirm": "Confirmar solicitud",
-      "apply_failed": "No se pudo enviar tu solicitud. Inténtalo de nuevo."
+      "apply_failed": "No se pudo enviar tu solicitud. Inténtalo de nuevo.",
+      "starting_soon": "¡Comienza pronto!"
     },
     "details": {
       "back": "Volver a viajes",
@@ -272,7 +279,11 @@
       "browse_all": "Ver todos los viajes",
       "edit": "Editar viaje",
       "delete": "Eliminar viaje",
-      "delete_error": "No se pudo eliminar el viaje."
+      "delete_error": "No se pudo eliminar el viaje.",
+      "countdown_title": "El viaje comienza en",
+      "countdown_days": "días",
+      "countdown_hours": "horas",
+      "countdown_minutes": "minutos"
     }
   },
   "applications": {

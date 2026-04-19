@@ -6,6 +6,8 @@ import { ApplicationService } from '../../applications/application.service';
 import { AppStatus } from '../../applications/application.model';
 import { FavouritesService } from '../../favourites/favourites.service';
 import { FavouriteList } from '../../favourites/favourite-list.model';
+import { FinderService } from '../../finder/finder.service';
+import { Finder } from '../../finder/finder.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,14 +18,18 @@ export class DashboardComponent {
   private readonly tripService = inject(TripService);
   private readonly applicationService = inject(ApplicationService);
   private readonly favouritesService = inject(FavouritesService);
+  private readonly finderService = inject(FinderService);
   private readonly platformId = inject(PLATFORM_ID);
 
   // All favourite lists fetched from json-server for admin stats
   private readonly allFavouriteLists = signal<FavouriteList[]>([]);
+  // All finders fetched from Firestore for B-level stats (req B16.1)
+  private readonly allFinders = signal<Finder[]>([]);
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
       void this.favouritesService.getAllLists().then(lists => this.allFavouriteLists.set(lists));
+      void this.finderService.getAllFinders().then(finders => this.allFinders.set(finders));
     }
   }
 
@@ -148,6 +154,32 @@ export class DashboardComponent {
       .slice(0, 3)
       .map(([tripId, count]) => ({ trip: this.tripService.getById(tripId), count }))
       .filter((item): item is { trip: NonNullable<typeof item.trip>; count: number } => !!item.trip);
+  });
+
+  // ── B-level stats (req B16.1) ──────────────────────────────────────────────
+
+  /** Average min and max price that explorers set in their finders */
+  readonly finderAvgPriceRange = computed(() => {
+    const finders = this.allFinders();
+    const minPrices = finders.filter(f => f.minPrice !== undefined).map(f => f.minPrice!);
+    const maxPrices = finders.filter(f => f.maxPrice !== undefined).map(f => f.maxPrice!);
+    const avgMin = minPrices.length > 0 ? minPrices.reduce((s, v) => s + v, 0) / minPrices.length : null;
+    const avgMax = maxPrices.length > 0 ? maxPrices.reduce((s, v) => s + v, 0) / maxPrices.length : null;
+    if (avgMin === null && avgMax === null) return null;
+    return { avgMin, avgMax };
+  });
+
+  /** Top 10 keywords used by explorers in their finders, sorted by frequency */
+  readonly finderTop10Keywords = computed(() => {
+    const counts = new Map<string, number>();
+    for (const finder of this.allFinders()) {
+      const kw = finder.keyword?.trim().toLowerCase();
+      if (kw) counts.set(kw, (counts.get(kw) ?? 0) + 1);
+    }
+    return [...counts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([keyword, count]) => ({ keyword, count }));
   });
 
   private computeStats(values: number[]) {
