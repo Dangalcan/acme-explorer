@@ -1,9 +1,9 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FinderService } from './finder.service';
 import { TripCardComponent } from '../trips/trip-card/trip-card.component';
-import { DifficultyLevel } from '../trips/trip.model';
+import { DifficultyLevel, DIFFICULTY_LEVELS } from '../trips/trip.model';
 
 @Component({
   selector: 'app-finder',
@@ -13,22 +13,35 @@ import { DifficultyLevel } from '../trips/trip.model';
 })
 export class FinderComponent {
   readonly finderService = inject(FinderService);
+  private readonly translate = inject(TranslateService);
 
   readonly finder = this.finderService.finder;
   readonly results = this.finderService.results;
   readonly dateRangeError = this.finderService.dateRangeError;
   readonly priceRangeError = this.finderService.priceRangeError;
+  readonly minPriceError = this.finderService.minPriceError;
+  readonly maxPriceError = this.finderService.maxPriceError;
 
-  readonly difficulties: DifficultyLevel[] = ['EASY', 'MEDIUM', 'HARD'];
+  readonly difficulties = DIFFICULTY_LEVELS;
 
   readonly hasResults = computed(() => this.results().length > 0);
-  readonly hasValidationError = computed(() => !!this.dateRangeError() || !!this.priceRangeError());
+  readonly hasValidationError = computed(
+    () =>
+      !!this.dateRangeError() ||
+      !!this.priceRangeError() ||
+      !!this.minPriceError() ||
+      !!this.maxPriceError(),
+  );
 
   readonly maxResults = computed(() => this.finder().maxResults);
   readonly isLimited = computed(() => {
     const results = this.results();
     return results.length === this.finder().maxResults;
   });
+
+  isSaving = signal(false);
+  saveSuccess = signal('');
+  saveError = signal('');
 
   constructor() {
     this.finderService.syncExplorerId();
@@ -70,7 +83,24 @@ export class FinderComponent {
     });
   }
 
+  async save(): Promise<void> {
+    if (this.hasValidationError()) return;
+    this.saveSuccess.set('');
+    this.saveError.set('');
+    this.isSaving.set(true);
+    try {
+      await this.finderService.persistFinder();
+      this.saveSuccess.set(this.translate.instant('finder.save_success'));
+    } catch {
+      this.saveError.set(this.translate.instant('finder.error.save_failed'));
+    } finally {
+      this.isSaving.set(false);
+    }
+  }
+
   reset(): void {
+    this.saveSuccess.set('');
+    this.saveError.set('');
     this.finderService.resetFinder();
   }
 

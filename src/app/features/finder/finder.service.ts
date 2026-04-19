@@ -1,8 +1,10 @@
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { db } from '../../infrastructure/firebase.config';
 import { AuthService } from '../../core/services/auth.service';
 import { TripService } from '../trips/trip.service';
-import { FINDER_DEFAULTS, Finder } from './finder.model';
+import { FINDER_DEFAULTS, FINDER_VALIDATION, Finder } from './finder.model';
 import { Trip } from '../trips/trip.model';
 
 @Injectable({
@@ -56,9 +58,33 @@ export class FinderService {
     return this.translate.instant('finder.error.invalid_price_range');
   });
 
+  readonly minPriceError = computed(() => {
+    const { minPrice } = this.finder();
+    if (minPrice === undefined) return null;
+    if (minPrice < FINDER_VALIDATION.minPrice.min)
+      return this.translate.instant('finder.error.min_price_negative');
+    return null;
+  });
+
+  readonly maxPriceError = computed(() => {
+    const { maxPrice } = this.finder();
+    if (maxPrice === undefined) return null;
+    if (maxPrice < FINDER_VALIDATION.maxPrice.min)
+      return this.translate.instant('finder.error.max_price_negative');
+    return null;
+  });
+
   readonly results = computed(() => this.cachedResults());
 
   constructor() {
+    effect(() => {
+      const explorerId = this.currentExplorerId();
+      if (!explorerId) return;
+      if (this.finder().explorerId === explorerId) return;
+      this.loadFromLocalStorage();
+      void this.loadFromFirestore(explorerId);
+    });
+
     effect(() => {
       const explorerId = this.currentExplorerId();
       const finder = this.finder();
@@ -66,7 +92,7 @@ export class FinderService {
       const dateError = this.dateRangeError();
       const priceError = this.priceRangeError();
 
-      if (!explorerId || dateError || priceError) {
+      if (!explorerId || dateError || priceError || this.minPriceError() || this.maxPriceError()) {
         this.cachedResults.set([]);
         return;
       }
@@ -91,6 +117,7 @@ export class FinderService {
     if (this.finder().explorerId === explorerId) return;
 
     this.loadFromLocalStorage();
+    void this.loadFromFirestore(explorerId);
   }
 
   updateFinder(patch: Partial<Finder>): void {
@@ -123,6 +150,11 @@ export class FinderService {
     });
 
     this.saveToLocalStorage();
+    void this.saveToFirestore();
+  }
+
+  async persistFinder(): Promise<void> {
+    return this.saveToFirestore();
   }
 
   private matchesKeyword(trip: Trip, keyword?: string): boolean {
@@ -176,6 +208,57 @@ export class FinderService {
     return `${this.storageKeyPrefix}.${explorerId}`;
   }
 
+  private toFirestorePayload(): Record<string, unknown> {
+    const finder = this.finder();
+    const raw: Record<string, unknown> = {
+      explorerId:     finder.explorerId,
+      version:        finder.version,
+      cacheTimeHours: finder.cacheTimeHours,
+      maxResults:     finder.maxResults,
+      keyword:        finder.keyword,
+      minPrice:       finder.minPrice,
+      maxPrice:       finder.maxPrice,
+      startDate:      finder.startDate ? finder.startDate.toISOString() : undefined,
+      endDate:        finder.endDate   ? finder.endDate.toISOString()   : undefined,
+      difficulty:     finder.difficulty,
+    };
+    return Object.fromEntries(Object.entries(raw).filter(([, v]) => v !== undefined));
+  }
+
+  private saveToFirestore(): Promise<void> {
+    const explorerId = this.currentExplorerId();
+    if (!explorerId) return Promise.resolve();
+    return setDoc(doc(db, 'finders', explorerId), this.toFirestorePayload(), { merge: true });
+  }
+
+  private async loadFromFirestore(explorerId: string): Promise<void> {
+    try {
+      const snap = await getDoc(doc(db, 'finders', explorerId));
+      if (!snap.exists()) return;
+
+      const parsed = snap.data() as Partial<Finder & { startDate?: string; endDate?: string }>;
+
+      this.finder.set({
+        id: 'finder-current',
+        version:        typeof parsed.version === 'number' ? parsed.version : 0,
+        explorerId,
+        keyword:        parsed.keyword    ?? undefined,
+        minPrice:       parsed.minPrice   ?? undefined,
+        maxPrice:       parsed.maxPrice   ?? undefined,
+        startDate:      parsed.startDate  ? new Date(parsed.startDate) : undefined,
+        endDate:        parsed.endDate    ? new Date(parsed.endDate)   : undefined,
+        difficulty:     parsed.difficulty ?? undefined,
+        cacheTimeHours: typeof parsed.cacheTimeHours === 'number' ? parsed.cacheTimeHours : FINDER_DEFAULTS.cacheTimeHours,
+        maxResults:     typeof parsed.maxResults === 'number'     ? parsed.maxResults     : FINDER_DEFAULTS.maxResults,
+        cachedAt: undefined,
+      });
+
+      this.saveToLocalStorage();
+    } catch {
+      // silently ignore — localStorage value stands
+    }
+  }
+
   private saveToLocalStorage(): void {
     const explorerId = this.currentExplorerId();
     if (!explorerId || typeof localStorage === 'undefined') return;
@@ -198,7 +281,7 @@ export class FinderService {
 
     const raw = localStorage.getItem(this.getStorageKey(explorerId));
     if (!raw) {
-      this.resetFinder();
+      this.setFinderDefaults(explorerId);
       return;
     }
 
@@ -224,8 +307,25 @@ export class FinderService {
           typeof parsed.maxResults === 'number' ? parsed.maxResults : FINDER_DEFAULTS.maxResults,
       });
     } catch {
-      this.resetFinder();
+      this.setFinderDefaults(explorerId);
     }
+  }
+
+  private setFinderDefaults(explorerId: string): void {
+    this.finder.set({
+      id: 'finder-current',
+      version: 0,
+      explorerId,
+      keyword: undefined,
+      minPrice: undefined,
+      maxPrice: undefined,
+      startDate: undefined,
+      endDate: undefined,
+      difficulty: undefined,
+      cacheTimeHours: FINDER_DEFAULTS.cacheTimeHours,
+      maxResults: FINDER_DEFAULTS.maxResults,
+      cachedAt: undefined,
+    });
   }
 
   private getResultsCacheKey(explorerId: string): string {
