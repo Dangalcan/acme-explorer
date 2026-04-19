@@ -460,5 +460,26 @@
   "language": {
     "switch": "ES",
     "current": "EN"
+  },
+  "weather": {
+    "title": "Weather Forecast",
+    "out_of_range": "Forecast not yet available — trip starts in more than 16 days.",
+    "loading": "Loading forecast…",
+    "departure": "Departure",
+    "temp_max": "Max",
+    "temp_min_legend": "min temperature in °C",
+    "conditions": {
+      "clear_sky": "Clear sky",
+      "partly_cloudy": "Partly cloudy",
+      "fog": "Fog",
+      "rain": "Rain",
+      "snow": "Snow",
+      "showers": "Showers",
+      "thunderstorm": "Thunderstorm"
+    },
+    "error": {
+      "location_not_found": "Location not found.",
+      "unavailable": "Weather forecast unavailable."
+    }
   }
 }

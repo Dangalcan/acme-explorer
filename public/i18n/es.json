@@ -460,5 +460,26 @@
   "language": {
     "switch": "EN",
     "current": "ES"
+  },
+  "weather": {
+    "title": "Previsión meteorológica",
+    "out_of_range": "Previsión no disponible aún — el viaje comienza en más de 16 días.",
+    "loading": "Cargando previsión…",
+    "departure": "Salida",
+    "temp_max": "Máx",
+    "temp_min_legend": "temperatura mín. en °C",
+    "conditions": {
+      "clear_sky": "Cielo despejado",
+      "partly_cloudy": "Parcialmente nublado",
+      "fog": "Niebla",
+      "rain": "Lluvia",
+      "snow": "Nieve",
+      "showers": "Chubascos",
+      "thunderstorm": "Tormenta"
+    },
+    "error": {
+      "location_not_found": "Ubicación no encontrada.",
+      "unavailable": "Previsión meteorológica no disponible."
+    }
   }
 }
