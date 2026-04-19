@@ -10,6 +10,30 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Client
   },
   {
+    path: 'trips/create',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'trips/:id/edit',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'applications',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'finder',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'favourites',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'settings',
+    renderMode: RenderMode.Client
+  },
+  {
     path: '**',
     renderMode: RenderMode.Prerender
   }
