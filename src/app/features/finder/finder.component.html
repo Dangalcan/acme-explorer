@@ -182,7 +182,14 @@
   } @else {
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
       @for (trip of results(); track trip.id) {
-        <app-trip-card [trip]="trip" />
+        <app-trip-card
+          [trip]="trip"
+          [enableFavouriteControls]="true"
+          [favouritePanelOpen]="openFavouriteTripId() === trip.id"
+          (favouritePanelToggle)="toggleFavouritePanel($event)"
+          (favouritePanelClose)="closeFavouritePanel()"
+          (view)="viewTrip($event)"
+        />
       }
     </div>
   }

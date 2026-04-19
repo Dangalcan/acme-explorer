@@ -253,7 +253,7 @@ export class FinderService {
   private saveToFirestore(): Promise<void> {
     const explorerId = this.currentExplorerId();
     if (!explorerId) return Promise.resolve();
-    return setDoc(doc(db, 'finders', explorerId), this.toFirestorePayload(), { merge: true });
+    return setDoc(doc(db, 'finders', explorerId), this.toFirestorePayload());
   }
 
   private async loadFromFirestore(explorerId: string): Promise<void> {

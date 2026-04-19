@@ -1,9 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FinderService } from './finder.service';
 import { TripCardComponent } from '../trips/trip-card/trip-card.component';
 import { DifficultyLevel, DIFFICULTY_LEVELS } from '../trips/trip.model';
+import { Trip } from '../trips/trip.model';
 
 @Component({
   selector: 'app-finder',
@@ -14,6 +16,7 @@ import { DifficultyLevel, DIFFICULTY_LEVELS } from '../trips/trip.model';
 export class FinderComponent {
   readonly finderService = inject(FinderService);
   private readonly translate = inject(TranslateService);
+  private readonly router = inject(Router);
 
   readonly finder = this.finderService.finder;
   readonly results = this.finderService.results;
@@ -38,6 +41,8 @@ export class FinderComponent {
     const results = this.results();
     return results.length === this.finder().maxResults;
   });
+
+  readonly openFavouriteTripId = signal<string | null>(null);
 
   isSaving = signal(false);
   saveSuccess = signal('');
@@ -102,6 +107,18 @@ export class FinderComponent {
     this.saveSuccess.set('');
     this.saveError.set('');
     this.finderService.resetFinder();
+  }
+
+  viewTrip(trip: Trip): void {
+    void this.router.navigate(['/trips', trip.id]);
+  }
+
+  toggleFavouritePanel(tripId: string): void {
+    this.openFavouriteTripId.update(current => current === tripId ? null : tripId);
+  }
+
+  closeFavouritePanel(): void {
+    this.openFavouriteTripId.set(null);
   }
 
   toDateInputValue(date?: Date): string {
