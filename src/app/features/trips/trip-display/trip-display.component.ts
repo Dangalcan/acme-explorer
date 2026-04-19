@@ -1,6 +1,6 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { DatePipe } from '@angular/common';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -27,8 +27,20 @@ export class TripDisplayComponent {
   private authService = inject(AuthService);
   private applicationService = inject(ApplicationService);
   private reviewService = inject(ReviewService);
+  private destroyRef = inject(DestroyRef);
+  private platformId = inject(PLATFORM_ID);
 
   private id = toSignal(this.route.paramMap.pipe(map(p => p.get('id') ?? '')));
+
+  constructor() {
+    if (isPlatformBrowser(this.platformId)) {
+      // Re-compute immediately when the trip signal changes (e.g., on first route load)
+      effect(() => { this.trip(); this.refreshCountdown(); });
+      // Tick every minute for live updates
+      const id = setInterval(() => this.refreshCountdown(), 60_000);
+      this.destroyRef.onDestroy(() => clearInterval(id));
+    }
+  }
 
   trip = computed(() => this.tripService.getById(this.id() ?? ''));
 
@@ -187,6 +199,21 @@ export class TripDisplayComponent {
   });
 
   readonly today = new Date();
+
+  // ── Countdown timer (req B20) ──────────────────────────────────────────────
+  readonly countdown = signal<{ days: number; hours: number; minutes: number } | null>(null);
+
+  private refreshCountdown(): void {
+    const trip = this.trip();
+    if (!trip || trip.cancellation) { this.countdown.set(null); return; }
+    const diff = new Date(trip.startDate).getTime() - Date.now();
+    if (diff <= 0) { this.countdown.set(null); return; }
+    this.countdown.set({
+      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+      minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+    });
+  }
 
   readonly reviewValidation = REVIEW_VALIDATION;
   readonly applicationValidation = APPLICATION_VALIDATION;

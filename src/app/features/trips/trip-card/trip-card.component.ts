@@ -173,6 +173,13 @@ export class TripCardComponent {
     }
   }
 
+  isUpcomingSoon(): boolean {
+    if (this.trip.cancellation) return false;
+    const now = Date.now();
+    const start = new Date(this.trip.startDate).getTime();
+    return start > now && start <= now + 7 * 24 * 60 * 60 * 1000;
+  }
+
   getTotalPrice(trip: Trip): number {
     return trip.totalPrice ?? trip.stages.reduce((sum, s) => sum + s.price, 0);
   }
