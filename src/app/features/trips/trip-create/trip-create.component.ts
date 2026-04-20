@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, ViewChild, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TripService } from '../trip.service';
 import { TripFormComponent, TripFormValue } from '../trip-form/trip-form.component';
+import { ComponentCanDeactivate } from '../../../core/guards/pending-changes.guard';
 
 @Component({
   selector: 'app-trip-create',
@@ -10,12 +11,15 @@ import { TripFormComponent, TripFormValue } from '../trip-form/trip-form.compone
   imports: [TripFormComponent, TranslatePipe],
   templateUrl: './trip-create.component.html',
 })
-export class TripCreateComponent {
+export class TripCreateComponent implements ComponentCanDeactivate {
   private tripService = inject(TripService);
   private router = inject(Router);
 
   readonly isLoading = signal(false);
   readonly errorMessage = signal<string | null>(null);
+
+  @ViewChild(TripFormComponent)
+  private tripFormComponent?: TripFormComponent;
 
   async onCreate(value: TripFormValue): Promise<void> {
     this.isLoading.set(true);
@@ -42,6 +46,7 @@ export class TripCreateComponent {
     this.isLoading.set(false);
 
     if (id) {
+      this.tripFormComponent?.tripForm.markAsPristine();
       void this.router.navigate(['/trips', id]);
     } else {
       this.errorMessage.set('trips.form.error.create_failed');
@@ -50,5 +55,9 @@ export class TripCreateComponent {
 
   onCancel(): void {
     void this.router.navigate(['/trips']);
+  }
+
+  canDeactivate(): boolean {
+    return !this.tripFormComponent?.tripForm.dirty;
   }
 }

@@ -4,13 +4,14 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ACTOR_VALIDATION } from '../../../shared/actor.model';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ComponentCanDeactivate } from '../../../core/guards/pending-changes.guard';
 
 @Component({
   selector: 'app-create-manager',
   imports: [FormsModule, RouterLink, TranslatePipe],
   templateUrl: './create-manager.component.html',
 })
-export class CreateManagerComponent {
+export class CreateManagerComponent implements ComponentCanDeactivate {
   private authService = inject(AuthService);
   private translate = inject(TranslateService);
 
@@ -126,5 +127,17 @@ export class CreateManagerComponent {
   private triggerShake() {
     this.isShaking.set(false);
     setTimeout(() => this.isShaking.set(true), 10);
+  }
+
+  canDeactivate(): boolean {
+    return !(
+      this.name().trim() ||
+      this.surname().trim() ||
+      this.email().trim() ||
+      this.phoneNumber().trim() ||
+      this.address().trim() ||
+      this.password() ||
+      this.confirmPassword()
+    );
   }
 }
