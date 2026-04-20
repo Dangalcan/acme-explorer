@@ -1,0 +1,16 @@
+.paypal-checkout {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.error-message {
+  color: #b91c1c;
+}
+
+.success-message {
+  color: #166534;
+}
+
+.paypal-buttons {
+  min-height: 45px;
+}

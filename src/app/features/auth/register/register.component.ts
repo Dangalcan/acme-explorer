@@ -4,13 +4,14 @@ import { ACTOR_VALIDATION } from '../../../shared/actor.model';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ComponentCanDeactivate } from '../../../core/guards/pending-changes.guard';
 
 @Component({
   selector: 'app-register',
   imports: [FormsModule, RouterLink, TranslatePipe],
   templateUrl: './register.component.html',
 })
-export class RegisterComponent {
+export class RegisterComponent implements ComponentCanDeactivate {
   private authService = inject(AuthService);
   private router = inject(Router);
   private translate = inject(TranslateService);
@@ -125,5 +126,17 @@ export class RegisterComponent {
   private triggerShake() {
     this.isShaking.set(false);
     setTimeout(() => this.isShaking.set(true), 10);
+  }
+
+  canDeactivate(): boolean {
+    return !(
+      this.name().trim() ||
+      this.surname().trim() ||
+      this.email().trim() ||
+      this.phoneNumber().trim() ||
+      this.address().trim() ||
+      this.password() ||
+      this.confirmPassword()
+    );
   }
 }

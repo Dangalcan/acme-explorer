@@ -3,6 +3,8 @@ import { adminGuard } from './core/guards/admin-guard';
 import { explorerGuard } from './core/guards/explorer-guard';
 import { authGuard } from './core/guards/auth-guard';
 import { managerGuard } from './core/guards/manager-guard';
+import { PaypalCheckoutComponent } from './features/payments/paypal-checkout/paypal-checkout.component';
+import { pendingChangesGuard } from './core/guards/pending-changes.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/trips', pathMatch: 'full' },
@@ -20,6 +22,7 @@ export const routes: Routes = [
       {
         path: 'create',
         canActivate: [managerGuard],
+        canDeactivate: [pendingChangesGuard],
         loadComponent: () =>
           import('./features/trips/trip-create/trip-create.component').then(
             (m) => m.TripCreateComponent,
@@ -28,6 +31,7 @@ export const routes: Routes = [
       {
         path: ':id/edit',
         canActivate: [managerGuard],
+        canDeactivate: [pendingChangesGuard],
         loadComponent: () =>
           import('./features/trips/trip-edit/trip-edit.component').then(
             (m) => m.TripEditComponent,
@@ -69,6 +73,7 @@ export const routes: Routes = [
   {
     path: 'settings',
     canActivate: [authGuard],
+    canDeactivate: [pendingChangesGuard],
     loadComponent: () =>
       import('./features/settings/settings.component').then((m) => m.SettingsComponent),
   },
@@ -86,6 +91,7 @@ export const routes: Routes = [
       },
       {
         path: 'create-manager',
+        canDeactivate: [pendingChangesGuard],
         loadComponent: () =>
           import('./features/admin/create-manager/create-manager.component').then(
             (m) => m.CreateManagerComponent,
@@ -108,8 +114,14 @@ export const routes: Routes = [
   },
   {
     path: 'register',
+    canDeactivate: [pendingChangesGuard],
     loadComponent: () =>
       import('./features/auth/register/register.component').then((m) => m.RegisterComponent),
+  },
+  {
+    path: 'payments/paypal/:amount',
+    canActivate: [explorerGuard],
+    component: PaypalCheckoutComponent,
   },
   {
     path: 'forbidden',

@@ -1,10 +1,11 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, ViewChild, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TripService } from '../trip.service';
 import { TripFormComponent, TripFormValue } from '../trip-form/trip-form.component';
+import { ComponentCanDeactivate } from '../../../core/guards/pending-changes.guard';
 
 @Component({
   selector: 'app-trip-edit',
@@ -12,7 +13,7 @@ import { TripFormComponent, TripFormValue } from '../trip-form/trip-form.compone
   imports: [TripFormComponent, TranslatePipe, RouterLink],
   templateUrl: './trip-edit.component.html',
 })
-export class TripEditComponent {
+export class TripEditComponent implements ComponentCanDeactivate {
   private route = inject(ActivatedRoute);
   private tripService = inject(TripService);
   private router = inject(Router);
@@ -23,6 +24,9 @@ export class TripEditComponent {
 
   readonly isLoading = signal(false);
   readonly errorMessage = signal<string | null>(null);
+
+  @ViewChild(TripFormComponent)
+  private tripFormComponent?: TripFormComponent;
 
   async onUpdate(value: TripFormValue): Promise<void> {
     const tripId = this.id();
@@ -53,6 +57,7 @@ export class TripEditComponent {
     this.isLoading.set(false);
 
     if (success) {
+      this.tripFormComponent?.tripForm.markAsPristine();
       void this.router.navigate(['/trips', tripId]);
     } else {
       this.errorMessage.set('trips.form.error.update_failed');
@@ -62,5 +67,9 @@ export class TripEditComponent {
   onCancel(): void {
     const tripId = this.id();
     void this.router.navigate(tripId ? ['/trips', tripId] : ['/trips']);
+  }
+
+  canDeactivate(): boolean {
+    return !this.tripFormComponent?.tripForm.dirty;
   }
 }
