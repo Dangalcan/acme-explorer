@@ -6,7 +6,15 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Client
   },
   {
+    path: 'trips/:id/edit',
+    renderMode: RenderMode.Client
+  },
+  {
     path: 'trips/:id',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'payments/paypal/:amount',
     renderMode: RenderMode.Client
   },
   {

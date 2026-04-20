@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { paypalConfig } from '../../infrastructure/paypal.config';
 import { ApplicationService } from '../../applications/application.service';
+import { TripService } from '../../trips/trip.service';
 
 type CheckoutStatus = 'idle' | 'ready' | 'success' | 'error';
 
@@ -63,6 +64,7 @@ export class PaypalCheckoutComponent implements AfterViewInit {
   private readonly route = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   private readonly applicationService = inject(ApplicationService);
+  private readonly tripService = inject(TripService);
   private readonly currency = 'EUR';
 
   @ViewChild('paypalButtons', { static: true })
@@ -71,20 +73,44 @@ export class PaypalCheckoutComponent implements AfterViewInit {
   readonly amount = signal(0);
   readonly status = signal<CheckoutStatus>('idle');
   readonly errorMessage = signal('');
+  readonly applicationId = signal<string | null>(null);
 
   readonly hasValidAmount = computed(() => this.amount() > 0);
 
   ngAfterViewInit() {
     this.route.paramMap
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(async (params) => {
-        const parsedAmount = Number(params.get('amount'));
-        this.amount.set(Math.max(0, parsedAmount));
+      .subscribe(async () => {
+        const applicationId = this.route.snapshot.queryParamMap.get('applicationId');
+        this.applicationId.set(applicationId);
         this.errorMessage.set('');
         this.status.set('idle');
+        this.amount.set(0);
         this.paypalButtonsRef.nativeElement.innerHTML = '';
 
+        if (!applicationId) {
+          this.status.set('error');
+          this.errorMessage.set('Missing application identifier for checkout.');
+          return;
+        }
+
+        await Promise.all([this.applicationService.refresh(), this.tripService.refresh()]);
+
+        const application = this.applicationService
+          .applications()
+          .find((item) => item.id === applicationId && item.status === 'DUE');
+
+        if (!application) {
+          this.status.set('error');
+          this.errorMessage.set('Application is not available for payment.');
+          return;
+        }
+
+        const trip = this.tripService.getById(application.tripId);
+        this.amount.set(Math.max(0, trip?.totalPrice ?? 0));
+
         if (!this.hasValidAmount()) {
+          this.status.set('error');
           this.errorMessage.set('Amount must be a number greater than zero.');
           return;
         }
@@ -154,14 +180,18 @@ export class PaypalCheckoutComponent implements AfterViewInit {
           }),
         onApprove: async (_data, actions) => {
           await actions.order.capture();
-          const applicationId = this.route.snapshot.queryParamMap.get('applicationId');
-          if (applicationId) {
-            const paid = await this.applicationService.payApplication(applicationId);
-            if (!paid) {
-              this.status.set('error');
-              this.errorMessage.set('Payment was captured but the application could not be updated.');
-              return;
-            }
+          const currentApplicationId = this.applicationId();
+          if (!currentApplicationId) {
+            this.status.set('error');
+            this.errorMessage.set('Missing application identifier for checkout.');
+            return;
+          }
+
+          const paid = await this.applicationService.payApplication(currentApplicationId);
+          if (!paid) {
+            this.status.set('error');
+            this.errorMessage.set('Payment was captured but the application could not be updated.');
+            return;
           }
           this.status.set('success');
         },
