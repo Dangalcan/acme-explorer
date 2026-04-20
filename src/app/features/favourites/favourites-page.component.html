@@ -1,30 +1,30 @@
-<div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 py-10 px-4">
+<div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 py-10 px-4">
   <div class="max-w-6xl mx-auto">
     <div class="mb-10 text-center animate-slide-up">
-      <h1 class="text-4xl font-bold text-slate-800 tracking-tight">{{ 'favourites.title' | translate }}</h1>
-      <p class="text-slate-500 mt-2 text-base">{{ 'favourites.subtitle' | translate }}</p>
+      <h1 class="text-4xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">{{ 'favourites.title' | translate }}</h1>
+      <p class="text-slate-500 dark:text-slate-400 mt-2 text-base">{{ 'favourites.subtitle' | translate }}</p>
     </div>
 
     @if (isLoading()) {
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-6 text-slate-500">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 mb-6 text-slate-500 dark:text-slate-400">
         <p>{{ 'favourites.loading' | translate }}</p>
       </div>
     }
 
     @if (favouritesError(); as error) {
-      <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
-        <p class="text-sm text-red-700 font-medium">{{ error }}</p>
+      <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/40 rounded-xl p-4 mb-6">
+        <p class="text-sm text-red-700 dark:text-red-400 font-medium">{{ error }}</p>
       </div>
     }
 
     <!-- Create list -->
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-8">
-      <h2 class="text-lg font-bold text-slate-800 mb-4">{{ 'favourites.create_list' | translate }}</h2>
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 mb-8">
+      <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4">{{ 'favourites.create_list' | translate }}</h2>
 
       <div class="flex flex-col sm:flex-row gap-3">
         <input
           type="text"
-          class="flex-1 rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-200"
+          class="flex-1 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-200"
           [ngModel]="newListName()"
           (ngModelChange)="newListName.set($event)"
           [maxlength]="maxNameLength"
@@ -40,46 +40,46 @@
         </button>
       </div>
 
-      <p class="text-xs text-slate-400 mt-2">
+      <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">
         {{ newListName().length }} / {{ maxNameLength }}
       </p>
 
       @if (createListError(); as error) {
-        <p class="text-sm text-red-600 mt-2 font-medium">{{ error }}</p>
+        <p class="text-sm text-red-600 dark:text-red-400 mt-2 font-medium">{{ error }}</p>
       }
     </div>
 
-    <!-- Keyword filter (req 23c) -->
+    <!-- Keyword filter -->
     <div class="mb-6">
       <input
         type="search"
         [ngModel]="filterKeyword()"
         (ngModelChange)="filterKeyword.set($event)"
         [placeholder]="'favourites.filter_placeholder' | translate"
-        class="w-full sm:w-80 rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-200"
+        class="w-full sm:w-80 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-200"
       />
     </div>
 
     @if (!hasLists()) {
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-10 text-center text-slate-500">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-10 text-center text-slate-500 dark:text-slate-400">
         <p class="text-lg font-semibold mb-2">{{ 'favourites.no_lists' | translate }}</p>
         <p>{{ 'favourites.no_lists_hint' | translate }}</p>
       </div>
     } @else if (filteredFavouriteLists().length === 0 && filterKeyword()) {
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-10 text-center text-slate-500">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-10 text-center text-slate-500 dark:text-slate-400">
         <p class="text-lg font-semibold">{{ 'favourites.no_results' | translate }}</p>
       </div>
     } @else {
       <div class="space-y-8">
         @for (list of filteredFavouriteLists(); track list.id) {
-          <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+          <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6">
             <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-6">
               <div class="flex-1 min-w-0">
                 @if (editingListId() === list.id) {
                   <div class="flex flex-col sm:flex-row gap-3">
                     <input
                       type="text"
-                      class="flex-1 rounded-xl border border-slate-300 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-200"
+                      class="flex-1 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-200"
                       [ngModel]="editingName()"
                       (ngModelChange)="editingName.set($event)"
                       [maxlength]="maxNameLength"
@@ -95,7 +95,7 @@
                       </button>
                       <button
                         type="button"
-                        class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700"
+                        class="rounded-lg border border-slate-300 dark:border-slate-600 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
                         (click)="cancelEditing()"
                       >
                         {{ 'favourites.cancel' | translate }}
@@ -103,12 +103,12 @@
                     </div>
                   </div>
                   @if (editListError(); as error) {
-                    <p class="text-sm text-red-600 mt-2 font-medium">{{ error }}</p>
+                    <p class="text-sm text-red-600 dark:text-red-400 mt-2 font-medium">{{ error }}</p>
                   }
                 } @else {
                   <div>
-                    <h2 class="text-2xl font-bold text-slate-800 break-all">{{ list.name }}</h2>
-                    <p class="text-sm text-slate-500 mt-1">
+                    <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100 break-all">{{ list.name }}</h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
                       {{ list.tripIds.length }}
                       @if (list.tripIds.length === 1) {
                         <span>{{ 'favourites.trip_saved_one' | translate }}</span>
@@ -124,14 +124,14 @@
                 <div class="flex flex-wrap gap-2">
                   <button
                     type="button"
-                    class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700"
+                    class="rounded-lg border border-slate-300 dark:border-slate-600 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
                     (click)="startEditing(list)"
                   >
                     {{ 'favourites.rename' | translate }}
                   </button>
                   <button
                     type="button"
-                    class="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-700"
+                    class="rounded-lg border border-red-200 dark:border-red-800/40 bg-red-50 dark:bg-red-900/20 px-4 py-2 text-sm font-semibold text-red-700 dark:text-red-400"
                     (click)="deleteList(list.id)"
                   >
                     {{ 'favourites.delete' | translate }}
@@ -141,15 +141,15 @@
             </div>
 
             <!-- Add trip -->
-            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6">
-              <h3 class="text-sm font-bold text-slate-700 mb-3">{{ 'favourites.add_trip_title' | translate }}</h3>
+            <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-4 mb-6">
+              <h3 class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-3">{{ 'favourites.add_trip_title' | translate }}</h3>
 
               @if (availableTripsForList(list).length === 0) {
-                <p class="text-sm text-slate-500">{{ 'favourites.all_trips_added' | translate }}</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400">{{ 'favourites.all_trips_added' | translate }}</p>
               } @else {
                 <div class="flex flex-col sm:flex-row gap-3">
                   <select
-                    class="flex-1 rounded-xl border border-slate-300 px-4 py-3 text-sm bg-white"
+                    class="flex-1 rounded-xl border border-slate-300 dark:border-slate-600 px-4 py-3 text-sm bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100"
                     [ngModel]="selectedTripByListId()[list.id] || ''"
                     (ngModelChange)="setSelectedTrip(list.id, $event)"
                   >
@@ -161,27 +161,26 @@
 
                   <button
                     type="button"
-                    class="rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-semibold px-5 py-3"
+                    class="rounded-xl bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white font-semibold px-5 py-3 transition-colors"
                     (click)="addSelectedTrip(list.id)"
                   >
                     {{ 'favourites.add_trip_button' | translate }}
                   </button>
                 </div>
                 @if (addTripErrorByListId()[list.id]; as error) {
-                  <p class="text-sm text-red-600 mt-3 font-medium">{{ error }}</p>
+                  <p class="text-sm text-red-600 dark:text-red-400 mt-3 font-medium">{{ error }}</p>
                 }
               }
             </div>
 
             <!-- Trips -->
             @if (tripsForList(list).length === 0) {
-              <div class="text-center py-8 text-slate-400">
+              <div class="text-center py-8 text-slate-400 dark:text-slate-500">
                 <p class="font-medium">{{ 'favourites.empty_list' | translate }}</p>
               </div>
             } @else {
               <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 @for (trip of tripsForList(list); track trip.id) {
-                  <!-- req 26: expired/cancelled → disabled; about-to-start → amber highlight -->
                   <div class="flex flex-col gap-3 relative"
                        [class.opacity-50]="isExpiredOrCancelled(trip)"
                        [class.ring-2]="isAboutToStart(trip)"
@@ -190,7 +189,7 @@
 
                     @if (isExpiredOrCancelled(trip)) {
                       <div class="absolute top-2 left-2 z-10 pointer-events-none">
-                        <span class="bg-slate-700/80 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                        <span class="bg-slate-700/80 dark:bg-slate-900/80 text-white text-xs font-bold px-2 py-0.5 rounded-full">
                           {{ trip.cancellation ? ('favourites.trip_cancelled' | translate) : ('favourites.trip_expired' | translate) }}
                         </span>
                       </div>
@@ -200,7 +199,7 @@
 
                     <button
                       type="button"
-                      class="rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 font-semibold px-4 py-2 text-sm"
+                      class="rounded-xl border border-red-200 dark:border-red-800/40 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-700 dark:text-red-400 font-semibold px-4 py-2 text-sm"
                       (click)="removeTrip(list.id, trip.id)"
                     >
                       {{ 'favourites.remove_from_list' | translate }}

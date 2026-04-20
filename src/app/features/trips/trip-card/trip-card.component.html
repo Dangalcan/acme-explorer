@@ -1,5 +1,5 @@
 @if (mode === 'list') {
-  <div class="group bg-white rounded-2xl shadow-md hover:shadow-xl border border-slate-100
+  <div class="group bg-white dark:bg-slate-800 rounded-2xl shadow-md hover:shadow-xl border border-slate-100 dark:border-slate-700
               overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 cursor-pointer"
        (click)="view.emit(trip)">
 
@@ -13,7 +13,7 @@
 
     <!-- Cancelled banner -->
     @if (trip.cancellation) {
-      <div class="bg-red-50 border-b border-red-100 px-5 py-2 flex items-center gap-1.5 text-xs font-semibold text-red-600">
+      <div class="bg-red-50 dark:bg-red-900/20 border-b border-red-100 dark:border-red-800/40 px-5 py-2 flex items-center gap-1.5 text-xs font-semibold text-red-600 dark:text-red-400">
         <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
         </svg>
@@ -21,9 +21,9 @@
       </div>
     }
 
-    <!-- Starting soon banner (B19) -->
+    <!-- Starting soon banner -->
     @if (isUpcomingSoon()) {
-      <div class="bg-amber-50 border-b border-amber-100 px-5 py-2 flex items-center gap-1.5 text-xs font-semibold text-amber-600">
+      <div class="bg-amber-50 dark:bg-amber-900/20 border-b border-amber-100 dark:border-amber-800/40 px-5 py-2 flex items-center gap-1.5 text-xs font-semibold text-amber-600 dark:text-amber-400">
         <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
         </svg>
@@ -36,7 +36,7 @@
 
       <!-- Title + difficulty badge -->
       <div class="flex items-start justify-between gap-2">
-        <h2 class="text-base font-bold text-slate-800 leading-snug">{{ trip.title }}</h2>
+        <h2 class="text-base font-bold text-slate-800 dark:text-slate-100 leading-snug">{{ trip.title }}</h2>
         <span class="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0
                      {{ difficultyConfig[trip.difficultyLevel] }}">
           {{ trip.difficultyLevel | dificultad }}
@@ -44,13 +44,13 @@
       </div>
 
       <!-- Ticker -->
-      <p class="text-xs text-slate-400 font-mono -mt-1">{{ trip.ticker }}</p>
+      <p class="text-xs text-slate-400 dark:text-slate-500 font-mono -mt-1">{{ trip.ticker }}</p>
 
       <!-- Description -->
-      <p class="text-sm text-slate-500 leading-relaxed line-clamp-2">{{ trip.description | description:55 }}</p>
+      <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">{{ trip.description | description:55 }}</p>
 
       <!-- Meta -->
-      <div class="text-xs text-slate-400 space-y-0.5 mt-1">
+      <div class="text-xs text-slate-400 dark:text-slate-500 space-y-0.5 mt-1">
         @if (trip.location) {
           <p class="flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,13 +67,13 @@
       </div>
 
       <!-- Footer -->
-      <div class="border-t border-slate-100 mt-auto pt-3 flex items-center justify-between">
+      <div class="border-t border-slate-100 dark:border-slate-700 mt-auto pt-3 flex items-center justify-between">
         <div>
-          <p class="text-xs text-slate-400">{{ trip.startDate | fechas:'d MMM' }} → {{ trip.endDate | fechas:'d MMM yyyy' }}</p>
+          <p class="text-xs text-slate-400 dark:text-slate-500">{{ trip.startDate | fechas:'d MMM' }} → {{ trip.endDate | fechas:'d MMM yyyy' }}</p>
           <p class="text-xs font-semibold text-indigo-500 mt-0.5">{{ 'trips.card.days' | translate: { count: getDuration(trip) } }}</p>
           <p class="text-xs font-semibold text-amber-600 mt-0.5">{{ trip.availablePlaces | soldOut:trip.maxParticipants }}</p>
         </div>
-        <p class="text-lg font-bold text-slate-800">{{ getTotalPrice(trip) | appCurrency }}</p>
+        <p class="text-lg font-bold text-slate-800 dark:text-slate-100">{{ getTotalPrice(trip) | appCurrency }}</p>
       </div>
 
       <!-- Action buttons -->
@@ -83,8 +83,8 @@
             @if (!isCancelPanelOpen()) {
               <button type="button"
                       (click)="openCancelPanel($event)"
-                      class="flex-1 py-2 rounded-lg bg-red-50 hover:bg-red-100 active:scale-95
-                            text-[#b21c2b] text-sm font-semibold border border-red-200 transition-all duration-150">
+                      class="flex-1 py-2 rounded-lg bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 active:scale-95
+                            text-[#b21c2b] dark:text-red-400 text-sm font-semibold border border-red-200 dark:border-red-800/40 transition-all duration-150">
                 {{ 'trips.card.cancel_trip' | translate }}
               </button>
             }
@@ -96,7 +96,7 @@
                       (click)="openApplyPanel($event)"
                       [disabled]="isApplyDisabled()"
                       class="flex-1 py-2 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723] active:scale-95
-                            text-white text-sm font-semibold transition-all duration-150 disabled:bg-slate-300 disabled:text-slate-600 disabled:cursor-not-allowed disabled:active:scale-100 disabled:hover:bg-slate-300">
+                            text-white text-sm font-semibold transition-all duration-150 disabled:bg-slate-300 dark:disabled:bg-slate-600 disabled:text-slate-600 dark:disabled:text-slate-400 disabled:cursor-not-allowed disabled:active:scale-100 disabled:hover:bg-slate-300 dark:disabled:hover:bg-slate-600">
                 {{ applyButtonLabel() }}
               </button>
             }
@@ -106,8 +106,8 @@
             <button
               type="button"
               (click)="toggleFavouritePanel($event)"
-              class="shrink-0 px-3 py-2 rounded-lg border border-indigo-200 bg-indigo-50 hover:bg-indigo-100
-                    text-indigo-700 transition-all duration-150"
+              class="shrink-0 px-3 py-2 rounded-lg border border-indigo-200 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/30
+                    text-indigo-700 dark:text-indigo-400 transition-all duration-150"
               [attr.aria-label]="'trips.card.aria_add_to_favourites' | translate"
               [title]="'trips.card.aria_add_to_favourites' | translate"
             >
@@ -121,10 +121,10 @@
 
         @if (canShowFavouriteButton() && isFavouritePanelVisible()) {
           <div
-            class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3"
+            class="mt-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-3"
             (click)="$event.stopPropagation()"
           >
-            <p class="text-sm font-semibold text-slate-700 mb-4">{{ 'trips.card.save_to_favourite' | translate }}</p>
+            <p class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">{{ 'trips.card.save_to_favourite' | translate }}</p>
 
             @if (getAvailableFavouriteLists().length > 0) {
               <div class="flex flex-col gap-1">
@@ -150,33 +150,33 @@
             }
 
             @if (favouriteError(); as error) {
-              <p class="mt-2 text-sm font-medium text-red-600">{{ error }}</p>
+              <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ error }}</p>
             }
           </div>
         }
 
         <!-- Inline apply comment panel -->
         @if (currentRole() !== 'manager' && isApplyPanelOpen()) {
-          <div class="mt-3 rounded-xl border border-indigo-200 bg-indigo-50 p-3 space-y-2"
+          <div class="mt-3 rounded-xl border border-indigo-200 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-900/20 p-3 space-y-2"
                (click)="$event.stopPropagation()">
-            <p class="text-sm font-semibold text-indigo-700">{{ 'trips.card.apply_comment_label' | translate }}</p>
+            <p class="text-sm font-semibold text-indigo-700 dark:text-indigo-400">{{ 'trips.card.apply_comment_label' | translate }}</p>
             <textarea
               [ngModel]="applyComment()"
               (ngModelChange)="applyComment.set($event); applyError.set(null)"
               rows="3"
               [placeholder]="'trips.card.apply_comment_placeholder' | translate"
               [maxlength]="1000"
-              class="w-full px-3 py-2 rounded-lg border border-indigo-200 bg-white text-slate-800 text-sm
+              class="w-full px-3 py-2 rounded-lg border border-indigo-200 dark:border-indigo-700 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                      focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none"
             ></textarea>
             @if (applyError()) {
-              <p class="text-xs text-red-600">{{ applyError() }}</p>
+              <p class="text-xs text-red-600 dark:text-red-400">{{ applyError() }}</p>
             }
             <div class="flex gap-2 justify-end">
               <button type="button"
                       (click)="closeApplyPanel($event)"
-                      class="px-3 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-600
-                             text-xs font-semibold hover:bg-slate-50 transition-colors">
+                      class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300
+                             text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
                 {{ 'common.back' | translate }}
               </button>
               <button type="button"
@@ -199,27 +199,27 @@
 
         <!-- Inline cancel reason panel -->
         @if (canCancelTrip() && isCancelPanelOpen()) {
-          <div class="mt-3 rounded-xl border border-red-200 bg-red-50 p-3 space-y-2"
+          <div class="mt-3 rounded-xl border border-red-200 dark:border-red-800/40 bg-red-50 dark:bg-red-900/20 p-3 space-y-2"
                (click)="$event.stopPropagation()">
-            <p class="text-sm font-semibold text-red-700">{{ 'trips.card.cancel_reason_label' | translate }}</p>
+            <p class="text-sm font-semibold text-red-700 dark:text-red-400">{{ 'trips.card.cancel_reason_label' | translate }}</p>
             <textarea
               [ngModel]="cancelReason()"
               (ngModelChange)="cancelReason.set($event); cancelReasonError.set(null)"
               rows="3"
               [placeholder]="'trips.card.cancel_reason_placeholder' | translate"
               [maxlength]="cancellationValidation.reason.maxLength"
-              class="w-full px-3 py-2 rounded-lg border border-red-300 bg-white text-slate-800 text-sm
+              class="w-full px-3 py-2 rounded-lg border border-red-300 dark:border-red-700 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                      focus:outline-none focus:ring-2 focus:ring-red-400 resize-none"
               [class.border-red-500]="cancelReasonError()"
             ></textarea>
             @if (cancelReasonError()) {
-              <p class="text-xs text-red-600">{{ cancelReasonError() }}</p>
+              <p class="text-xs text-red-600 dark:text-red-400">{{ cancelReasonError() }}</p>
             }
             <div class="flex gap-2 justify-end">
               <button type="button"
                       (click)="closeCancelPanel($event)"
-                      class="px-3 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-600
-                             text-xs font-semibold hover:bg-slate-50 transition-colors">
+                      class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300
+                             text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
                 {{ 'common.back' | translate }}
               </button>
               <button type="button"
@@ -254,21 +254,21 @@
     }
 
     <!-- Header -->
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-4">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 mb-4">
 
       <div class="flex items-start justify-between gap-4 mb-3">
-        <h1 class="text-2xl font-bold text-slate-800 leading-snug">{{ trip.title }}</h1>
+        <h1 class="text-2xl font-bold text-slate-800 dark:text-slate-100 leading-snug">{{ trip.title }}</h1>
         <span class="text-sm font-semibold px-3 py-1 rounded-full shrink-0
                      {{ difficultyConfig[trip.difficultyLevel] }}">
           {{ trip.difficultyLevel | dificultad }}
         </span>
       </div>
 
-      <p class="text-xs text-slate-400 font-mono mb-3">{{ trip.ticker }}</p>
+      <p class="text-xs text-slate-400 dark:text-slate-500 font-mono mb-3">{{ trip.ticker }}</p>
 
       <!-- Cancelled banner -->
       @if (trip.cancellation) {
-        <div class="bg-red-50 border border-red-100 rounded-lg px-4 py-2.5 flex items-center gap-2 text-sm font-semibold text-red-600 mb-3">
+        <div class="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/40 rounded-lg px-4 py-2.5 flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400 mb-3">
           <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
           </svg>
@@ -276,15 +276,15 @@
         </div>
       }
 
-      <p class="text-slate-600 leading-relaxed mb-4">{{ trip.description | description:260 }}</p>
+      <p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-4">{{ trip.description | description:260 }}</p>
 
       @if (canShowFavouriteButton() && !trip.cancellation) {
         <div class="mb-4">
           <button
             type="button"
             (click)="toggleFavouritePanel($event)"
-            class="inline-flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 hover:bg-indigo-100
-                  text-indigo-700 px-4 py-2 text-sm font-semibold transition-all duration-150"
+            class="inline-flex items-center gap-2 rounded-lg border border-indigo-200 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/30
+                  text-indigo-700 dark:text-indigo-400 px-4 py-2 text-sm font-semibold transition-all duration-150"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -295,8 +295,8 @@
         </div>
 
         @if (isFavouritePanelVisible()) {
-          <div class="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <p class="text-sm font-semibold text-slate-700 mb-2">{{ 'trips.card.save_to_favourite' | translate }}</p>
+          <div class="mb-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-4">
+            <p class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{{ 'trips.card.save_to_favourite' | translate }}</p>
 
             @if (getAvailableFavouriteLists().length > 0) {
               <div class="flex items-start gap-2">
@@ -320,7 +320,7 @@
             }
 
             @if (favouriteError(); as error) {
-              <p class="mt-2 text-sm font-medium text-red-600">{{ error }}</p>
+              <p class="mt-2 text-sm font-medium text-red-600 dark:text-red-400">{{ error }}</p>
             }
           </div>
         }
@@ -329,58 +329,58 @@
       <!-- Key facts grid -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
         <div>
-          <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.start_date' | translate }}</p>
-          <p class="font-semibold text-slate-700">{{ trip.startDate | fechas:'d MMM yyyy' }}</p>
+          <p class="text-xs text-slate-400 dark:text-slate-500 mb-0.5">{{ 'trips.card.start_date' | translate }}</p>
+          <p class="font-semibold text-slate-700 dark:text-slate-300">{{ trip.startDate | fechas:'d MMM yyyy' }}</p>
         </div>
         <div>
-          <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.end_date' | translate }}</p>
-          <p class="font-semibold text-slate-700">{{ trip.endDate | fechas:'d MMM yyyy' }}</p>
+          <p class="text-xs text-slate-400 dark:text-slate-500 mb-0.5">{{ 'trips.card.end_date' | translate }}</p>
+          <p class="font-semibold text-slate-700 dark:text-slate-300">{{ trip.endDate | fechas:'d MMM yyyy' }}</p>
         </div>
         <div>
-          <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.duration' | translate }}</p>
-          <p class="font-semibold text-slate-700">{{ getDuration(trip) }} days</p>
+          <p class="text-xs text-slate-400 dark:text-slate-500 mb-0.5">{{ 'trips.card.duration' | translate }}</p>
+          <p class="font-semibold text-slate-700 dark:text-slate-300">{{ getDuration(trip) }} days</p>
         </div>
         <div>
-          <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.max_participants_label' | translate }}</p>
-          <p class="font-semibold text-slate-700">{{ trip.maxParticipants }}</p>
+          <p class="text-xs text-slate-400 dark:text-slate-500 mb-0.5">{{ 'trips.card.max_participants_label' | translate }}</p>
+          <p class="font-semibold text-slate-700 dark:text-slate-300">{{ trip.maxParticipants }}</p>
         </div>
         @if (trip.location) {
           <div>
-            <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.location' | translate }}</p>
-            <p class="font-semibold text-slate-700">{{ trip.location.city }}, {{ trip.location.country }}</p>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mb-0.5">{{ 'trips.card.location' | translate }}</p>
+            <p class="font-semibold text-slate-700 dark:text-slate-300">{{ trip.location.city }}, {{ trip.location.country }}</p>
           </div>
         }
         <div>
-          <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.total_price' | translate }}</p>
+          <p class="text-xs text-slate-400 dark:text-slate-500 mb-0.5">{{ 'trips.card.total_price' | translate }}</p>
           <p class="font-bold text-indigo-600">{{ getTotalPrice(trip) | appCurrency }}</p>
         </div>
         <div>
-          <p class="text-xs text-slate-400 mb-0.5">{{ 'trips.card.availability' | translate }}</p>
-          <p class="font-semibold text-slate-700">{{ trip.availablePlaces | soldOut:trip.maxParticipants }}</p>
+          <p class="text-xs text-slate-400 dark:text-slate-500 mb-0.5">{{ 'trips.card.availability' | translate }}</p>
+          <p class="font-semibold text-slate-700 dark:text-slate-300">{{ trip.availablePlaces | soldOut:trip.maxParticipants }}</p>
         </div>
       </div>
     </div>
 
     <!-- Stages -->
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-4">
-      <h2 class="text-lg font-bold text-slate-800 mb-4">{{ 'trips.card.stages' | translate }}</h2>
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 mb-4">
+      <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4">{{ 'trips.card.stages' | translate }}</h2>
       <ol class="space-y-4">
         @for (stage of trip.stages; track stage.id; let i = $index) {
           <li class="flex gap-4">
             <div class="flex flex-col items-center">
-              <span class="w-7 h-7 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold flex items-center justify-center shrink-0">
+              <span class="w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0">
                 {{ i + 1 }}
               </span>
               @if (!$last) {
-                <div class="w-px flex-1 bg-slate-200 mt-1"></div>
+                <div class="w-px flex-1 bg-slate-200 dark:bg-slate-700 mt-1"></div>
               }
             </div>
             <div class="pb-4 flex-1">
               <div class="flex items-center justify-between gap-2">
-                <p class="font-semibold text-slate-800">{{ stage.title }}</p>
+                <p class="font-semibold text-slate-800 dark:text-slate-100">{{ stage.title }}</p>
                 <p class="text-sm font-semibold text-indigo-500 shrink-0">{{ stage.price | appCurrency }}</p>
               </div>
-              <p class="text-sm text-slate-500 mt-0.5">{{ stage.description | description:180 }}</p>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{{ stage.description | description:180 }}</p>
             </div>
           </li>
         }
@@ -389,8 +389,8 @@
 
     <!-- All pictures -->
     @if (trip.pictures && trip.pictures.length > 1) {
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-4">
-        <h2 class="text-lg font-bold text-slate-800 mb-4">{{ 'trips.card.photos' | translate }}</h2>
+      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 mb-4">
+        <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4">{{ 'trips.card.photos' | translate }}</h2>
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
           @for (pic of trip.pictures; track pic.url) {
             <div class="rounded-xl overflow-hidden h-36">
@@ -407,35 +407,35 @@
     }
 
     <!-- Reviews -->
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-      <h2 class="text-lg font-bold text-slate-800 mb-4">{{ 'trips.card.reviews' | translate }}</h2>
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6">
+      <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4">{{ 'trips.card.reviews' | translate }}</h2>
 
-      <!-- Average rating summary (req 25) -->
+      <!-- Average rating summary -->
       @if (trip.averageRating !== undefined) {
-        <div class="flex items-center gap-2 mb-4 pb-4 border-b border-slate-100">
-          <span class="text-sm font-semibold text-slate-700">{{ 'trips.card.average_rating' | translate }}</span>
+        <div class="flex items-center gap-2 mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
+          <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ 'trips.card.average_rating' | translate }}</span>
           <div class="flex gap-0.5">
             @for (star of ratingStars; track star) {
-              <svg class="w-5 h-5 {{ star <= trip.averageRating! ? 'text-amber-400' : 'text-slate-200' }}"
+              <svg class="w-5 h-5 {{ star <= trip.averageRating! ? 'text-amber-400' : 'text-slate-200 dark:text-slate-600' }}"
                    fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
               </svg>
             }
           </div>
-          <span class="text-sm text-slate-500">({{ trip.averageRating | number:'1.1-1' }})</span>
+          <span class="text-sm text-slate-500 dark:text-slate-400">({{ trip.averageRating | number:'1.1-1' }})</span>
         </div>
       }
 
       @if (reviews.length === 0) {
-        <p class="text-sm text-slate-400">{{ 'trips.card.no_reviews' | translate }}</p>
+        <p class="text-sm text-slate-400 dark:text-slate-500">{{ 'trips.card.no_reviews' | translate }}</p>
       } @else {
         <ul class="space-y-4">
           @for (review of reviews; track review.id) {
-            <li class="border-b border-slate-100 last:border-0 pb-4 last:pb-0">
+            <li class="border-b border-slate-100 dark:border-slate-700 last:border-0 pb-4 last:pb-0">
 
               @if (editingReviewId() === review.id) {
                 <!-- Edit mode -->
-                <p class="text-sm font-semibold text-slate-700 mb-2">{{ 'reviews.edit_title' | translate }}</p>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">{{ 'reviews.edit_title' | translate }}</p>
 
                 <!-- Star picker -->
                 <div class="flex gap-1 mb-3">
@@ -443,7 +443,7 @@
                     <button type="button" (click)="setEditRating(star)"
                             class="focus:outline-none transition-colors"
                             [attr.aria-label]="star + ' star'">
-                      <svg class="w-7 h-7 {{ star <= editRating() ? 'text-amber-400' : 'text-slate-300' }} hover:text-amber-300 transition-colors"
+                      <svg class="w-7 h-7 {{ star <= editRating() ? 'text-amber-400' : 'text-slate-300 dark:text-slate-600' }} hover:text-amber-300 transition-colors"
                            fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                       </svg>
@@ -458,11 +458,11 @@
                   rows="3"
                   [placeholder]="'reviews.comment_placeholder' | translate"
                   [maxlength]="reviewValidation.comment.maxLength"
-                  class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-200 resize-none mb-2"
+                  class="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-200 resize-none mb-2"
                 ></textarea>
 
                 @if (reviewActionError()) {
-                  <p class="text-sm text-red-600 mb-2">{{ reviewActionError()! | translate }}</p>
+                  <p class="text-sm text-red-600 dark:text-red-400 mb-2">{{ reviewActionError()! | translate }}</p>
                 }
 
                 <div class="flex gap-2">
@@ -478,7 +478,7 @@
                     {{ 'reviews.save_button' | translate }}
                   </button>
                   <button type="button" (click)="cancelEditReview()"
-                          class="px-4 py-1.5 rounded-lg border border-slate-300 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors">
+                          class="px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                     {{ 'reviews.cancel_button' | translate }}
                   </button>
                 </div>
@@ -486,19 +486,19 @@
               } @else {
                 <!-- View mode -->
                 <div class="flex items-center justify-between mb-1">
-                  <p class="text-sm font-semibold text-slate-700">{{ review.explorerId }}</p>
-                  <p class="text-xs text-slate-400">{{ review.createdAt | fechas:'d MMM yyyy' }}</p>
+                  <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ review.explorerId }}</p>
+                  <p class="text-xs text-slate-400 dark:text-slate-500">{{ review.createdAt | fechas:'d MMM yyyy' }}</p>
                 </div>
                 <div class="flex gap-0.5 mb-1.5">
                   @for (star of ratingStars; track star) {
-                    <svg class="w-4 h-4 {{ star <= review.rating ? 'text-amber-400' : 'text-slate-200' }}"
+                    <svg class="w-4 h-4 {{ star <= review.rating ? 'text-amber-400' : 'text-slate-200 dark:text-slate-600' }}"
                          fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                     </svg>
                   }
                 </div>
                 @if (review.comment) {
-                  <p class="text-sm text-slate-600 leading-relaxed">{{ review.comment | description:200 }}</p>
+                  <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ review.comment | description:200 }}</p>
                 }
 
                 @if (canModifyReview(review)) {
@@ -520,7 +520,7 @@
                     </button>
                   </div>
                   @if (reviewActionError()) {
-                    <p class="text-xs text-red-600 mt-1">{{ reviewActionError()! | translate }}</p>
+                    <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ reviewActionError()! | translate }}</p>
                   }
                 }
               }

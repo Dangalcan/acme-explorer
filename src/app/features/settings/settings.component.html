@@ -1,39 +1,39 @@
-<div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 py-10 px-4">
+<div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 py-10 px-4">
   <div class="max-w-lg mx-auto">
     <div class="mb-8 animate-slide-up">
-      <h1 class="text-3xl font-bold text-slate-800 tracking-tight">
+      <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">
         {{ 'settings.title' | translate }}
       </h1>
-      <p class="text-slate-500 mt-1 text-sm">{{ 'settings.subtitle' | translate }}</p>
+      <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">{{ 'settings.subtitle' | translate }}</p>
     </div>
 
     @if (isLoadingData()) {
-      <div class="text-center py-16 text-slate-400 text-sm">
+      <div class="text-center py-16 text-slate-400 dark:text-slate-500 text-sm">
         {{ 'settings.loading' | translate }}
       </div>
     } @else {
       <div
-        class="bg-white rounded-xl shadow-sm border border-slate-100 p-8 space-y-5 animate-slide-up"
+        class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 p-8 space-y-5 animate-slide-up"
       >
         <!-- Email (read-only) -->
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
             {{ 'settings.email_label' | translate }}
           </label>
           <input
             type="email"
             [value]="email()"
             readonly
-            class="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-500 text-sm cursor-not-allowed"
+            class="w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-sm cursor-not-allowed"
           />
-          <p class="mt-1 text-xs text-slate-400">
+          <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">
             {{ 'settings.email_readonly_hint' | translate }}
           </p>
         </div>
 
         <!-- Name -->
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
             {{ 'settings.name' | translate }} <span class="text-red-500">*</span>
           </label>
           <input
@@ -41,13 +41,13 @@
             [ngModel]="name()"
             (ngModelChange)="name.set($event)"
             [placeholder]="'settings.name' | translate"
-            class="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b] transition"
+            class="w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b] transition"
           />
         </div>
 
         <!-- Surname -->
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
             {{ 'settings.surname' | translate }} <span class="text-red-500">*</span>
           </label>
           <input
@@ -55,15 +55,15 @@
             [ngModel]="surname()"
             (ngModelChange)="surname.set($event)"
             [placeholder]="'settings.surname' | translate"
-            class="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b] transition"
+            class="w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b] transition"
           />
         </div>
 
         <!-- Phone (optional) -->
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
             {{ 'settings.phone' | translate }}
-            <span class="text-slate-400 font-normal text-xs ml-1">{{
+            <span class="text-slate-400 dark:text-slate-500 font-normal text-xs ml-1">{{
               'common.optional' | translate
             }}</span>
           </label>
@@ -72,15 +72,15 @@
             [ngModel]="phoneNumber()"
             (ngModelChange)="phoneNumber.set($event)"
             placeholder="+1234567890"
-            class="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b] transition"
+            class="w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b] transition"
           />
         </div>
 
         <!-- Address (optional) -->
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
             {{ 'settings.address' | translate }}
-            <span class="text-slate-400 font-normal text-xs ml-1">{{
+            <span class="text-slate-400 dark:text-slate-500 font-normal text-xs ml-1">{{
               'common.optional' | translate
             }}</span>
           </label>
@@ -89,13 +89,13 @@
             [ngModel]="address()"
             (ngModelChange)="address.set($event)"
             [placeholder]="'auth.register.address_placeholder' | translate"
-            class="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b] transition"
+            class="w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b] transition"
           />
         </div>
 
         <!-- Error message -->
         @if (errorMessage()) {
-          <p class="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5">
+          <p class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/40 rounded-lg px-4 py-2.5">
             {{ errorMessage() }}
           </p>
         }
@@ -103,7 +103,7 @@
         <!-- Success message -->
         @if (successMessage()) {
           <p
-            class="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-2.5"
+            class="text-sm text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/40 rounded-lg px-4 py-2.5"
           >
             {{ successMessage() }}
           </p>
@@ -120,19 +120,19 @@
       </div>
       @if (currentRole() === 'explorer') {
       <div
-        class="bg-white rounded-xl shadow-sm border border-slate-100 p-8 space-y-5 animate-slide-up mt-6"
+        class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 p-8 space-y-5 animate-slide-up mt-6"
       >
         <div>
-          <h2 class="text-xl font-bold text-slate-800 tracking-tight">
+          <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">
             {{ 'settings.finder_preferences.title' | translate }}
           </h2>
-          <p class="text-slate-500 mt-1 text-sm">
+          <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">
             {{ 'settings.finder_preferences.subtitle' | translate }}
           </p>
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
             {{ 'settings.finder_preferences.cache_time' | translate }}
           </label>
           <div class="flex items-center gap-3">
@@ -142,9 +142,9 @@
               max="24"
               [ngModel]="cacheTimeHours()"
               (ngModelChange)="cacheTimeHours.set($event)"
-              class="w-28 px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b] transition"
+              class="w-28 px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b] transition"
             />
-            <span class="text-sm text-slate-500">
+            <span class="text-sm text-slate-500 dark:text-slate-400">
               {{
                 (cacheTimeHours() === 1
                   ? 'settings.finder_preferences.hour'
@@ -153,7 +153,7 @@
               }}
             </span>
           </div>
-          <p class="mt-1 text-xs text-slate-400">
+          <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">
             {{
               'settings.finder_preferences.cache_time_hint'
                 | translate
@@ -166,7 +166,7 @@
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-slate-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
             {{ 'settings.finder_preferences.max_results' | translate }}
           </label>
           <div class="flex items-center gap-3">
@@ -176,9 +176,9 @@
               max="50"
               [ngModel]="maxResults()"
               (ngModelChange)="maxResults.set($event)"
-              class="w-28 px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b] transition"
+              class="w-28 px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b] transition"
             />
-            <span class="text-sm text-slate-500">
+            <span class="text-sm text-slate-500 dark:text-slate-400">
               {{
                 (maxResults() === 1
                   ? 'settings.finder_preferences.result'
@@ -187,7 +187,7 @@
               }}
             </span>
           </div>
-          <p class="mt-1 text-xs text-slate-400">
+          <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">
             {{
               'settings.finder_preferences.max_results_hint'
                 | translate
@@ -200,14 +200,14 @@
         </div>
 
         @if (finderPreferencesError()) {
-          <p class="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5">
+          <p class="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/40 rounded-lg px-4 py-2.5">
             {{ finderPreferencesError() }}
           </p>
         }
 
         @if (finderPreferencesSuccess()) {
           <p
-            class="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-2.5"
+            class="text-sm text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/40 rounded-lg px-4 py-2.5"
           >
             {{ finderPreferencesSuccess() }}
           </p>
@@ -216,7 +216,7 @@
         <button
           (click)="saveFinderPreferences()"
           [disabled]="isSavingFinderPreferences()"
-          class="w-full py-2.5 rounded-lg bg-slate-800 hover:bg-slate-900 text-white font-semibold text-sm transition-colors active:scale-95 shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
+          class="w-full py-2.5 rounded-lg bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white font-semibold text-sm transition-colors active:scale-95 shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {{
             isSavingFinderPreferences()

@@ -1,14 +1,14 @@
-<div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 py-10 px-4">
+<div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 py-10 px-4">
   <div class="max-w-2xl mx-auto animate-slide-up">
 
-    <h1 class="text-3xl font-bold text-slate-800 tracking-tight mb-8">
+    <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight mb-8">
       {{ 'trips.form.edit_title' | translate }}
     </h1>
 
     @if (trip(); as t) {
 
       @if (errorMessage()) {
-        <div class="mb-6 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-700 text-sm">
+        <div class="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/40 rounded-xl px-4 py-3 text-red-700 dark:text-red-400 text-sm">
           {{ errorMessage() | translate }}
         </div>
       }
@@ -21,8 +21,8 @@
       />
 
     } @else {
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 text-center">
-        <p class="text-slate-500 mb-4">{{ 'trips.details.not_found' | translate }}</p>
+      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-8 text-center">
+        <p class="text-slate-500 dark:text-slate-400 mb-4">{{ 'trips.details.not_found' | translate }}</p>
         <a
           routerLink="/trips"
           class="text-sm text-[#b21c2b] hover:underline font-medium"

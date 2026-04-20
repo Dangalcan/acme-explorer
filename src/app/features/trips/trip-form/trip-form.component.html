@@ -2,26 +2,26 @@
   [formGroup]="tripForm"
   (ngSubmit)="submit()"
   novalidate
-  class="space-y-6 bg-white rounded-2xl shadow-sm border border-slate-100 p-8 max-w-2xl mx-auto"
+  class="space-y-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-8 max-w-2xl mx-auto"
 >
   <!-- Title -->
   <div>
-    <label for="title" class="block text-sm font-medium text-slate-700 mb-1.5">
+    <label for="title" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
       {{ 'trips.form.title' | translate }} <span class="text-red-500">*</span>
     </label>
     <input
       id="title"
       type="text"
       formControlName="title"
-      class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+      class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
              focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
       [class.border-red-500]="tripForm.get('title')?.invalid && tripForm.get('title')?.touched"
     />
     @if (tripForm.get('title')?.hasError('required') && tripForm.get('title')?.touched) {
-      <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.title_required' | translate }}</p>
+      <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'trips.form.error.title_required' | translate }}</p>
     }
     @if (tripForm.get('title')?.hasError('maxlength') && tripForm.get('title')?.touched) {
-      <p class="mt-1 text-xs text-red-600">
+      <p class="mt-1 text-xs text-red-600 dark:text-red-400">
         {{ 'trips.form.error.title_max' | translate: { max: validation.title.maxLength } }}
       </p>
     }
@@ -29,22 +29,22 @@
 
   <!-- Description -->
   <div>
-    <label for="description" class="block text-sm font-medium text-slate-700 mb-1.5">
+    <label for="description" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
       {{ 'trips.form.description' | translate }} <span class="text-red-500">*</span>
     </label>
     <textarea
       id="description"
       formControlName="description"
       rows="4"
-      class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+      class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
              focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors resize-none"
       [class.border-red-500]="tripForm.get('description')?.invalid && tripForm.get('description')?.touched"
     ></textarea>
     @if (tripForm.get('description')?.hasError('required') && tripForm.get('description')?.touched) {
-      <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.description_required' | translate }}</p>
+      <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'trips.form.error.description_required' | translate }}</p>
     }
     @if (tripForm.get('description')?.hasError('maxlength') && tripForm.get('description')?.touched) {
-      <p class="mt-1 text-xs text-red-600">
+      <p class="mt-1 text-xs text-red-600 dark:text-red-400">
         {{ 'trips.form.error.description_max' | translate: { max: validation.description.maxLength } }}
       </p>
     }
@@ -53,13 +53,13 @@
   <!-- Difficulty + Max Participants -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div>
-      <label for="difficultyLevel" class="block text-sm font-medium text-slate-700 mb-1.5">
+      <label for="difficultyLevel" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
         {{ 'trips.form.difficulty' | translate }} <span class="text-red-500">*</span>
       </label>
       <select
         id="difficultyLevel"
         formControlName="difficultyLevel"
-        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
       >
         @for (level of difficultyLevels; track level) {
@@ -69,7 +69,7 @@
     </div>
 
     <div>
-      <label for="maxParticipants" class="block text-sm font-medium text-slate-700 mb-1.5">
+      <label for="maxParticipants" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
         {{ 'trips.form.max_participants' | translate }} <span class="text-red-500">*</span>
       </label>
       <input
@@ -77,12 +77,12 @@
         type="number"
         formControlName="maxParticipants"
         [min]="validation.maxParticipants.min"
-        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
         [class.border-red-500]="tripForm.get('maxParticipants')?.invalid && tripForm.get('maxParticipants')?.touched"
       />
       @if (tripForm.get('maxParticipants')?.hasError('min') && tripForm.get('maxParticipants')?.touched) {
-        <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.max_participants_min' | translate }}</p>
+        <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'trips.form.error.max_participants_min' | translate }}</p>
       }
     </div>
   </div>
@@ -90,14 +90,14 @@
   <!-- Start Date + End Date -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div>
-      <label for="startDate" class="block text-sm font-medium text-slate-700 mb-1.5">
+      <label for="startDate" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
         {{ 'trips.form.start_date' | translate }} <span class="text-red-500">*</span>
       </label>
       <input
         id="startDate"
         type="date"
         formControlName="startDate"
-        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
         [class.border-red-500]="
           (tripForm.get('startDate')?.invalid && tripForm.get('startDate')?.touched) ||
@@ -106,22 +106,22 @@
         "
       />
       @if (tripForm.get('startDate')?.hasError('required') && tripForm.get('startDate')?.touched) {
-        <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.start_date_required' | translate }}</p>
+        <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'trips.form.error.start_date_required' | translate }}</p>
       }
       @if (tripForm.errors?.['startDateNotInFuture'] && tripForm.get('startDate')?.touched) {
-        <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.start_date_not_in_future' | translate }}</p>
+        <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'trips.form.error.start_date_not_in_future' | translate }}</p>
       }
     </div>
 
     <div>
-      <label for="endDate" class="block text-sm font-medium text-slate-700 mb-1.5">
+      <label for="endDate" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
         {{ 'trips.form.end_date' | translate }} <span class="text-red-500">*</span>
       </label>
       <input
         id="endDate"
         type="date"
         formControlName="endDate"
-        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+        class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
         [class.border-red-500]="
           (tripForm.get('endDate')?.invalid && tripForm.get('endDate')?.touched) ||
@@ -129,7 +129,7 @@
         "
       />
       @if (tripForm.get('endDate')?.hasError('required') && tripForm.get('endDate')?.touched) {
-        <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.end_date_required' | translate }}</p>
+        <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'trips.form.error.end_date_required' | translate }}</p>
       }
     </div>
   </div>
@@ -138,39 +138,39 @@
     tripForm.errors?.['endBeforeStart'] &&
     (tripForm.get('startDate')?.touched || tripForm.get('endDate')?.touched)
   ) {
-    <p class="text-xs text-red-600 -mt-3">
+    <p class="text-xs text-red-600 dark:text-red-400 -mt-3">
       {{ 'trips.form.error.end_before_start' | translate }}
     </p>
   }
 
   <!-- Location (optional) -->
-  <fieldset formGroupName="location" class="border border-slate-200 rounded-xl p-4 space-y-4">
-    <legend class="text-sm font-semibold text-slate-700 px-1">
+  <fieldset formGroupName="location" class="border border-slate-200 dark:border-slate-700 rounded-xl p-4 space-y-4">
+    <legend class="text-sm font-semibold text-slate-700 dark:text-slate-300 px-1">
       {{ 'trips.form.location' | translate }}
-      <span class="text-slate-400 font-normal text-xs ml-1">{{ 'common.optional' | translate }}</span>
+      <span class="text-slate-400 dark:text-slate-500 font-normal text-xs ml-1">{{ 'common.optional' | translate }}</span>
     </legend>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
-        <label for="city" class="block text-xs font-medium text-slate-600 mb-1">
+        <label for="city" class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
           {{ 'trips.form.city' | translate }}
         </label>
         <input
           id="city"
           type="text"
           formControlName="city"
-          class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+          class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
         />
       </div>
       <div>
-        <label for="country" class="block text-xs font-medium text-slate-600 mb-1">
+        <label for="country" class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
           {{ 'trips.form.country' | translate }}
         </label>
         <input
           id="country"
           type="text"
           formControlName="country"
-          class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+          class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
         />
       </div>
@@ -178,8 +178,8 @@
   </fieldset>
 
   <!-- Stages (FormArray) -->
-  <fieldset class="border border-slate-200 rounded-xl p-4 space-y-4">
-    <legend class="text-sm font-semibold text-slate-700 px-1">
+  <fieldset class="border border-slate-200 dark:border-slate-700 rounded-xl p-4 space-y-4">
+    <legend class="text-sm font-semibold text-slate-700 dark:text-slate-300 px-1">
       {{ 'trips.form.stages' | translate }} <span class="text-red-500">*</span>
     </legend>
 
@@ -187,10 +187,10 @@
       @for (stageCtrl of stagesArray.controls; track $index; let i = $index) {
         <div
           [formGroupName]="i"
-          class="border border-slate-100 rounded-lg p-4 bg-slate-50 space-y-3"
+          class="border border-slate-100 dark:border-slate-700 rounded-lg p-4 bg-slate-50 dark:bg-slate-900 space-y-3"
         >
           <div class="flex justify-between items-center">
-            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+            <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
               {{ 'trips.form.stage' | translate }} {{ i + 1 }}
             </span>
             @if (stagesArray.length > 1) {
@@ -210,15 +210,15 @@
               type="text"
               formControlName="title"
               [placeholder]="'trips.form.stage_title' | translate"
-              class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+              class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                      focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
               [class.border-red-500]="getStageGroup(i).get('title')?.invalid && getStageGroup(i).get('title')?.touched"
             />
             @if (getStageGroup(i).get('title')?.hasError('required') && getStageGroup(i).get('title')?.touched) {
-              <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.stage_title_required' | translate }}</p>
+              <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'trips.form.error.stage_title_required' | translate }}</p>
             }
             @if (getStageGroup(i).get('title')?.hasError('maxlength') && getStageGroup(i).get('title')?.touched) {
-              <p class="mt-1 text-xs text-red-600">
+              <p class="mt-1 text-xs text-red-600 dark:text-red-400">
                 {{ 'trips.form.error.stage_title_max' | translate: { max: stageValidation.title.maxLength } }}
               </p>
             }
@@ -230,15 +230,15 @@
               formControlName="description"
               rows="2"
               [placeholder]="'trips.form.stage_description' | translate"
-              class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+              class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                      focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors resize-none"
               [class.border-red-500]="getStageGroup(i).get('description')?.invalid && getStageGroup(i).get('description')?.touched"
             ></textarea>
             @if (getStageGroup(i).get('description')?.hasError('required') && getStageGroup(i).get('description')?.touched) {
-              <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.stage_description_required' | translate }}</p>
+              <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'trips.form.error.stage_description_required' | translate }}</p>
             }
             @if (getStageGroup(i).get('description')?.hasError('maxlength') && getStageGroup(i).get('description')?.touched) {
-              <p class="mt-1 text-xs text-red-600">
+              <p class="mt-1 text-xs text-red-600 dark:text-red-400">
                 {{ 'trips.form.error.stage_description_max' | translate: { max: stageValidation.description.maxLength } }}
               </p>
             }
@@ -246,7 +246,7 @@
 
           <!-- Stage Price -->
           <div>
-            <label class="block text-xs font-medium text-slate-600 mb-1">
+            <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
               {{ 'trips.form.stage_price' | translate }}
             </label>
             <input
@@ -254,12 +254,12 @@
               formControlName="price"
               [min]="stageValidation.price.min"
               step="0.01"
-              class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+              class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                      focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
               [class.border-red-500]="getStageGroup(i).get('price')?.invalid && getStageGroup(i).get('price')?.touched"
             />
             @if (getStageGroup(i).get('price')?.hasError('min') && getStageGroup(i).get('price')?.touched) {
-              <p class="mt-1 text-xs text-red-600">
+              <p class="mt-1 text-xs text-red-600 dark:text-red-400">
                 {{ 'trips.form.error.stage_price_min' | translate: { min: stageValidation.price.min } }}
               </p>
             }
@@ -271,22 +271,22 @@
     <button
       type="button"
       (click)="addStage()"
-      class="w-full py-2.5 rounded-lg border border-dashed border-slate-300 text-slate-500 text-sm
-             hover:bg-slate-50 hover:border-slate-400 transition-colors font-medium"
+      class="w-full py-2.5 rounded-lg border border-dashed border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 text-sm
+             hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-400 transition-colors font-medium"
     >
       + {{ 'trips.form.add_stage' | translate }}
     </button>
 
     @if (stagesArray.errors?.['minlength'] && stagesArray.touched) {
-      <p class="text-xs text-red-600">{{ 'trips.form.error.stages_required' | translate }}</p>
+      <p class="text-xs text-red-600 dark:text-red-400">{{ 'trips.form.error.stages_required' | translate }}</p>
     }
   </fieldset>
 
   <!-- Pictures (FormArray of URL strings) -->
-  <fieldset class="border border-slate-200 rounded-xl p-4 space-y-3">
-    <legend class="text-sm font-semibold text-slate-700 px-1">
+  <fieldset class="border border-slate-200 dark:border-slate-700 rounded-xl p-4 space-y-3">
+    <legend class="text-sm font-semibold text-slate-700 dark:text-slate-300 px-1">
       {{ 'trips.form.pictures' | translate }}
-      <span class="text-slate-400 font-normal text-xs ml-1">{{ 'common.optional' | translate }}</span>
+      <span class="text-slate-400 dark:text-slate-500 font-normal text-xs ml-1">{{ 'common.optional' | translate }}</span>
     </legend>
 
     <div formArrayName="pictures" class="space-y-2">
@@ -297,18 +297,18 @@
               type="url"
               [formControlName]="i"
               [placeholder]="'trips.form.picture_url_placeholder' | translate"
-              class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-slate-800 text-sm
+              class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                      focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
               [class.border-red-500]="getPictureControl(i).hasError('pattern') && getPictureControl(i).touched"
             />
             @if (getPictureControl(i).hasError('pattern') && getPictureControl(i).touched) {
-              <p class="mt-1 text-xs text-red-600">{{ 'trips.form.error.picture_invalid_url' | translate }}</p>
+              <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ 'trips.form.error.picture_invalid_url' | translate }}</p>
             }
           </div>
           <button
             type="button"
             (click)="removePicture(i)"
-            class="mt-0.5 p-2 text-slate-400 hover:text-red-500 rounded-lg hover:bg-red-50 transition-colors"
+            class="mt-0.5 p-2 text-slate-400 hover:text-red-500 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -332,7 +332,7 @@
     <button
       type="button"
       (click)="cancelled.emit()"
-      class="flex-1 py-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700
+      class="flex-1 py-2.5 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300
              font-semibold text-sm transition-colors"
     >
       {{ 'common.back' | translate }}

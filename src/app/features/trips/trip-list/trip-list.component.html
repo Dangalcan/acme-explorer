@@ -1,11 +1,11 @@
-<div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 py-10 px-4">
+<div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 py-10 px-4">
 
   <div class="max-w-6xl mx-auto">
 
     <!-- Page header -->
     <div class="mb-10 text-center animate-slide-up">
-      <h1 class="text-4xl font-bold text-slate-800 tracking-tight">{{ 'trips.explore.title' | translate }}</h1>
-      <p class="text-slate-500 mt-2 text-base">{{ 'trips.explore.subtitle' | translate }}</p>
+      <h1 class="text-4xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">{{ 'trips.explore.title' | translate }}</h1>
+      <p class="text-slate-500 dark:text-slate-400 mt-2 text-base">{{ 'trips.explore.subtitle' | translate }}</p>
       @if (currentRole() === 'manager') {
         <div class="mt-5">
           <a
@@ -35,8 +35,8 @@
           [ngModel]="searchKeyword()"
           (ngModelChange)="searchKeyword.set($event)"
           [placeholder]="'trips.list.search_placeholder' | translate"
-          class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 bg-white
-                 text-slate-800 placeholder-slate-400 text-sm shadow-sm
+          class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800
+                 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm shadow-sm
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b]/40 focus:border-[#b21c2b]
                  transition"
         />
@@ -44,8 +44,8 @@
       @if (searchKeyword()) {
         <button
           (click)="clearSearch()"
-          class="px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 bg-white border border-slate-200
-                 hover:bg-slate-50 transition shadow-sm whitespace-nowrap"
+          class="px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700
+                 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm whitespace-nowrap"
         >
           {{ 'trips.list.clear_search' | translate }}
         </button>
@@ -70,8 +70,8 @@
       }
 
       @if (filteredTrips().length === 0 && searchKeyword().trim()) {
-        <div class="col-span-full text-center py-16 text-slate-500">
-          <svg class="mx-auto mb-4 w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="col-span-full text-center py-16 text-slate-500 dark:text-slate-400">
+          <svg class="mx-auto mb-4 w-12 h-12 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                   d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
           </svg>
