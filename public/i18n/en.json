@@ -284,7 +284,18 @@
       "countdown_title": "Trip starts in",
       "countdown_days": "days",
       "countdown_hours": "hours",
-      "countdown_minutes": "minutes"
+      "countdown_minutes": "minutes",
+      "mark_as_due": "Mark as due",
+      "reject": "Reject",
+      "col_actions": "Actions",
+      "only_manage_own": "You can only manage applications for trips that you manage.",
+      "rejection_reason_placeholder": "Reason for rejection",
+      "no_actions": "No actions",
+      "rejection_reason_required": "Rejection reason is required.",
+      "rejection_reason_max_length": "Rejection reason is too long.",
+      "reject_failed": "Could not reject the application.",
+      "load_apps_error": "Could not load applications.",
+      "create_app_error": "Could not create the application."
     }
   },
   "applications": {
@@ -461,6 +472,23 @@
   "language": {
     "switch": "ES",
     "current": "EN"
+  },
+  "paypal": {
+    "title": "PayPal Checkout",
+    "amount": "Amount to pay:",
+    "success": "Payment completed successfully.",
+    "return_to_applications": "Return to applications list",
+    "error": {
+      "missing_application": "Missing application identifier for checkout.",
+      "not_available": "Application is not available for payment.",
+      "invalid_amount": "Amount must be a number greater than zero.",
+      "sdk_load_failed": "Could not load the PayPal checkout.",
+      "payment_error": "PayPal reported an error during the payment.",
+      "update_failed": "Payment was captured but the application could not be updated."
+    }
+  },
+  "guard": {
+    "pending_changes": "WARNING: You have unsaved changes. Press Cancel to go back and save your changes, or OK to lose them."
   },
   "weather": {
     "title": "Weather Forecast",

@@ -284,7 +284,18 @@
       "countdown_title": "El viaje comienza en",
       "countdown_days": "días",
       "countdown_hours": "horas",
-      "countdown_minutes": "minutos"
+      "countdown_minutes": "minutos",
+      "mark_as_due": "Marcar como pendiente de pago",
+      "reject": "Rechazar",
+      "col_actions": "Acciones",
+      "only_manage_own": "Solo puedes gestionar solicitudes de viajes que tú gestionas.",
+      "rejection_reason_placeholder": "Motivo del rechazo",
+      "no_actions": "Sin acciones",
+      "rejection_reason_required": "El motivo del rechazo es obligatorio.",
+      "rejection_reason_max_length": "El motivo del rechazo es demasiado largo.",
+      "reject_failed": "No se pudo rechazar la solicitud.",
+      "load_apps_error": "No se pudieron cargar las solicitudes.",
+      "create_app_error": "No se pudo crear la solicitud."
     }
   },
   "applications": {
@@ -461,6 +472,23 @@
   "language": {
     "switch": "EN",
     "current": "ES"
+  },
+  "paypal": {
+    "title": "Pago con PayPal",
+    "amount": "Importe a pagar:",
+    "success": "Pago completado correctamente.",
+    "return_to_applications": "Volver a la lista de solicitudes",
+    "error": {
+      "missing_application": "Falta el identificador de solicitud para el pago.",
+      "not_available": "La solicitud no está disponible para pago.",
+      "invalid_amount": "El importe debe ser un número mayor que cero.",
+      "sdk_load_failed": "No se pudo cargar el proceso de pago con PayPal.",
+      "payment_error": "PayPal ha reportado un error durante el pago.",
+      "update_failed": "El pago se procesó pero no se pudo actualizar la solicitud."
+    }
+  },
+  "guard": {
+    "pending_changes": "AVISO: Tienes cambios sin guardar. Pulsa Cancelar para volver y guardar los cambios, o Aceptar para perderlos."
   },
   "weather": {
     "title": "Previsión meteorológica",
