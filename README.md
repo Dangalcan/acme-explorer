@@ -42,6 +42,20 @@ password:
 changeMe1@
 ```
 
+## Payment credentials
+
+email:
+
+```text
+acme-explorer@personal.example.com
+```
+
+password:
+
+```text
+IM$s9#vk
+```
+
 ## Development server
 
 To start a local development server, run:
