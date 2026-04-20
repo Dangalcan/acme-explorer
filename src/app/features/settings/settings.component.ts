@@ -6,13 +6,14 @@ import { AuthService } from '../../core/services/auth.service';
 import { ACTOR_VALIDATION } from '../../shared/actor.model';
 import { FinderService } from '../finder/finder.service';
 import { FINDER_VALIDATION } from '../finder/finder.model';
+import { ComponentCanDeactivate } from '../../core/guards/pending-changes.guard';
 
 @Component({
   selector: 'app-settings',
   imports: [FormsModule, TranslatePipe],
   templateUrl: './settings.component.html',
 })
-export class SettingsComponent {
+export class SettingsComponent implements ComponentCanDeactivate {
   private authService = inject(AuthService);
   readonly currentRole = this.authService.currentRole;
   private router = inject(Router);
@@ -39,6 +40,17 @@ export class SettingsComponent {
   successMessage = signal('');
   errorMessage = signal('');
 
+  private readonly initialProfile = signal({
+    name: '',
+    surname: '',
+    phoneNumber: '',
+    address: '',
+  });
+  private readonly initialFinderPreferences = signal({
+    cacheTimeHours: 1,
+    maxResults: 10,
+  });
+
   constructor() {
     this.finderService.syncExplorerId();
     void this.loadActorData();
@@ -47,6 +59,10 @@ export class SettingsComponent {
       const finder = this.finderService.finder();
       this.cacheTimeHours.set(finder.cacheTimeHours);
       this.maxResults.set(finder.maxResults);
+      this.initialFinderPreferences.set({
+        cacheTimeHours: finder.cacheTimeHours,
+        maxResults: finder.maxResults,
+      });
     });
   }
 
@@ -64,6 +80,12 @@ export class SettingsComponent {
         this.surname.set(data.surname ?? '');
         this.phoneNumber.set(data.phoneNumber ?? '');
         this.address.set(data.address ?? '');
+        this.initialProfile.set({
+          name: data.name ?? '',
+          surname: data.surname ?? '',
+          phoneNumber: data.phoneNumber ?? '',
+          address: data.address ?? '',
+        });
       }
     } finally {
       this.isLoadingData.set(false);
@@ -120,6 +142,12 @@ export class SettingsComponent {
         phoneNumber: this.phoneNumber().trim() || undefined,
         address: this.address().trim() || undefined,
       });
+      this.initialProfile.set({
+        name: this.name(),
+        surname: this.surname(),
+        phoneNumber: this.phoneNumber(),
+        address: this.address(),
+      });
       this.successMessage.set(this.translate.instant('settings.success'));
     } catch {
       this.errorMessage.set(this.translate.instant('settings.error.save_failed'));
@@ -168,6 +196,10 @@ export class SettingsComponent {
     try {
       this.finderService.updateFinder({ cacheTimeHours: cacheTime, maxResults });
       await this.finderService.persistFinder();
+      this.initialFinderPreferences.set({
+        cacheTimeHours: this.cacheTimeHours(),
+        maxResults: this.maxResults(),
+      });
       this.finderPreferencesSuccess.set(
         this.translate.instant('settings.finder_preferences.success'),
       );
@@ -178,5 +210,22 @@ export class SettingsComponent {
     } finally {
       this.isSavingFinderPreferences.set(false);
     }
+  }
+
+  canDeactivate(): boolean {
+    const profile = this.initialProfile();
+    const finder = this.initialFinderPreferences();
+
+    const hasProfileChanges =
+      this.name() !== profile.name ||
+      this.surname() !== profile.surname ||
+      this.phoneNumber() !== profile.phoneNumber ||
+      this.address() !== profile.address;
+
+    const hasFinderChanges =
+      this.cacheTimeHours() !== finder.cacheTimeHours ||
+      this.maxResults() !== finder.maxResults;
+
+    return !hasProfileChanges && !hasFinderChanges;
   }
 }
