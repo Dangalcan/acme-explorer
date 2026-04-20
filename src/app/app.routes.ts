@@ -3,6 +3,7 @@ import { adminGuard } from './core/guards/admin-guard';
 import { explorerGuard } from './core/guards/explorer-guard';
 import { authGuard } from './core/guards/auth-guard';
 import { managerGuard } from './core/guards/manager-guard';
+import { PaypalCheckoutComponent } from './features/payments/paypal-checkout/paypal-checkout.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/trips', pathMatch: 'full' },
@@ -110,6 +111,11 @@ export const routes: Routes = [
     path: 'register',
     loadComponent: () =>
       import('./features/auth/register/register.component').then((m) => m.RegisterComponent),
+  },
+  {
+    path: 'payments/paypal/:amount',
+    canActivate: [explorerGuard],
+    component: PaypalCheckoutComponent,
   },
   {
     path: 'forbidden',

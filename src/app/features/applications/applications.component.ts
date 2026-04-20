@@ -5,6 +5,7 @@ import { ApplicationService } from './application.service';
 import { FechasPipe } from '../../shared/pipes/fechas.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TripService } from '../trips/trip.service';
+import { Router } from '@angular/router';
 
 interface ApplicationItem extends Application {
   tripTitle?: string;
@@ -19,6 +20,7 @@ export class ApplicationsComponent {
   private readonly authService = inject(AuthService);
   private readonly applicationService = inject(ApplicationService);
   private readonly tripService = inject(TripService);
+  private readonly router = inject(Router);
 
   readonly currentRole = this.authService.currentRole;
   readonly expandedId = signal<string | null>(null);
@@ -87,7 +89,20 @@ export class ApplicationsComponent {
   }
 
   payApplication(applicationId: string): void {
-    void this.applicationService.payApplication(applicationId);
+    const application = this.explorerApplications().find((item) => item.id === applicationId);
+    if (!application || !this.canPay(application)) {
+      return;
+    }
+
+    const trip = this.tripService.getById(application.tripId);
+    const amount = trip?.totalPrice ?? 0;
+    if (amount <= 0) {
+      return;
+    }
+
+    void this.router.navigate(['/payments/paypal', amount], {
+      queryParams: { applicationId },
+    });
   }
 
   cancelApplication(applicationId: string): void {
