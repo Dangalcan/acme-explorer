@@ -13,7 +13,7 @@ export class ThemeService {
     if (!isPlatformBrowser(this.platformId)) return;
 
     const saved = localStorage.getItem(STORAGE_KEY) as Theme | null;
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
     const dark = saved ? saved === 'dark' : prefersDark;
 
     this.apply(dark);
