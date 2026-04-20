@@ -11,7 +11,8 @@
     "create_manager": "Crear gestor",
     "logout": "Cerrar sesión",
     "login": "Iniciar sesión",
-    "register": "Registrarse"
+    "register": "Registrarse",
+    "toggle_theme": "Cambiar tema"
   },
   "errors": {
     "forbidden": {

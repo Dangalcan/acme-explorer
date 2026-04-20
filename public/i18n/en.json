@@ -11,7 +11,8 @@
     "create_manager": "Create manager",
     "logout": "Logout",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "toggle_theme": "Toggle dark mode"
   },
   "errors": {
     "forbidden": {
