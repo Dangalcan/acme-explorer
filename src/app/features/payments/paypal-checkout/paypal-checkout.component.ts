@@ -1,4 +1,5 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 import {
   AfterViewInit,
   Component,
@@ -9,7 +10,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { paypalConfig } from '../../infrastructure/paypal.config';
 import { ApplicationService } from '../../applications/application.service';
@@ -56,12 +57,13 @@ type PayPalWindow = Window & {
 
 @Component({
   selector: 'app-paypal-checkout',
-  imports: [CommonModule, CurrencyPipe],
+  imports: [CommonModule, CurrencyPipe, TranslatePipe],
   templateUrl: './paypal-checkout.component.html',
   styleUrl: './paypal-checkout.component.scss',
 })
 export class PaypalCheckoutComponent implements AfterViewInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly applicationService = inject(ApplicationService);
   private readonly tripService = inject(TripService);
@@ -90,7 +92,7 @@ export class PaypalCheckoutComponent implements AfterViewInit {
 
         if (!applicationId) {
           this.status.set('error');
-          this.errorMessage.set('Missing application identifier for checkout.');
+          this.errorMessage.set('paypal.error.missing_application');
           return;
         }
 
@@ -102,7 +104,7 @@ export class PaypalCheckoutComponent implements AfterViewInit {
 
         if (!application) {
           this.status.set('error');
-          this.errorMessage.set('Application is not available for payment.');
+          this.errorMessage.set('paypal.error.not_available');
           return;
         }
 
@@ -111,7 +113,7 @@ export class PaypalCheckoutComponent implements AfterViewInit {
 
         if (!this.hasValidAmount()) {
           this.status.set('error');
-          this.errorMessage.set('Amount must be a number greater than zero.');
+          this.errorMessage.set('paypal.error.invalid_amount');
           return;
         }
 
@@ -122,7 +124,7 @@ export class PaypalCheckoutComponent implements AfterViewInit {
         } catch (error) {
           console.error(error);
           this.status.set('error');
-          this.errorMessage.set('Could not load the PayPal checkout.');
+          this.errorMessage.set('paypal.error.sdk_load_failed');
         }
       });
   }
@@ -183,14 +185,14 @@ export class PaypalCheckoutComponent implements AfterViewInit {
           const currentApplicationId = this.applicationId();
           if (!currentApplicationId) {
             this.status.set('error');
-            this.errorMessage.set('Missing application identifier for checkout.');
+            this.errorMessage.set('paypal.error.missing_application');
             return;
           }
 
           const paid = await this.applicationService.payApplication(currentApplicationId);
           if (!paid) {
             this.status.set('error');
-            this.errorMessage.set('Payment was captured but the application could not be updated.');
+            this.errorMessage.set('paypal.error.update_failed');
             return;
           }
           this.status.set('success');
@@ -198,9 +200,13 @@ export class PaypalCheckoutComponent implements AfterViewInit {
         onError: (error) => {
           console.error(error);
           this.status.set('error');
-          this.errorMessage.set('PayPal reported an error during the payment.');
+          this.errorMessage.set('paypal.error.payment_error');
         },
       })
       .render(this.paypalButtonsRef.nativeElement);
+  }
+
+  goToApplications(): void {
+    void this.router.navigate(['/applications']);
   }
 }

@@ -1,14 +1,38 @@
-<section class="paypal-checkout">
-  <h2>PayPal Checkout</h2>
-  <p>Amount to pay: {{ amount() | currency: 'EUR' }}</p>
+<div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 py-10 px-4">
+  <div class="max-w-lg mx-auto animate-slide-up">
 
-  @if (errorMessage()) {
-    <p class="error-message">{{ errorMessage() }}</p>
-  }
+    <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight mb-8">
+      {{ 'paypal.title' | translate }}
+    </h1>
 
-  @if (status() === 'success') {
-    <p class="success-message">Payment completed in sandbox mode</p>
-  }
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-8">
 
-  <div #paypalButtons class="paypal-buttons"></div>
-</section>
+      <p class="text-base text-slate-600 dark:text-slate-300 mb-6">
+        {{ 'paypal.amount' | translate }}
+        <span class="font-bold text-slate-900 dark:text-slate-100">{{ amount() | currency: 'EUR' }}</span>
+      </p>
+
+      @if (errorMessage()) {
+        <div class="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/40 rounded-xl px-4 py-3 text-red-700 dark:text-red-400 text-sm">
+          {{ errorMessage() | translate }}
+        </div>
+      }
+
+      @if (status() === 'success') {
+        <div class="mb-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/40 rounded-xl px-4 py-3 text-green-700 dark:text-green-400 text-sm font-medium">
+          {{ 'paypal.success' | translate }}
+        </div>
+        <button
+          type="button"
+          (click)="goToApplications()"
+          class="w-full rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-3 transition-colors"
+        >
+          {{ 'paypal.return_to_applications' | translate }}
+        </button>
+      }
+
+      <div #paypalButtons [class.hidden]="status() === 'success'" style="min-height: 45px;"></div>
+    </div>
+
+  </div>
+</div>
