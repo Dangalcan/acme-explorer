@@ -144,6 +144,12 @@
       "trips_per_month_title": "Número de viajes por mes ({{year}})",
       "top3_by_favourites": "Top 3 viajes más guardados en favoritos",
       "no_favourites_data": "Aún no se ha guardado ningún viaje en favoritos.",
+      "finder_avg_price_range_title": "Rango de precio medio de los buscadores de exploradores",
+      "finder_avg_min_price": "Precio mín. medio",
+      "finder_avg_max_price": "Precio máx. medio",
+      "no_finder_price_data": "Aún ningún explorador ha establecido un rango de precio en su buscador.",
+      "finder_top10_keywords_title": "Top 10 palabras clave de los buscadores de exploradores",
+      "no_finder_keyword_data": "Aún ningún explorador ha establecido una palabra clave en su buscador.",
       "months": {
         "0": "Enero",
         "1": "Febrero",
@@ -253,7 +259,8 @@
       "apply_comment_label": "Añade un comentario (opcional)",
       "apply_comment_placeholder": "Explica al gestor por qué quieres unirte a este viaje...",
       "apply_confirm": "Confirmar solicitud",
-      "apply_failed": "No se pudo enviar tu solicitud. Inténtalo de nuevo."
+      "apply_failed": "No se pudo enviar tu solicitud. Inténtalo de nuevo.",
+      "starting_soon": "¡Comienza pronto!"
     },
     "details": {
       "back": "Volver a viajes",
@@ -272,7 +279,11 @@
       "browse_all": "Ver todos los viajes",
       "edit": "Editar viaje",
       "delete": "Eliminar viaje",
-      "delete_error": "No se pudo eliminar el viaje."
+      "delete_error": "No se pudo eliminar el viaje.",
+      "countdown_title": "El viaje comienza en",
+      "countdown_days": "días",
+      "countdown_hours": "horas",
+      "countdown_minutes": "minutos"
     }
   },
   "applications": {
@@ -365,6 +376,39 @@
       "delete_failed": "No se pudo eliminar la reseña. Inténtalo de nuevo."
     }
   },
+  "finder": {
+    "title": "Buscador de viajes",
+    "subtitle": "Busca viajes usando filtros opcionales.",
+    "keyword": "Palabra clave",
+    "keyword_placeholder": "Ticker, título o descripción",
+    "min_price": "Precio mínimo",
+    "max_price": "Precio máximo",
+    "start_date": "Fecha de inicio",
+    "end_date": "Fecha de fin",
+    "difficulty": "Dificultad",
+    "all": "Todas",
+    "reset_filters": "Restablecer filtros",
+    "save_filters": "Guardar filtros",
+    "saving_filters": "Guardando...",
+    "save_success": "Filtros guardados correctamente.",
+    "results_count_one": "1 resultado",
+    "results_count": "{{count}} resultados",
+    "limited_results": "Mostrando hasta {{max}} resultados según tus preferencias del buscador.",
+    "invalid_filters": "Corrige los filtros inválidos para ver resultados.",
+    "no_results": "No se encontraron viajes.",
+    "difficulty_levels": {
+      "EASY": "Fácil",
+      "MEDIUM": "Media",
+      "HARD": "Difícil"
+    },
+    "error": {
+      "invalid_date_range": "La fecha de inicio no puede ser posterior a la fecha de fin.",
+      "invalid_price_range": "El precio mínimo no puede ser mayor que el precio máximo.",
+      "min_price_negative": "El precio mínimo no puede ser negativo.",
+      "max_price_negative": "El precio máximo no puede ser negativo.",
+      "save_failed": "No se pudieron guardar los filtros. Inténtalo de nuevo."
+    }
+  },
   "settings": {
     "title": "Mi perfil",
     "subtitle": "Actualiza tu información personal",
@@ -385,7 +429,28 @@
       "phone_invalid": "Formato de número de teléfono no válido",
       "address_max": "La dirección no puede superar {{max}} caracteres",
       "save_failed": "No se pudo guardar el perfil. Inténtalo de nuevo."
-    }
+    },
+    "finder_preferences": {
+      "title": "Preferencias del buscador",
+      "subtitle": "Ajusta el rendimiento del buscador en tu dispositivo.",
+      "cache_time": "Tiempo de caché",
+      "cache_time_hint": "Valor entre {{min}} y {{max}}.",
+      "hour": "hora",
+      "hours": "horas",
+      "max_results": "Máximo de resultados",
+      "max_results_hint": "Valor entre {{min}} y {{max}}.",
+      "result": "resultado",
+      "results": "resultados",
+      "saving_preferences": "Guardando...",
+      "save_preferences": "Guardar preferencias del buscador",
+      "success": "Preferencias del buscador guardadas correctamente.",
+      "error": {
+        "cache_time_range": "El tiempo de caché debe estar entre {{min}} y {{max}} horas.",
+        "max_results_range": "El máximo de resultados debe estar entre {{min}} y {{max}}.",
+        "save_failed": "No se pudieron guardar las preferencias del buscador."
+      }
+    },
+    "loading": "Cargando..."
   },
   "roles": {
     "administrator": "Administrador",
@@ -395,5 +460,26 @@
   "language": {
     "switch": "EN",
     "current": "ES"
+  },
+  "weather": {
+    "title": "Previsión meteorológica",
+    "out_of_range": "Previsión no disponible aún — el viaje comienza en más de 16 días.",
+    "loading": "Cargando previsión…",
+    "departure": "Salida",
+    "temp_max": "Máx",
+    "temp_min_legend": "temperatura mín. en °C",
+    "conditions": {
+      "clear_sky": "Cielo despejado",
+      "partly_cloudy": "Parcialmente nublado",
+      "fog": "Niebla",
+      "rain": "Lluvia",
+      "snow": "Nieve",
+      "showers": "Chubascos",
+      "thunderstorm": "Tormenta"
+    },
+    "error": {
+      "location_not_found": "Ubicación no encontrada.",
+      "unavailable": "Previsión meteorológica no disponible."
+    }
   }
 }

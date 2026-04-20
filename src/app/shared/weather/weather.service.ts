@@ -9,14 +9,14 @@ export interface WeatherDay {
   weatherCode: number;
 }
 
-export function weatherLabel(code: number): { label: string; icon: string } {
-  if (code === 0)  return { label: 'Clear sky',    icon: '☀️' };
-  if (code <= 3)   return { label: 'Partly cloudy',icon: '⛅' };
-  if (code <= 48)  return { label: 'Fog',           icon: '🌫️' };
-  if (code <= 67)  return { label: 'Rain',          icon: '🌧️' };
-  if (code <= 77)  return { label: 'Snow',          icon: '❄️' };
-  if (code <= 82)  return { label: 'Showers',       icon: '🌦️' };
-  return                  { label: 'Thunderstorm',  icon: '⛈️' };
+export function weatherLabel(code: number): { key: string; icon: string } {
+  if (code === 0)  return { key: 'weather.conditions.clear_sky',    icon: '☀️' };
+  if (code <= 3)   return { key: 'weather.conditions.partly_cloudy',icon: '⛅' };
+  if (code <= 48)  return { key: 'weather.conditions.fog',           icon: '🌫️' };
+  if (code <= 67)  return { key: 'weather.conditions.rain',          icon: '🌧️' };
+  if (code <= 77)  return { key: 'weather.conditions.snow',          icon: '❄️' };
+  if (code <= 82)  return { key: 'weather.conditions.showers',       icon: '🌦️' };
+  return                  { key: 'weather.conditions.thunderstorm',  icon: '⛈️' };
 }
 
 interface GeoResponse {
@@ -54,7 +54,7 @@ export class WeatherService {
       const geo = await firstValueFrom(this.http.get<GeoResponse>(geoUrl));
 
       if (!geo.results?.length) {
-        this.error.set('Location not found');
+        this.error.set('weather.error.location_not_found');
         return;
       }
 
@@ -81,7 +81,7 @@ export class WeatherService {
 
       this.forecast.set(days);
     } catch {
-      this.error.set('Weather forecast unavailable');
+      this.error.set('weather.error.unavailable');
     } finally {
       this.loading.set(false);
     }

@@ -144,6 +144,12 @@
       "trips_per_month_title": "Number of Trips per Month ({{year}})",
       "top3_by_favourites": "Top 3 Most Favourited Trips",
       "no_favourites_data": "No trips have been saved to favourites yet.",
+      "finder_avg_price_range_title": "Average Price Range from Explorer Finders",
+      "finder_avg_min_price": "Avg Min Price",
+      "finder_avg_max_price": "Avg Max Price",
+      "no_finder_price_data": "No explorers have set a price range in their finders yet.",
+      "finder_top10_keywords_title": "Top 10 Keywords from Explorer Finders",
+      "no_finder_keyword_data": "No explorers have set a keyword in their finders yet.",
       "months": {
         "0": "January",
         "1": "February",
@@ -253,7 +259,8 @@
       "apply_comment_label": "Add a comment (optional)",
       "apply_comment_placeholder": "Tell the manager why you want to join this trip...",
       "apply_confirm": "Confirm application",
-      "apply_failed": "Could not submit your application. Please try again."
+      "apply_failed": "Could not submit your application. Please try again.",
+      "starting_soon": "Starting soon!"
     },
     "details": {
       "back": "Back to trips",
@@ -272,7 +279,11 @@
       "browse_all": "Browse all trips",
       "edit": "Edit Trip",
       "delete": "Delete Trip",
-      "delete_error": "Could not delete the trip."
+      "delete_error": "Could not delete the trip.",
+      "countdown_title": "Trip starts in",
+      "countdown_days": "days",
+      "countdown_hours": "hours",
+      "countdown_minutes": "minutes"
     }
   },
   "applications": {
@@ -365,6 +376,39 @@
       "delete_failed": "Could not delete your review. Please try again."
     }
   },
+  "finder": {
+    "title": "Trip Finder",
+    "subtitle": "Search trips using optional filters.",
+    "keyword": "Keyword",
+    "keyword_placeholder": "Ticker, title or description",
+    "min_price": "Min price",
+    "max_price": "Max price",
+    "start_date": "Start date",
+    "end_date": "End date",
+    "difficulty": "Difficulty",
+    "all": "All",
+    "reset_filters": "Reset filters",
+    "save_filters": "Save filters",
+    "saving_filters": "Saving...",
+    "save_success": "Filters saved successfully.",
+    "results_count_one": "1 result",
+    "results_count": "{{count}} results",
+    "limited_results": "Showing up to {{max}} results based on your finder preferences.",
+    "invalid_filters": "Please fix the invalid filters to see results.",
+    "no_results": "No trips found.",
+    "difficulty_levels": {
+      "EASY": "Easy",
+      "MEDIUM": "Medium",
+      "HARD": "Hard"
+    },
+    "error": {
+      "invalid_date_range": "Start date cannot be after end date.",
+      "invalid_price_range": "Min price cannot be greater than max price.",
+      "min_price_negative": "Min price cannot be negative.",
+      "max_price_negative": "Max price cannot be negative.",
+      "save_failed": "Could not save filters. Please try again."
+    }
+  },
   "settings": {
     "title": "My Profile",
     "subtitle": "Update your personal information",
@@ -385,7 +429,28 @@
       "phone_invalid": "Invalid phone number format",
       "address_max": "Address must be at most {{max}} characters",
       "save_failed": "Could not save profile. Please try again."
-    }
+    },
+    "finder_preferences": {
+      "title": "Finder preferences",
+      "subtitle": "Adjust finder performance on your device.",
+      "cache_time": "Cache time",
+      "cache_time_hint": "Value between {{min}} and {{max}}.",
+      "hour": "hour",
+      "hours": "hours",
+      "max_results": "Max results",
+      "max_results_hint": "Value between {{min}} and {{max}}.",
+      "result": "result",
+      "results": "results",
+      "saving_preferences": "Saving...",
+      "save_preferences": "Save finder preferences",
+      "success": "Finder preferences saved successfully.",
+      "error": {
+        "cache_time_range": "Cache time must be between {{min}} and {{max}} hours.",
+        "max_results_range": "Max results must be between {{min}} and {{max}}.",
+        "save_failed": "Could not save finder preferences."
+      }
+    },
+    "loading": "Loading..."
   },
   "roles": {
     "administrator": "Administrator",
@@ -395,5 +460,26 @@
   "language": {
     "switch": "ES",
     "current": "EN"
+  },
+  "weather": {
+    "title": "Weather Forecast",
+    "out_of_range": "Forecast not yet available — trip starts in more than 16 days.",
+    "loading": "Loading forecast…",
+    "departure": "Departure",
+    "temp_max": "Max",
+    "temp_min_legend": "min temperature in °C",
+    "conditions": {
+      "clear_sky": "Clear sky",
+      "partly_cloudy": "Partly cloudy",
+      "fog": "Fog",
+      "rain": "Rain",
+      "snow": "Snow",
+      "showers": "Showers",
+      "thunderstorm": "Thunderstorm"
+    },
+    "error": {
+      "location_not_found": "Location not found.",
+      "unavailable": "Weather forecast unavailable."
+    }
   }
 }

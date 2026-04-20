@@ -11,6 +11,28 @@
     </a>
 
     @if (trip(); as t) {
+
+    <!-- Countdown timer (req B20) — shown only when trip hasn't started yet -->
+    @if (countdown(); as cd) {
+      <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-5 mb-4 text-center">
+        <p class="text-sm font-semibold text-indigo-700 mb-3">{{ 'trips.details.countdown_title' | translate }}</p>
+        <div class="flex justify-center gap-6">
+          <div class="flex flex-col items-center">
+            <span class="text-3xl font-bold text-indigo-800">{{ cd.days }}</span>
+            <span class="text-xs text-indigo-500 mt-1">{{ 'trips.details.countdown_days' | translate }}</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-3xl font-bold text-indigo-800">{{ cd.hours }}</span>
+            <span class="text-xs text-indigo-500 mt-1">{{ 'trips.details.countdown_hours' | translate }}</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="text-3xl font-bold text-indigo-800">{{ cd.minutes }}</span>
+            <span class="text-xs text-indigo-500 mt-1">{{ 'trips.details.countdown_minutes' | translate }}</span>
+          </div>
+        </div>
+      </div>
+    }
+
     <app-trip-card
       [trip]="t"
       mode="details"

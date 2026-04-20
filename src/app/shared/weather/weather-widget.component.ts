@@ -1,12 +1,13 @@
 import { Component, computed, inject, Input, OnInit } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 import { TripLocation } from '../../features/trips/trip.model';
 import { WeatherService, weatherLabel } from './weather.service';
 
 @Component({
   selector: 'app-weather-widget',
   standalone: true,
-  imports: [DatePipe, DecimalPipe],
+  imports: [DatePipe, DecimalPipe, TranslatePipe],
   templateUrl: './weather-widget.component.html',
 })
 export class WeatherWidgetComponent implements OnInit {

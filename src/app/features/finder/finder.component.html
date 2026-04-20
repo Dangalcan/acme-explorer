@@ -1,4 +1,196 @@
-<section class="max-w-4xl mx-auto px-6 py-16">
-  <h1 class="text-3xl font-bold text-gray-800">Finder</h1>
-  <p class="mt-4 text-gray-500">This page is under construction.</p>
+<section class="max-w-6xl mx-auto px-6 py-10">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-slate-800">{{ 'finder.title' | translate }}</h1>
+    <p class="mt-2 text-slate-500">{{ 'finder.subtitle' | translate }}</p>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">
+          {{ 'finder.keyword' | translate }}
+        </label>
+        <input
+          type="text"
+          class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm"
+          [ngModel]="finder().keyword ?? ''"
+          (ngModelChange)="onKeywordChange($event)"
+          [placeholder]="'finder.keyword_placeholder' | translate"
+          maxlength="32"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">
+          {{ 'finder.min_price' | translate }}
+        </label>
+        <input
+          type="number"
+          min="0"
+          class="w-full rounded-xl border px-4 py-3 text-sm"
+          [class.border-slate-300]="!priceRangeError() && !minPriceError()"
+          [class.border-red-300]="!!priceRangeError() || !!minPriceError()"
+          [class.bg-red-50]="!!priceRangeError() || !!minPriceError()"
+          [ngModel]="finder().minPrice ?? ''"
+          (ngModelChange)="onMinPriceChange($event)"
+          [max]="finder().maxPrice ?? null"
+        />
+        @if (minPriceError(); as error) {
+          <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">
+          {{ 'finder.max_price' | translate }}
+        </label>
+        <input
+          type="number"
+          min="0"
+          class="w-full rounded-xl border px-4 py-3 text-sm"
+          [class.border-slate-300]="!priceRangeError() && !maxPriceError()"
+          [class.border-red-300]="!!priceRangeError() || !!maxPriceError()"
+          [class.bg-red-50]="!!priceRangeError() || !!maxPriceError()"
+          [ngModel]="finder().maxPrice ?? ''"
+          (ngModelChange)="onMaxPriceChange($event)"
+          [min]="finder().minPrice ?? 0"
+        />
+        @if (maxPriceError(); as error) {
+          <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">
+          {{ 'finder.start_date' | translate }}
+        </label>
+        <input
+          type="date"
+          class="w-full rounded-xl border px-4 py-3 text-sm"
+          [class.border-slate-300]="!dateRangeError()"
+          [class.border-red-300]="!!dateRangeError()"
+          [class.bg-red-50]="!!dateRangeError()"
+          [ngModel]="toDateInputValue(finder().startDate)"
+          (ngModelChange)="onStartDateChange($event)"
+          [max]="toDateInputValue(finder().endDate)"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">
+          {{ 'finder.end_date' | translate }}
+        </label>
+        <input
+          type="date"
+          class="w-full rounded-xl border px-4 py-3 text-sm"
+          [class.border-slate-300]="!dateRangeError()"
+          [class.border-red-300]="!!dateRangeError()"
+          [class.bg-red-50]="!!dateRangeError()"
+          [ngModel]="toDateInputValue(finder().endDate)"
+          (ngModelChange)="onEndDateChange($event)"
+          [min]="toDateInputValue(finder().startDate)"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">
+          {{ 'finder.difficulty' | translate }}
+        </label>
+        <select
+          class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm bg-white"
+          [ngModel]="finder().difficulty ?? ''"
+          (ngModelChange)="onDifficultyChange($event)"
+        >
+          <option value="">{{ 'finder.all' | translate }}</option>
+          @for (difficulty of difficulties; track difficulty) {
+            <option [value]="difficulty">
+              {{ 'finder.difficulty_levels.' + difficulty | translate }}
+            </option>
+          }
+        </select>
+      </div>
+    </div>
+
+    @if (dateRangeError(); as error) {
+      <div class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+        <p class="text-sm font-medium text-red-700">{{ error }}</p>
+      </div>
+    }
+
+    @if (priceRangeError(); as error) {
+      <div class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+        <p class="text-sm font-medium text-red-700">{{ error }}</p>
+      </div>
+    }
+
+    @if (saveSuccess()) {
+      <div class="mt-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3">
+        <p class="text-sm font-medium text-green-700">{{ saveSuccess() }}</p>
+      </div>
+    }
+
+    @if (saveError()) {
+      <div class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+        <p class="text-sm font-medium text-red-700">{{ saveError() }}</p>
+      </div>
+    }
+
+    <div class="mt-6 flex justify-end gap-3">
+      <button
+        type="button"
+        class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700"
+        (click)="reset()"
+      >
+        {{ 'finder.reset_filters' | translate }}
+      </button>
+      <button
+        type="button"
+        class="rounded-xl bg-slate-800 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+        [disabled]="isSaving() || hasValidationError()"
+        (click)="save()"
+      >
+        {{ isSaving() ? ('finder.saving_filters' | translate) : ('finder.save_filters' | translate) }}
+      </button>
+    </div>
+  </div>
+
+  <div class="mb-4 text-sm text-slate-500 space-y-1">
+    <div>
+      {{
+        (results().length === 1 ? 'finder.results_count_one' : 'finder.results_count')
+          | translate: { count: results().length }
+      }}
+    </div>
+
+    @if (isLimited()) {
+      <div class="text-xs text-slate-400">
+        {{ 'finder.limited_results' | translate: { max: maxResults() } }}
+      </div>
+    }
+  </div>
+
+  @if (hasValidationError()) {
+    <div class="bg-white rounded-2xl shadow-sm border border-red-100 p-10 text-center text-red-600">
+      {{ 'finder.invalid_filters' | translate }}
+    </div>
+  } @else if (!hasResults()) {
+    <div
+      class="bg-white rounded-2xl shadow-sm border border-slate-100 p-10 text-center text-slate-500"
+    >
+      {{ 'finder.no_results' | translate }}
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+      @for (trip of results(); track trip.id) {
+        <app-trip-card
+          [trip]="trip"
+          [enableFavouriteControls]="true"
+          [favouritePanelOpen]="openFavouriteTripId() === trip.id"
+          (favouritePanelToggle)="toggleFavouritePanel($event)"
+          (favouritePanelClose)="closeFavouritePanel()"
+          (view)="viewTrip($event)"
+        />
+      }
+    </div>
+  }
 </section>
