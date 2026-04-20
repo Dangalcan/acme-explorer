@@ -25,6 +25,9 @@
   </div>
 
   <div class="flex items-center gap-4 text-sm font-medium">
+    <button mat-icon-button type="button" (click)="themeService.toggle()" [attr.aria-label]="'header.toggle_theme' | translate">
+      <mat-icon>{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
     <button mat-button type="button" (click)="languageService.switchLanguage()">
       {{ 'language.switch' | translate }}
     </button>
