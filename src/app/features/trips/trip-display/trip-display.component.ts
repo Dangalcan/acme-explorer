@@ -157,7 +157,7 @@ export class TripDisplayComponent {
     if (!reason) {
       this.rejectionErrorByApplicationId.update((state) => ({
         ...state,
-        [applicationId]: $localize`:@@trip.manager.rejectReason.required:Rejection reason is required.`,
+        [applicationId]: 'trips.details.rejection_reason_required',
       }));
       return;
     }
@@ -165,7 +165,7 @@ export class TripDisplayComponent {
     if (reason.length > this.applicationValidation.rejectionReason.maxLength) {
       this.rejectionErrorByApplicationId.update((state) => ({
         ...state,
-        [applicationId]: $localize`:@@trip.manager.rejectReason.maxLength:Rejection reason must be at most ${this.applicationValidation.rejectionReason.maxLength} characters.`,
+        [applicationId]: 'trips.details.rejection_reason_max_length',
       }));
       return;
     }
@@ -174,7 +174,7 @@ export class TripDisplayComponent {
     if (!didReject) {
       this.rejectionErrorByApplicationId.update((state) => ({
         ...state,
-        [applicationId]: $localize`:@@trip.manager.rejectReason.invalid:Could not reject the application.`,
+        [applicationId]: 'trips.details.reject_failed',
       }));
       return;
     }

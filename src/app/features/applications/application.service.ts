@@ -71,7 +71,7 @@ export class ApplicationService {
       return true;
     } catch (error) {
       console.error('Error creating application', error);
-      this.error.set('Could not create the application.');
+      this.error.set('trips.details.create_app_error');
       return false;
     }
   }
@@ -306,7 +306,7 @@ export class ApplicationService {
       await this.loadAcceptedCounts();
     } catch (error) {
       console.error('Error loading applications', error);
-      this.error.set('Could not load applications from Firestore.');
+      this.error.set('trips.details.load_apps_error');
       this.allApplications.set([]);
     } finally {
       this.isLoading.set(false);
