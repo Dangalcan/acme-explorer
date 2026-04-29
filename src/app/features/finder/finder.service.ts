@@ -389,6 +389,7 @@ export class FinderService {
       .filter((trip) => this.matchesPrice(trip, minPrice, maxPrice))
       .filter((trip) => this.matchesDateRange(trip, startDate, endDate))
       .filter((trip) => this.matchesDifficulty(trip, difficulty))
+      .sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
       .slice(0, finder.maxResults);
   }
 
