@@ -28,7 +28,7 @@ Acme Explorer, Inc. is a company that organises adventurous trips around the wor
 9. An actor who is authenticated as an explorer must be able to:  
    1. ~~Apply for a trip as long as it has not started yet.~~ ***DONE***  
    2. ~~List the applications that he or she’s made, grouped by status.~~ ***DONE***  
-   3. Pay a trip with status “DUE”  
+   3. ~~Pay a trip with status “DUE”~~ ***DONE***  
    4. ~~Cancel an application with status “PENDING” or “DUE”. Note that it is not possible to cancel an application that has already been paid.~~ ***DONE***  
 10. An actor who is authenticated as an administrator must be able to:
    1. ~~Create accounts for new managers.~~ DONE
