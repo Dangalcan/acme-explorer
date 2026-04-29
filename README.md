@@ -66,6 +66,26 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
+## Running with Docker
+
+Just use the official image
+
+```bash
+docker pull megamagolas/acme-explorer:latest
+```
+
+Or you can just build the image locally by yourself
+
+```bash
+docker build -t acme-explorer .
+```
+
+Once you have your image, run it in a container
+
+```bash
+docker run --name acme-explorer -p 4200:4200 -p 3000:3000 acme-explorer
+```
+
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
@@ -107,21 +127,6 @@ ng e2e
 ```
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Running with Docker
-
-Just use the official image
-
-```bash
-docker pull megamagolas/acme-explorer:latest
-```
-
-Or you can just the image locally by yourself
-
-```bash
-docker build -t acme-explorer .
-docker run --name acme-explorer -p 4200:4200 -p 3000:3000 acme-explorer
-```
 
 ## Additional Resources
 
