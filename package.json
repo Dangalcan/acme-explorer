@@ -12,7 +12,8 @@
     "serve:ssr:acme-explorer": "node dist/acme-explorer/server/server.mjs",
     "i18n:extract": "ng extract-i18n --output-path src/locale",
     "seed:firestore": "node scripts/seed-firestore.mjs",
-    "json-server": "json-server --watch mock-api/db.json --port 3000"
+    "json-server": "json-server --watch mock-api/db.json --port 3000",
+    "start:cypress": "cypress open"
   },
   "private": true,
   "packageManager": "npm@11.6.2",

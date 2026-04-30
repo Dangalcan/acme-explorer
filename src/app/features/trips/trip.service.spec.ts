@@ -645,7 +645,6 @@ describe('TripService', () => {
       expect(service.error()).not.toBeNull();
     });
 
-    // Spec compliance tests — these document UNIMPLEMENTED requirements.
     // Per req #8.3: cancellation is only allowed at least one week before start.
     it('[spec] returns false when trip starts in less than 7 days', async () => {
       (getDocs as ReturnType<typeof vi.fn>).mockResolvedValue(
@@ -657,7 +656,6 @@ describe('TripService', () => {
       (updateDoc as ReturnType<typeof vi.fn>).mockResolvedValue(undefined);
 
       const result = await service.cancelTrip('trip-1', 'reason');
-      // NOTE: this test currently fails — cancelTrip() does not enforce the 7-day rule
       expect(result).toBe(false);
     });
 
@@ -669,7 +667,6 @@ describe('TripService', () => {
       (updateDoc as ReturnType<typeof vi.fn>).mockResolvedValue(undefined);
 
       const result = await service.cancelTrip('trip-1', 'reason');
-      // NOTE: this test currently fails — cancelTrip() does not check for paid applications
       expect(result).toBe(false);
     });
   });
