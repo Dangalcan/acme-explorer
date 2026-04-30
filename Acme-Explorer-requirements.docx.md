@@ -50,24 +50,24 @@ Acme Explorer, Inc. is a company that organises adventurous trips around the wor
 
 ## **Information requirements**
 
-14. Explorers have a finder in which they can specify some search criteria, namely: a single key word, a price range, a date range to search for trips, and/or level of difficulty.  The key word must be contained in the ticker, the title, or the description of the trips returned; the price of the trip should not exceed the price range, if any, must be organised within the date range specified, if any, and according to the level of difficulty indicated, if any. Initially, every search criterion must be null, which means that every trip must be returned.
+14. ~~Explorers have a finder in which they can specify some search criteria, namely: a single key word, a price range, a date range to search for trips, and/or level of difficulty.  The key word must be contained in the ticker, the title, or the description of the trips returned; the price of the trip should not exceed the price range, if any, must be organised within the date range specified, if any, and according to the level of difficulty indicated, if any. Initially, every search criterion must be null, which means that every trip must be returned.~~ ***DONE***
 
 ## **Functional requirements**
 
 15. An actor who is authenticated as an explorer must be able to:  
-   1. Manage his or her finder, which includes modifying it and consulting its results, that is, the trips that meet the search criteria. The finder can be persisted in the browser’s local storage.  
-   2. Customise the appearance of Acme Explorer to suit their likings, in order to achieve a better UX. Explorers should be able to customize the CSS style (choosing from at least two different styles, light and dark).
+   1. ~~Manage his or her finder, which includes modifying it and consulting its results, that is, the trips that meet the search criteria. The finder can be persisted in the browser’s local storage.~~ ***DONE***  
+   2. ~~Customise the appearance of Acme Explorer to suit their likings, in order to achieve a better UX. Explorers should be able to customize the CSS style (choosing from at least two different styles, light and dark).~~ ***DONE***
 16. An actor who is authenticated as an administrator must be able to:  
    1. Display a dashboard with the following information:  
-      * The average price range that explorers indicate in their finders.  
-      * The top 10 key words that the explorers indicate in their finders.
+      * ~~The average price range that explorers indicate in their finders.~~ ***DONE***
+      * ~~The top 10 key words that the explorers indicate in their finders.~~ ***DONE***
 
 ## **Non-functional requirements**
 
-17. The results of a finder are cached on the users’ browsing device for one hour (by default).  The user should be able to configure that time at will in order to adjust the performance of the system, according to his or her device features.  The minimum time’s one hour and the maximum time’s 24 hours.  
-18. The maximum number of results that a finder returns is 10 by default.  The user should be able to change this parameter in order to adjust the performance of the system, according to his or her device features.  The absolute maximum is 50 results.  
-19. Trips that start in less than one week should be highlighted in the trip list page, using a distinctive format.  
-20. Trip display pages should include a countdown timer that informs the user about the time left for the trip to start (e.g., days, hours and minutes)
+17. ~~The results of a finder are cached on the users’ browsing device for one hour (by default).  The user should be able to configure that time at will in order to adjust the performance of the system, according to his or her device features.  The minimum time’s one hour and the maximum time’s 24 hours.~~ ***DONE***  
+18. ~~The maximum number of results that a finder returns is 10 by default.  The user should be able to change this parameter in order to adjust the performance of the system, according to his or her device features.  The absolute maximum is 50 results.~~ ***DONE***  
+19. ~~Trips that start in less than one week should be highlighted in the trip list page, using a distinctive format.~~ ***DONE***  
+20. ~~Trip display pages should include a countdown timer that informs the user about the time left for the trip to start (e.g., days, hours and minutes)~~ ***DONE***
 
 # **A-level requirements**
 
