@@ -28,31 +28,31 @@
 
 ## L02-S01. Displaying information (I) - Training
 
-+ Create a component that allows to display an item card and use it in a parent component to list them or to display them. According to the action executed (listing or displaying) you should provide a summary of the trip (listing) or more complete information about the trip (display).
++ ~~Create a component that allows to display an item card and use it in a parent component to list them or to display them. According to the action executed (listing or displaying) you should provide a summary of the trip (listing) or more complete information about the trip (display).~~ ***DONE***
 
-+ Create a built-in pipe to provide the date in the footer of your application.
++ ~~Create a built-in pipe to provide the date in the footer of your application.~~ ***DONE***
 
-+ Create a custom pipe to somehow highlight when a trip is available or with no more seats available.
++ ~~Create a custom pipe to somehow highlight when a trip is available or with no more seats available.~~ ***DONE***
 
 + ~~Before delivering your project, delete the node_modules folder. It stores downloaded dependencies and unnecessarily increases the project size. Remember to remove node_modules.~~ ***DONE***
 
 ## L02-S02. Displaying information (II) - Training
 
-+ Implement a datatable for your use case: list my applications (as manager).
++ ~~Implement a datatable for your use case: list my applications (as manager).~~ ***DONE***
 
-+ Add pagination, sorting, filtering and internationalisation to it.
++ ~~Add pagination, sorting, filtering and internationalisation to it.~~ ***DONE***
 
 + ~~Before delivering your project, delete the node_modules folder. It stores downloaded dependencies and unnecessarily increases the project size. Remember to remove node_modules.~~ ***DONE***
 
 ## L02-S03. Displaying information (III) - Training
 
-+ Create a testing suite to test one of your components related to trip display Today’s task: Trip display test.
++ ~~Create a testing suite to test one of your components related to trip display Today’s task: Trip display test.~~ ***DONE***
 
 + ~~Before delivering your project, delete the node_modules folder. It stores downloaded dependencies and unnecessarily increases the project size. Remember to remove node_modules.~~ ***DONE***
 
 ## L03-S01. Edition (I) - Training
 
-+ Create the component that allows creating/editing a trip, publishing it, and/or cancelling it. Include validation!
++ ~~Create the component that allows creating/editing a trip, publishing it, and/or cancelling it. Include validation!~~ ***DONE***
 
 + ~~Before delivering your project, delete the node_modules folder. It stores downloaded dependencies and unnecessarily increases the project size. Remember to remove node_modules.~~ ***DONE***
 
