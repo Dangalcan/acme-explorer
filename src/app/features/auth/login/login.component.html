@@ -21,6 +21,7 @@
       <div>
         <label class="block text-sm font-medium text-[#2c3e50] dark:text-slate-300 mb-1.5">{{ 'auth.login.email' | translate }}</label>
         <input
+          data-cy="email-input"
           type="email"
           [ngModel]="email()"
           (ngModelChange)="email.set($event)"
@@ -33,6 +34,7 @@
       <div>
         <label class="block text-sm font-medium text-[#2c3e50] dark:text-slate-300 mb-1.5">{{ 'auth.login.password' | translate }}</label>
         <input
+          data-cy="password-input"
           type="password"
           [ngModel]="password()"
           (ngModelChange)="password.set($event)"
@@ -61,6 +63,7 @@
           {{ 'auth.login.back' | translate }}
         </button>
         <button
+          data-cy="login-submit"
           type="button"
           (click)="login()"
           [disabled]="isLoading()"
