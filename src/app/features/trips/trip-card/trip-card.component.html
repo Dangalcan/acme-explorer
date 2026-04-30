@@ -71,7 +71,7 @@
         <div>
           <p class="text-xs text-slate-400 dark:text-slate-500">{{ trip.startDate | fechas:'d MMM' }} → {{ trip.endDate | fechas:'d MMM yyyy' }}</p>
           <p class="text-xs font-semibold text-indigo-500 mt-0.5">{{ 'trips.card.days' | translate: { count: getDuration(trip) } }}</p>
-          <p class="text-xs font-semibold text-amber-600 mt-0.5">{{ trip.availablePlaces | soldOut:trip.maxParticipants }}</p>
+          <p class="text-xs font-semibold mt-0.5" [ngClass]="trip.availablePlaces | soldOutClass">{{ trip.availablePlaces | soldOut:trip.maxParticipants }}</p>
         </div>
         <p class="text-lg font-bold text-slate-800 dark:text-slate-100">{{ getTotalPrice(trip) | appCurrency }}</p>
       </div>

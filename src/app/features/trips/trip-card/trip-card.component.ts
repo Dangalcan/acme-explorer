@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, HostListener, inject, Input, Output, signal } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { Trip, TRIP_CANCELLATION_VALIDATION } from '../trip.model';
@@ -8,6 +8,7 @@ import { AppCurrencyPipe } from '../../../shared/pipes/currency.pipe';
 import { DescriptionPipe } from '../../../shared/pipes/description.pipe';
 import { DificultadPipe } from '../../../shared/pipes/dificultad.pipe';
 import { SoldOutPipe } from '../../../shared/pipes/sold-out.pipe';
+import { SoldOutClassPipe } from '../../../shared/pipes/sold-out-class.pipe';
 import { FavouritesService } from '../../favourites/favourites.service';
 import { FavouriteList } from '../../favourites/favourite-list.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,12 +26,14 @@ import { ReviewService } from '../review.service';
   selector: 'app-trip-card',
   imports: [
     DecimalPipe,
+    NgClass,
     FormsModule,
     FechasPipe,
     AppCurrencyPipe,
     DescriptionPipe,
     DificultadPipe,
     SoldOutPipe,
+    SoldOutClassPipe,
     MatFormFieldModule,
     MatSelectModule,
     MatButtonModule,
@@ -198,17 +201,26 @@ export class TripCardComponent {
     return this.favouriteLists().filter(list => !this.favouritesService.isTripInList(list.id, this.trip.id));
   }
 
+  private isTripStartTodayOrPast(): boolean {
+    const tripStart = new Date(this.trip.startDate);
+    tripStart.setHours(0, 0, 0, 0);
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    return tripStart <= todayStart;
+  }
+
   isApplyDisabled(): boolean {
     if (this.currentRole() === 'manager') return true;
     if (this.trip.cancellation) return true;
     if (this.trip.availablePlaces !== undefined && this.trip.availablePlaces <= 0) return true;
+    if (this.isTripStartTodayOrPast()) return true;
     return !this.applicationService.canApplyForTrip(this.trip);
   }
 
   applyButtonLabel(): string {
     if (this.currentRole() === 'manager') return this.translate.instant('trips.card.apply');
     if (this.trip.cancellation) return this.translate.instant('trips.card.unavailable');
-    if (new Date(this.trip.startDate).getTime() <= Date.now()) return this.translate.instant('trips.card.started');
+    if (this.isTripStartTodayOrPast()) return this.translate.instant('trips.card.started');
     if (this.trip.availablePlaces !== undefined && this.trip.availablePlaces <= 0) return this.translate.instant('trips.card.sold_out');
     if (this.applicationService.hasActiveApplicationForTrip(this.trip.id)) return this.translate.instant('trips.card.applied');
     return this.translate.instant('trips.card.apply');

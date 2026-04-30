@@ -80,12 +80,40 @@ export class TripDisplayComponent {
     }
   }
 
+  readonly sortColumn = signal<string>('createdAt');
+  readonly sortDirection = signal<'asc' | 'desc'>('desc');
+
   readonly tripApplications = computed(() => {
     const tripId = this.trip()?.id;
     const apps = this.applicationService.applications();
     if (!tripId) return [];
-    return apps.filter((app) => app.tripId === tripId).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+    const filteredApps = apps.filter((app) => app.tripId === tripId);
+    const col = this.sortColumn();
+    const dir = this.sortDirection();
+
+    return [...filteredApps].sort((a, b) => {
+      let valA: any = (a as any)[col];
+      let valB: any = (b as any)[col];
+
+      if (valA instanceof Date) valA = valA.getTime();
+      if (valB instanceof Date) valB = valB.getTime();
+
+      if (valA === valB) return 0;
+      if (valA < valB) return dir === 'asc' ? -1 : 1;
+      return dir === 'asc' ? 1 : -1;
+    });
   });
+
+  toggleSort(column: string): void {
+    if (this.sortColumn() === column) {
+      this.sortDirection.update((dir) => (dir === 'asc' ? 'desc' : 'asc'));
+    } else {
+      this.sortColumn.set(column);
+      this.sortDirection.set('asc');
+    }
+    this.currentPage.set(0);
+  }
 
   readonly statusConfig: Record<AppStatus, { key: string; classes: string }> = {
     PENDING:   { key: 'applications.status.pending',   classes: 'bg-yellow-100 text-yellow-700 border border-yellow-200' },
