@@ -58,7 +58,7 @@
 
 ## L03-S02. Edition (II) - Training
 
-+ Make sure that you store required user information (no sensitive) in order to navigate throughout the menu appropriately.
++ ~~Make sure that you store required user information (no sensitive) in order to navigate throughout the menu appropriately.~~ ***DONE***
 
 + ~~Implement a component to pay an amount of money via PayPal. Complete and reuse this component before the last deliverable.~~ ***DONE***
 
