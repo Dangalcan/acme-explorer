@@ -47,7 +47,7 @@ changeMe1@
 email:
 
 ```text
-acme-explorer@personal.example.com
+acme-explorer2@personal.example.com
 ```
 
 password:
