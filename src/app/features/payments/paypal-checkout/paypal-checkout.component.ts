@@ -18,28 +18,13 @@ import { TripService } from '../../trips/trip.service';
 
 type CheckoutStatus = 'idle' | 'ready' | 'success' | 'error';
 
-type CaptureActions = {
-  order: {
-    capture: () => Promise<unknown>;
-  };
-};
-
-type CreateActions = {
-  order: {
-    create: (order: {
-      purchase_units: Array<{
-        amount: {
-          currency_code: string;
-          value: string;
-        };
-      }>;
-    }) => Promise<string>;
-  };
+type PayPalApproveData = {
+  orderID: string;
 };
 
 type PayPalButtonsOptions = {
-  createOrder: (_data: unknown, actions: CreateActions) => Promise<string>;
-  onApprove: (_data: unknown, actions: CaptureActions) => Promise<void>;
+  createOrder: () => Promise<string>;
+  onApprove: (data: PayPalApproveData) => Promise<void>;
   onError: (error: unknown) => void;
 };
 
@@ -150,8 +135,8 @@ export class PaypalCheckoutComponent implements AfterViewInit {
     await new Promise<void>((resolve, reject) => {
       const script = document.createElement('script');
       script.src =
-        `https://www.paypal.com/sdk/js?client-id=${paypalConfig.clientId}` +
-        `&currency=${this.currency}&intent=capture&components=buttons`;
+        `https://sandbox.paypal.com/sdk/js?client-id=${paypalConfig.clientId}` +
+        `&currency=${this.currency}&intent=capture&components=buttons&debug=true`;
       script.async = true;
       script.dataset['paypalSdk'] = 'true';
       script.onload = () => resolve();
@@ -169,34 +154,8 @@ export class PaypalCheckoutComponent implements AfterViewInit {
 
     await paypal
       .Buttons({
-        createOrder: (_data, actions) =>
-          actions.order.create({
-            purchase_units: [
-              {
-                amount: {
-                  currency_code: this.currency,
-                  value: this.amount().toFixed(2),
-                },
-              },
-            ],
-          }),
-        onApprove: async (_data, actions) => {
-          await actions.order.capture();
-          const currentApplicationId = this.applicationId();
-          if (!currentApplicationId) {
-            this.status.set('error');
-            this.errorMessage.set('paypal.error.missing_application');
-            return;
-          }
-
-          const paid = await this.applicationService.payApplication(currentApplicationId);
-          if (!paid) {
-            this.status.set('error');
-            this.errorMessage.set('paypal.error.update_failed');
-            return;
-          }
-          this.status.set('success');
-        },
+        createOrder: () => this.createPaypalOrder(),
+        onApprove: (data) => this.capturePaypalOrder(data.orderID),
         onError: (error) => {
           console.error(error);
           this.status.set('error');
@@ -204,6 +163,79 @@ export class PaypalCheckoutComponent implements AfterViewInit {
         },
       })
       .render(this.paypalButtonsRef.nativeElement);
+  }
+
+  private async getAccessToken(): Promise<string> {
+    const credentials = btoa(`${paypalConfig.clientId}:${paypalConfig.clientSecret}`);
+    const response = await fetch(`${paypalConfig.apiBase}/v1/oauth2/token`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${credentials}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: 'grant_type=client_credentials',
+    });
+    if (!response.ok) throw new Error('Failed to get PayPal access token');
+    const data = (await response.json()) as { access_token: string };
+    return data.access_token;
+  }
+
+  private async createPaypalOrder(): Promise<string> {
+    const token = await this.getAccessToken();
+    const response = await fetch(`${paypalConfig.apiBase}/v2/checkout/orders`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            amount: {
+              currency_code: this.currency,
+              value: this.amount().toFixed(2),
+            },
+          },
+        ],
+      }),
+    });
+    if (!response.ok) throw new Error('Failed to create PayPal order');
+    const order = (await response.json()) as { id: string };
+    return order.id;
+  }
+
+  private async capturePaypalOrder(orderID: string): Promise<void> {
+    const token = await this.getAccessToken();
+    const response = await fetch(
+      `${paypalConfig.apiBase}/v2/checkout/orders/${orderID}/capture`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    if (!response.ok) {
+      const err = (await response.json()) as { message?: string };
+      throw new Error(err.message ?? 'Failed to capture PayPal order');
+    }
+
+    const currentApplicationId = this.applicationId();
+    if (!currentApplicationId) {
+      this.status.set('error');
+      this.errorMessage.set('paypal.error.missing_application');
+      return;
+    }
+
+    const paid = await this.applicationService.payApplication(currentApplicationId);
+    if (!paid) {
+      this.status.set('error');
+      this.errorMessage.set('paypal.error.update_failed');
+      return;
+    }
+    this.status.set('success');
   }
 
   goToApplications(): void {
