@@ -39,7 +39,7 @@ Requirements for levels C, B, and A
     d. Apply for a trip whose starting date has not yet passed.
     e. Apply for a trip whose starting data has already passed (it should fail).
 
-- Item 3. An e2e testing suite for the following use case.
-    a. ~~Browse the list of trips, search for one of them using a keyword, display the details of the resulting trip and apply for it.~~ ***DONE***
+- ~~Item 3. An e2e testing suite for the following use case.
+    a. Browse the list of trips, search for one of them using a keyword, display the details of the resulting trip and apply for it.~~ ***DONE***
 
 Please, consider that for evaluation purposes, the backend on which your project relies should be available (either as a JSON-server instance, or as a working backend deployed on a cloud environment, and accessible via HTTP). Make sure that we, the lecturers, have the appropriate permissions to access the backend.
