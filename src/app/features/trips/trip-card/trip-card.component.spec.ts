@@ -10,6 +10,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TripCardComponent } from './trip-card.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { FavouritesService } from '../../favourites/favourites.service';
+import { ApplicationService } from '../../applications/application.service';
+import { TripService } from '../trip.service';
+import { ReviewService } from '../review.service';
 import { Trip } from '../trip.model';
 import { FavouriteList } from '../../favourites/favourite-list.model';
 
@@ -28,6 +31,23 @@ describe('TripCardComponent', () => {
     favouriteLists: favouriteListsSignal,
     isTripInList: vi.fn<(listId: string, tripId: string) => boolean>(),
     addTripToList: vi.fn<(listId: string, tripId: string) => void>(),
+  };
+
+  const applicationServiceMock = {
+    applyForTrip: vi.fn<(trip: Trip, comment?: string) => Promise<boolean>>().mockResolvedValue(true),
+    canApplyForTrip: vi.fn<(trip: Trip) => boolean>().mockReturnValue(true),
+    hasActiveApplicationForTrip: vi.fn<(tripId: string) => boolean>().mockReturnValue(false),
+  };
+
+  const tripServiceMock = {
+    canCancelTrip: vi.fn<(tripId: string) => boolean>().mockReturnValue(true),
+    cancelTrip: vi.fn<(tripId: string, reason: string) => Promise<boolean>>().mockResolvedValue(true),
+  };
+
+  const reviewServiceMock = {
+    canModifyReview: vi.fn<(reviewId: string) => boolean>().mockReturnValue(false),
+    updateReview: vi.fn<(reviewId: string, rating: number, comment?: string) => Promise<boolean>>().mockResolvedValue(true),
+    deleteReview: vi.fn<(reviewId: string) => Promise<boolean>>().mockResolvedValue(true),
   };
 
   const mockTrip: Trip = {
@@ -71,6 +91,9 @@ describe('TripCardComponent', () => {
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: FavouritesService, useValue: favouritesServiceMock },
+        { provide: ApplicationService, useValue: applicationServiceMock },
+        { provide: TripService, useValue: tripServiceMock },
+        { provide: ReviewService, useValue: reviewServiceMock },
         provideHttpClient(),
         provideHttpClientTesting(),
         provideTranslateService({ fallbackLang: 'en' }),
@@ -82,10 +105,27 @@ describe('TripCardComponent', () => {
     favouritesServiceMock.isTripInList.mockReset();
     favouritesServiceMock.addTripToList.mockReset();
 
+    applicationServiceMock.applyForTrip.mockReset();
+    applicationServiceMock.canApplyForTrip.mockReset();
+    applicationServiceMock.hasActiveApplicationForTrip.mockReset();
+    tripServiceMock.canCancelTrip.mockReset();
+    tripServiceMock.cancelTrip.mockReset();
+    reviewServiceMock.canModifyReview.mockReset();
+    reviewServiceMock.updateReview.mockReset();
+    reviewServiceMock.deleteReview.mockReset();
+
     authServiceMock.currentRole.set('explorer');
     favouriteListsSignal.set([]);
 
     favouritesServiceMock.isTripInList.mockReturnValue(false);
+    applicationServiceMock.applyForTrip.mockResolvedValue(true);
+    applicationServiceMock.canApplyForTrip.mockReturnValue(true);
+    applicationServiceMock.hasActiveApplicationForTrip.mockReturnValue(false);
+    tripServiceMock.canCancelTrip.mockReturnValue(true);
+    tripServiceMock.cancelTrip.mockResolvedValue(true);
+    reviewServiceMock.canModifyReview.mockReturnValue(false);
+    reviewServiceMock.updateReview.mockResolvedValue(true);
+    reviewServiceMock.deleteReview.mockResolvedValue(true);
 
     await configureTestingModule();
 
