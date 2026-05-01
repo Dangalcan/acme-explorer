@@ -105,6 +105,7 @@ describe('TripService', () => {
   const applicationServiceMock = {
     applications: applicationsSignal,
     publicAcceptedCounts: publicAcceptedCountsSignal,
+    deleteApplicationsByTripId: vi.fn().mockResolvedValue(undefined),
   };
 
   const reviewServiceMock = {
