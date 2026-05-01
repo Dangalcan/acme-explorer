@@ -119,6 +119,7 @@ export class TripService {
     if (!this.canDeleteTrip(tripId)) return false;
 
     try {
+      await this.applicationService.deleteApplicationsByTripId(tripId, ['PENDING', 'DUE', 'REJECTED']);
       await deleteDoc(doc(db, 'trips', tripId));
       await this.loadTrips();
       return true;

@@ -3,6 +3,7 @@ import { Injectable, PLATFORM_ID, computed, effect, inject, signal } from '@angu
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   documentId,
   getDocs,
@@ -143,6 +144,13 @@ export class ApplicationService {
       });
       return true;
     });
+  }
+
+  async deleteApplicationsByTripId(tripId: string, statuses: Application['status'][]): Promise<void> {
+    const snapshot = await getDocs(
+      query(this.applicationsCollection, where('tripId', '==', tripId), where('status', 'in', statuses)),
+    );
+    await Promise.all(snapshot.docs.map((d) => deleteDoc(doc(db, 'applications', d.id))));
   }
 
   private hasTripStarted(trip: Trip): boolean {
