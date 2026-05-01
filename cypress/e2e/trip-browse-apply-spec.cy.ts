@@ -28,12 +28,14 @@ describe('Trip browsing, searching and applying', () => {
 
     const loginAsManager = () => {
         loginPage.navigateTo();
+        cy.wait(500);
         loginPage.fillInLoginFormAsManager();
         headerPage.getLogoutButton().should('be.visible');
     };
 
     const loginAsExplorer = () => {
         loginPage.navigateTo();
+        cy.wait(500);
         loginPage.fillInLoginFormAsExplorer();
         headerPage.getLogoutButton().should('be.visible');
     };
@@ -74,11 +76,13 @@ describe('Trip browsing, searching and applying', () => {
 
     it('should display trip list with cards', () => {
         tripsPage.navigateTo();
+        cy.wait(500);
         tripsPage.getTripCards().should('have.length.greaterThan', 0);
     });
 
     it('should search trips by keyword and show matching result', () => {
         tripsPage.navigateTo();
+        cy.wait(500);
         tripsPage.getTripCards().should('have.length.greaterThan', 0);
         tripsPage.typeSearchKeyword(UNIQUE_KEYWORD);
         tripsPage.getTripCards().should('have.length.at.least', 1);
@@ -87,6 +91,7 @@ describe('Trip browsing, searching and applying', () => {
 
     it('should show empty state when no trips match the keyword', () => {
         tripsPage.navigateTo();
+        cy.wait(500);
         tripsPage.getTripCards().should('have.length.greaterThan', 0);
         tripsPage.typeSearchKeyword('xyzzy_no_match_12345');
         tripsPage.getEmptyState().should('be.visible');
@@ -95,6 +100,7 @@ describe('Trip browsing, searching and applying', () => {
 
     it('should clear search and restore the full trip list', () => {
         tripsPage.navigateTo();
+        cy.wait(500);
         tripsPage.getTripCards().should('have.length.greaterThan', 1);
         tripsPage.typeSearchKeyword(UNIQUE_KEYWORD);
         tripsPage.getTripCards().should('have.length.at.least', 1);
@@ -105,6 +111,7 @@ describe('Trip browsing, searching and applying', () => {
 
     it('should display trip details when clicking on a search result', () => {
         tripsPage.navigateTo();
+        cy.wait(500);
         tripsPage.getTripCards().should('have.length.greaterThan', 0);
         tripsPage.typeSearchKeyword(UNIQUE_KEYWORD);
         tripsPage.getTripCards().should('have.length.at.least', 1);

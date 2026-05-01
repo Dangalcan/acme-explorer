@@ -26,6 +26,7 @@ describe('Trip edition', () => {
 
     const loginAsManager = () => {
         loginPage.navigateTo();
+        cy.wait(500);
         loginPage.fillInLoginFormAsManager();
         headerPage.getLogoutButton().should('be.visible');
     };
@@ -65,7 +66,7 @@ describe('Trip edition', () => {
         clearStorage();
         loginAsManager();
         tripEditPage.navigateTo(tripId);
-        
+        cy.wait(500);
         cy.url().should('include', '/edit');
         
         tripEditPage.getTitleInput().should('not.have.value', '', { timeout: 10000 }); 
@@ -73,6 +74,7 @@ describe('Trip edition', () => {
     });
 
     it('should display edit form pre-filled with trip data', () => {
+        cy.wait(500); 
         tripEditPage.getTitleInput().should('not.have.value', '');
         tripEditPage.getDescriptionInput().should('not.have.value', '');
         tripEditPage.getSubmitButton().should('not.be.disabled');
@@ -80,6 +82,7 @@ describe('Trip edition', () => {
 
     it('should successfully save edit and redirect to trip display', () => {
         const newTitle = 'Updated E2E Title ' + Date.now();
+        cy.wait(500);
         tripEditPage.getTitleInput()
             .click()
             .type('{selectall}{backspace}')
@@ -101,6 +104,7 @@ describe('Trip edition', () => {
     });
 
     it('should show validation error when title is blank', () => {
+        cy.wait(500); 
         tripEditPage.getTitleInput().click().type('{selectall}{backspace}');
         tripEditPage.submit();
         tripEditPage.getTitleInput().should('have.class', 'border-red-500');
@@ -108,6 +112,7 @@ describe('Trip edition', () => {
     });
 
     it('should show validation error for past start date', () => {
+        cy.wait(500);
         tripEditPage.getStartDateInput().clear().type('2020-01-01');
         tripEditPage.submit();
         tripEditPage.getStartDateInput().should('have.class', 'border-red-500');
@@ -115,6 +120,7 @@ describe('Trip edition', () => {
     });
 
     it('should show validation error when end date is before start date', () => {
+        cy.wait(500);
         tripEditPage.getStartDateInput().clear().type('2030-06-01');
         tripEditPage.getEndDateInput().clear().type('2030-05-01');
         tripEditPage.submit();
@@ -123,6 +129,7 @@ describe('Trip edition', () => {
     });
 
     it('should successfully change difficulty level', () => {
+        cy.wait(500);
         tripEditPage.getDifficultySelect().select('HARD');
         tripEditPage.submit();
         cy.url().should('not.include', '/edit');
