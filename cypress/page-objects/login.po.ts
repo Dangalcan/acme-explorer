@@ -20,7 +20,7 @@ export class LoginPage {
         password: 'badCredentials'
     }
 
-    nagivateTo() {
+    navigateTo() {
         return cy.visit('localhost:4200/login');
     }
 
