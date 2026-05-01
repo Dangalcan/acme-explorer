@@ -123,10 +123,16 @@ ng test
 For end-to-end (e2e) testing, run:
 
 ```bash
-ng e2e
+npm run test:e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+We made some e2e tests using Cypress. If you want to view the UI changes and interactions use the following command:
+
+```bash
+npm run start:cypress
+```
+
+A pop-up will appear. Go to e2e tests (should be marked as configured) and run the tests in the UI.
 
 ## Additional Resources
 

@@ -8,6 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:e2e": "cypress run",
     "test:coverage": "ng test --coverage",
     "serve:ssr:acme-explorer": "node dist/acme-explorer/server/server.mjs",
     "i18n:extract": "ng extract-i18n --output-path src/locale",
