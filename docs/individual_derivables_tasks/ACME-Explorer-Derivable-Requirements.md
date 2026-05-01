@@ -30,7 +30,7 @@ data is available
 
 Requirements for levels C, B, and A
 
-- Item 1. An Angular project that implements all the requirements for Acme Explorer, including the models, services, components, guards, and so on. The project must be fully functional.
+- ~~Item 1. An Angular project that implements all the requirements for Acme Explorer, including the models, services, components, guards, and so on. The project must be fully functional.~~ ***DONE***
 
 - Item 2. A functional testing suite for the following use cases:
     a. Create a trip with valid data.
@@ -40,10 +40,6 @@ Requirements for levels C, B, and A
     e. Apply for a trip whose starting data has already passed (it should fail).
 
 - Item 3. An e2e testing suite for the following use case.
-    a. Browse the list of trips, search for one of them using a keyword, display the
-    details of the resulting trip and apply for it.
+    a. ~~Browse the list of trips, search for one of them using a keyword, display the details of the resulting trip and apply for it.~~ ***DONE***
 
-Please, consider that for evaluation purposes, the backend on which your project relies should be
-available (either as a JSON-server instance, or as a working backend deployed on a cloud environment,
-and accessible via HTTP). Make sure that we, the lecturers, have the appropriate permissions to access
-the backend.
+Please, consider that for evaluation purposes, the backend on which your project relies should be available (either as a JSON-server instance, or as a working backend deployed on a cloud environment, and accessible via HTTP). Make sure that we, the lecturers, have the appropriate permissions to access the backend.
