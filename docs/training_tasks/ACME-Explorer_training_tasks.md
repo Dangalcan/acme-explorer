@@ -66,6 +66,6 @@
 
 ## L03-S03. Edition (III) - Training
 
-+ Implement a test suite for trip edition. Don’t forget to use page objects.
++ Implement an end to end test suite for trip edition. Don’t forget to use page objects.
 
 + ~~Before delivering your project, delete the node_modules folder. It stores downloaded dependencies and unnecessarily increases the project size. Remember to remove node_modules.~~ ***DONE***

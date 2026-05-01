@@ -13,6 +13,7 @@
       id="title"
       type="text"
       formControlName="title"
+      data-cy="trip-title-input"
       class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
              focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
       [class.border-red-500]="tripForm.get('title')?.invalid && tripForm.get('title')?.touched"
@@ -35,6 +36,7 @@
     <textarea
       id="description"
       formControlName="description"
+      data-cy="trip-description-input"
       rows="4"
       class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
              focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors resize-none"
@@ -59,6 +61,7 @@
       <select
         id="difficultyLevel"
         formControlName="difficultyLevel"
+        data-cy="trip-difficulty-select"
         class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
       >
@@ -76,6 +79,7 @@
         id="maxParticipants"
         type="number"
         formControlName="maxParticipants"
+        data-cy="trip-max-participants-input"
         [min]="validation.maxParticipants.min"
         class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
@@ -97,6 +101,7 @@
         id="startDate"
         type="date"
         formControlName="startDate"
+        data-cy="trip-start-date-input"
         class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
         [class.border-red-500]="
@@ -121,6 +126,7 @@
         id="endDate"
         type="date"
         formControlName="endDate"
+        data-cy="trip-end-date-input"
         class="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
         [class.border-red-500]="
@@ -158,6 +164,7 @@
           id="city"
           type="text"
           formControlName="city"
+          data-cy="trip-city-input"
           class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
         />
@@ -170,6 +177,7 @@
           id="country"
           type="text"
           formControlName="country"
+          data-cy="trip-country-input"
           class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                  focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
         />
@@ -197,6 +205,7 @@
               <button
                 type="button"
                 (click)="removeStage(i)"
+                [attr.data-cy]="'trip-remove-stage-' + i"
                 class="text-xs text-red-500 hover:text-red-700 font-medium transition-colors"
               >
                 {{ 'trips.form.remove_stage' | translate }}
@@ -209,6 +218,7 @@
             <input
               type="text"
               formControlName="title"
+              [attr.data-cy]="'trip-stage-title-' + i"
               [placeholder]="'trips.form.stage_title' | translate"
               class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
                      focus:outline-none focus:ring-2 focus:ring-[#b21c2b] focus:border-transparent transition-colors"
@@ -228,6 +238,7 @@
           <div>
             <textarea
               formControlName="description"
+              [attr.data-cy]="'trip-stage-description-' + i"
               rows="2"
               [placeholder]="'trips.form.stage_description' | translate"
               class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
@@ -252,6 +263,7 @@
             <input
               type="number"
               formControlName="price"
+              [attr.data-cy]="'trip-stage-price-' + i"
               [min]="stageValidation.price.min"
               step="0.01"
               class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm
@@ -270,6 +282,7 @@
 
     <button
       type="button"
+      data-cy="trip-add-stage-btn"
       (click)="addStage()"
       class="w-full py-2.5 rounded-lg border border-dashed border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 text-sm
              hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-400 transition-colors font-medium"
@@ -331,6 +344,7 @@
   <div class="flex gap-3 pt-2">
     <button
       type="button"
+      data-cy="trip-form-cancel"
       (click)="cancelled.emit()"
       class="flex-1 py-2.5 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300
              font-semibold text-sm transition-colors"
@@ -340,6 +354,7 @@
 
     <button
       type="submit"
+      data-cy="trip-form-submit"
       [disabled]="isLoading"
       class="flex-1 py-2.5 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723] text-white font-bold text-sm
              transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
