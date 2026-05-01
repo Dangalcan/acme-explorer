@@ -94,6 +94,7 @@
           @if (currentRole() !== 'manager' && currentRole() !== 'administrator') {
             @if (!isApplyPanelOpen()) {
               <button type="button"
+                      data-cy="trip-apply-btn"
                       (click)="openApplyPanel($event)"
                       [disabled]="isApplyDisabled()"
                       class="flex-1 py-2 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723] active:scale-95
@@ -162,6 +163,7 @@
                (click)="$event.stopPropagation()">
             <p class="text-sm font-semibold text-indigo-700 dark:text-indigo-400">{{ 'trips.card.apply_comment_label' | translate }}</p>
             <textarea
+              data-cy="trip-apply-comment"
               [ngModel]="applyComment()"
               (ngModelChange)="applyComment.set($event); applyError.set(null)"
               rows="3"
@@ -181,6 +183,7 @@
                 {{ 'common.back' | translate }}
               </button>
               <button type="button"
+                      data-cy="trip-apply-confirm"
                       (click)="confirmApply($event)"
                       [disabled]="isApplying()"
                       class="px-3 py-1.5 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723] text-white
@@ -332,6 +335,7 @@
         <div class="mb-4">
           @if (!isApplyPanelOpen()) {
             <button type="button"
+                    data-cy="trip-apply-btn"
                     (click)="openApplyPanel($event)"
                     [disabled]="isApplyDisabled()"
                     class="inline-flex items-center gap-2 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723] active:scale-95
@@ -347,6 +351,7 @@
           <div class="mb-4 rounded-xl border border-indigo-200 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-900/20 p-3 space-y-2">
             <p class="text-sm font-semibold text-indigo-700 dark:text-indigo-400">{{ 'trips.card.apply_comment_label' | translate }}</p>
             <textarea
+              data-cy="trip-apply-comment"
               [ngModel]="applyComment()"
               (ngModelChange)="applyComment.set($event); applyError.set(null)"
               rows="3"
@@ -366,6 +371,7 @@
                 {{ 'common.back' | translate }}
               </button>
               <button type="button"
+                      data-cy="trip-apply-confirm"
                       (click)="confirmApply($event)"
                       [disabled]="isApplying()"
                       class="px-3 py-1.5 rounded-lg bg-[#b21c2b] hover:bg-[#8e1723] text-white

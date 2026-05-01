@@ -32,6 +32,7 @@
         </svg>
         <input
           type="search"
+          data-cy="trip-search-input"
           [ngModel]="searchKeyword()"
           (ngModelChange)="searchKeyword.set($event)"
           [placeholder]="'trips.list.search_placeholder' | translate"
@@ -43,6 +44,7 @@
       </div>
       @if (searchKeyword()) {
         <button
+          data-cy="trip-search-clear"
           (click)="clearSearch()"
           class="px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700
                  hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm whitespace-nowrap"
@@ -70,7 +72,7 @@
       }
 
       @if (filteredTrips().length === 0 && searchKeyword().trim()) {
-        <div class="col-span-full text-center py-16 text-slate-500 dark:text-slate-400">
+        <div data-cy="trip-empty-state" class="col-span-full text-center py-16 text-slate-500 dark:text-slate-400">
           <svg class="mx-auto mb-4 w-12 h-12 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                   d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
