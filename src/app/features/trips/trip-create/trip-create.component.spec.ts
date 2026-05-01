@@ -3,7 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideTranslateService } from '@ngx-translate/core';
-import { provideRouter } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { signal } from '@angular/core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -27,8 +27,11 @@ function makeFormValue(overrides: Partial<TripFormValue> = {}): TripFormValue {
     startDate: new Date('2026-08-01'),
     endDate: new Date('2026-08-10'),
     location: { city: 'Zermatt', country: 'Switzerland' },
-    stages: [{ title: 'Stage 1', description: 'Desc 1', price: 150 }],
-    pictures: ['https://example.com/img.jpg'],
+    stages: [
+      { title: 'Stage 1', description: 'Desc 1', price: 150 },
+      { title: 'Stage 2', description: 'Desc 2', price: 220 },
+    ],
+    pictures: ['https://example.com/img.jpg', 'https://example.com/img-2.jpg'],
     ...overrides,
   };
 }
@@ -39,6 +42,7 @@ function makeFormValue(overrides: Partial<TripFormValue> = {}): TripFormValue {
 describe('TripCreateComponent', () => {
   let fixture: ComponentFixture<TripCreateComponent>;
   let component: TripCreateComponent;
+  let router: Router;
 
   const createTripSpy = vi.fn();
 
@@ -106,6 +110,7 @@ describe('TripCreateComponent', () => {
 
     fixture = TestBed.createComponent(TripCreateComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -123,6 +128,14 @@ describe('TripCreateComponent', () => {
     expect(arg['description']).toBe('A great trip');
     expect(arg['difficultyLevel']).toBe('MEDIUM');
     expect(arg['maxParticipants']).toBe(10);
+  });
+
+  it('maps pictures to objects with url', async () => {
+    const pictures = ['https://example.com/a.jpg', 'https://example.com/b.jpg'];
+    await component.onCreate(makeFormValue({ pictures }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { pictures: Array<{ url: string }> };
+    expect(arg.pictures).toEqual([{ url: pictures[0] }, { url: pictures[1] }]);
   });
 
   it('passes stages with version 0 for each stage', async () => {
@@ -146,6 +159,13 @@ describe('TripCreateComponent', () => {
     const arg = createTripSpy.mock.calls[0][0] as { location: unknown };
     expect(arg.location).toBeDefined();
     expect((arg.location as { city: string }).city).toBe('Paris');
+  });
+
+  it('passes location when only country is provided', async () => {
+    await component.onCreate(makeFormValue({ location: { city: '', country: 'Spain' } }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { location: unknown };
+    expect((arg.location as { country: string }).country).toBe('Spain');
   });
 
   it('passes location as undefined when both city and country are empty', async () => {
@@ -178,5 +198,42 @@ describe('TripCreateComponent', () => {
     createTripSpy.mockResolvedValue(null);
     await component.onCreate(makeFormValue());
     expect(component.errorMessage()).toBe('trips.form.error.create_failed');
+  });
+
+  it('navigates to the created trip and marks the form pristine on success', async () => {
+    const markAsPristine = vi.fn();
+    (component as unknown as { tripFormComponent?: { tripForm: { markAsPristine: () => void } } }).tripFormComponent = {
+      tripForm: { markAsPristine },
+    };
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    await component.onCreate(makeFormValue());
+
+    expect(markAsPristine).toHaveBeenCalledOnce();
+    expect(navigateSpy).toHaveBeenCalledWith(['/trips', 'new-trip-id']);
+  });
+
+  it('navigates back on cancel', () => {
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    component.onCancel();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/trips']);
+  });
+
+  it('prevents deactivation when the form is dirty', () => {
+    (component as unknown as { tripFormComponent?: { tripForm: { dirty: boolean } } }).tripFormComponent = {
+      tripForm: { dirty: true },
+    };
+
+    expect(component.canDeactivate()).toBe(false);
+  });
+
+  it('allows deactivation when the form is clean', () => {
+    (component as unknown as { tripFormComponent?: { tripForm: { dirty: boolean } } }).tripFormComponent = {
+      tripForm: { dirty: false },
+    };
+
+    expect(component.canDeactivate()).toBe(true);
   });
 });
