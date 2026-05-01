@@ -60,7 +60,6 @@ describe('Trip edition', () => {
     });
 
     beforeEach(() => {
-        // Intercept Firestore calls to help stabilize the test
         cy.intercept('GET', '**/google.firestore.v1.Firestore/Listen/**').as('firestoreListen');
         
         clearStorage();
@@ -69,11 +68,7 @@ describe('Trip edition', () => {
         
         cy.url().should('include', '/edit');
         
-        // Wait for the form to populate. We use a longer timeout here because 
-        // Firestore cold starts can be slow.
-        tripEditPage.getTitleInput().should('not.have.value', '', { timeout: 10000 });
-        
-        // Brief pause to allow Angular's reactive form to stabilize after ngOnChanges
+        tripEditPage.getTitleInput().should('not.have.value', '', { timeout: 10000 }); 
         cy.wait(500); 
     });
 
@@ -85,9 +80,6 @@ describe('Trip edition', () => {
 
     it('should successfully save edit and redirect to trip display', () => {
         const newTitle = 'Updated E2E Title ' + Date.now();
-
-        // FIX: Using {selectall}{backspace} ensures the field is empty even if 
-        // Angular tries to re-pipe data into the input mid-type.
         tripEditPage.getTitleInput()
             .click()
             .type('{selectall}{backspace}')
@@ -96,14 +88,9 @@ describe('Trip edition', () => {
 
         tripEditPage.submit();
 
-        // Ensure we left the edit page
         cy.url().should('not.include', '/edit');
         cy.url().should('include', `/trips/${tripId}`);
-
-        // Force a reload to clear any local cache and fetch fresh from Firestore
         cy.reload();
-
-        // FIX: Use 'have.text' for an exact match to prevent "Frankenstein" titles
         cy.get('h1', { timeout: 10000 }).should('have.text', newTitle);
     });
 
