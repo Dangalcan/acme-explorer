@@ -1,6 +1,12 @@
 # AcmeExplorer
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+This project is part of the subject ***Frontend-technologies*** of Cloud, Data engineering and IT Management Master's. We decided to implement ***all*** requirements levels to achieve the **maximum mark**. We completed **C**, **B** and **A** level requirements and implemented **6 A+ tasks**.
+
+All work is available [here](https://github.com/Dangalcan/acme-explorer/issues?q=is%3Aissue%20state%3Aclosed) and contributions information is available [here](https://github.com/Dangalcan/acme-explorer/graphs/contributors).
+
+### Disclaimer
+
+If you experiment problems testing payments requirement you can check that it works properly in this [video](https://youtu.be/wE66SEHcvgo). Paypal is very strict with public leaks and it is all the time checking if clientIds and other credentials are publicly available on Github. If this happens with our credentials, Paypal will revoke them and that feature will not work, which will lead to a penalization in project evaluation. Moreover, we experimented some problems because Paypal just release v6 javascript SDK so ended up adapting our implementation to it, which makes our code different from the one provided in the theory material. We apologise in advance in case it does not work during project evaluation. We hope this video serves as a prove that it used to work when we delivered the project.
 
 ## User credentials
 
@@ -61,7 +67,7 @@ IM$s9#vk
 To start a local development server, run:
 
 ```bash
-ng serve
+npm start
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
@@ -86,36 +92,12 @@ Once you have your image, run it in a container
 docker run --name acme-explorer -p 4200:4200 -p 3000:3000 acme-explorer
 ```
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
 
 ```bash
-ng test
+npm test
 ```
 
 ## Running end-to-end tests
@@ -132,8 +114,24 @@ We made some e2e tests using Cypress. If you want to view the UI changes and int
 npm run start:cypress
 ```
 
-A pop-up will appear. Go to e2e tests (should be marked as configured) and run the tests in the UI.
+A pop-up will appear. Go to e2e tests (should be marked as configured), select **CHROME** and run the tests in the UI. ***We do not guarantee Edge or Electron compatibility.***.
 
 ## Additional Resources
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Class Diagram
+
+ACME-Explorer UML diagram can be found in *./docs/data_model* folder. You can find an image with all the UML diagram and a *draw.io* file in case the image provided does not show all the detail that you want when you zoom in.
+
+### Implemented Project Requirements
+
+Implemented project requirements report is accesible in ***Acme-Explorer-requirements.docx.md***.
+
+### Done tasks
+
+You can find all done tasks in *./docs* folder.
+
++ ***A+ tasks reports:*** Thery are stored in a dedicated folder for each derivable. *./docs/a_plus_tasks_d01/a_plus_tasks_d01.md* (1st delivery) *./docs/a_plus_tasks_d02/a_plus_tasks_d02.md* (2nd delivery) *./docs/a_plus_tasks_d03/a_plus_tasks_d03.md* (3rd delivery).
+
++ ***Derivable tasks:*** Individual derivable tasks report is stored in *./docs/individual_derivables_tasks/ACME-Explorer-Derivable-Requirements.md*.
+
++ ***Training tasks:*** Training tasks requirements report is stored in *./docs/training_tasks/ACME-Explorer_training_tasks.md*.
