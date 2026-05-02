@@ -3,7 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideTranslateService } from '@ngx-translate/core';
-import { provideRouter } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { signal } from '@angular/core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -27,8 +27,11 @@ function makeFormValue(overrides: Partial<TripFormValue> = {}): TripFormValue {
     startDate: new Date('2026-08-01'),
     endDate: new Date('2026-08-10'),
     location: { city: 'Zermatt', country: 'Switzerland' },
-    stages: [{ title: 'Stage 1', description: 'Desc 1', price: 150 }],
-    pictures: ['https://example.com/img.jpg'],
+    stages: [
+      { title: 'Stage 1', description: 'Desc 1', price: 150 },
+      { title: 'Stage 2', description: 'Desc 2', price: 220 },
+    ],
+    pictures: ['https://example.com/img.jpg', 'https://example.com/img-2.jpg'],
     ...overrides,
   };
 }
@@ -39,6 +42,7 @@ function makeFormValue(overrides: Partial<TripFormValue> = {}): TripFormValue {
 describe('TripCreateComponent', () => {
   let fixture: ComponentFixture<TripCreateComponent>;
   let component: TripCreateComponent;
+  let router: Router;
 
   const createTripSpy = vi.fn();
 
@@ -106,6 +110,7 @@ describe('TripCreateComponent', () => {
 
     fixture = TestBed.createComponent(TripCreateComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -125,6 +130,14 @@ describe('TripCreateComponent', () => {
     expect(arg['maxParticipants']).toBe(10);
   });
 
+  it('maps pictures to objects with url', async () => {
+    const pictures = ['https://example.com/a.jpg', 'https://example.com/b.jpg'];
+    await component.onCreate(makeFormValue({ pictures }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { pictures: Array<{ url: string }> };
+    expect(arg.pictures).toEqual([{ url: pictures[0] }, { url: pictures[1] }]);
+  });
+
   it('passes stages with version 0 for each stage', async () => {
     await component.onCreate(makeFormValue());
 
@@ -140,6 +153,19 @@ describe('TripCreateComponent', () => {
     expect(typeof arg.stages[0].id).toBe('string');
   });
 
+  it('passes stages with invalid prices as provided', async () => {
+    const stages = [
+      { title: 'Stage 1', description: 'Desc 1', price: -10 },
+      { title: 'Stage 2', description: 'Desc 2', price: -1 },
+    ];
+
+    await component.onCreate(makeFormValue({ stages }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { stages: Array<{ price: number }> };
+    expect(arg.stages[0].price).toBe(-10);
+    expect(arg.stages[1].price).toBe(-1);
+  });
+
   it('passes location when city or country is provided', async () => {
     await component.onCreate(makeFormValue({ location: { city: 'Paris', country: '' } }));
 
@@ -148,11 +174,68 @@ describe('TripCreateComponent', () => {
     expect((arg.location as { city: string }).city).toBe('Paris');
   });
 
+  it('passes location when only country is provided', async () => {
+    await component.onCreate(makeFormValue({ location: { city: '', country: 'Spain' } }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { location: unknown };
+    expect((arg.location as { country: string }).country).toBe('Spain');
+  });
+
   it('passes location as undefined when both city and country are empty', async () => {
     await component.onCreate(makeFormValue({ location: { city: '', country: '' } }));
 
     const arg = createTripSpy.mock.calls[0][0] as { location: unknown };
     expect(arg.location).toBeUndefined();
+  });
+
+  it('passes invalid dates as provided', async () => {
+    const startDate = new Date('2026-08-10');
+    const endDate = new Date('2026-08-01');
+
+    await component.onCreate(makeFormValue({ startDate, endDate }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { startDate: Date; endDate: Date };
+    expect(arg.startDate).toBe(startDate);
+    expect(arg.endDate).toBe(endDate);
+  });
+
+  it('passes startDate when it is today', async () => {
+    const today = new Date();
+    const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    await component.onCreate(makeFormValue({ startDate }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { startDate: Date };
+    expect(arg.startDate).toBe(startDate);
+  });
+
+  it('passes startDate when it is in the past', async () => {
+    const startDate = new Date('2020-01-01');
+
+    await component.onCreate(makeFormValue({ startDate }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { startDate: Date };
+    expect(arg.startDate).toBe(startDate);
+  });
+
+  it('passes startDate when it is in the future', async () => {
+    const startDate = new Date('2099-12-31');
+
+    await component.onCreate(makeFormValue({ startDate }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { startDate: Date };
+    expect(arg.startDate).toBe(startDate);
+  });
+
+  it('passes endDate when it equals startDate', async () => {
+    const startDate = new Date('2026-08-01');
+    const endDate = new Date('2026-08-01');
+
+    await component.onCreate(makeFormValue({ startDate, endDate }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { startDate: Date; endDate: Date };
+    expect(arg.startDate).toBe(startDate);
+    expect(arg.endDate).toBe(endDate);
   });
 
   it('sets isLoading to true while waiting, then false after', async () => {
@@ -178,5 +261,42 @@ describe('TripCreateComponent', () => {
     createTripSpy.mockResolvedValue(null);
     await component.onCreate(makeFormValue());
     expect(component.errorMessage()).toBe('trips.form.error.create_failed');
+  });
+
+  it('navigates to the created trip and marks the form pristine on success', async () => {
+    const markAsPristine = vi.fn();
+    (component as unknown as { tripFormComponent?: { tripForm: { markAsPristine: () => void } } }).tripFormComponent = {
+      tripForm: { markAsPristine },
+    };
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    await component.onCreate(makeFormValue());
+
+    expect(markAsPristine).toHaveBeenCalledOnce();
+    expect(navigateSpy).toHaveBeenCalledWith(['/trips', 'new-trip-id']);
+  });
+
+  it('navigates back on cancel', () => {
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    component.onCancel();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/trips']);
+  });
+
+  it('prevents deactivation when the form is dirty', () => {
+    (component as unknown as { tripFormComponent?: { tripForm: { dirty: boolean } } }).tripFormComponent = {
+      tripForm: { dirty: true },
+    };
+
+    expect(component.canDeactivate()).toBe(false);
+  });
+
+  it('allows deactivation when the form is clean', () => {
+    (component as unknown as { tripFormComponent?: { tripForm: { dirty: boolean } } }).tripFormComponent = {
+      tripForm: { dirty: false },
+    };
+
+    expect(component.canDeactivate()).toBe(true);
   });
 });
