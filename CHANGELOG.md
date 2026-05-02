@@ -1,3 +1,105 @@
+# Release v2.0.0
+
+## Features
+- feat: make PENDING, REJECTED and DUE applications be removed when deleting a trip
+- feat: make explorers able to apply for trips in trip details view
+- feat: add dark theme and i18n logic in payments
+- feat: add dark theme support
+- feat: prepare app for dark theme support
+- feat: implement pending changes guard for trip and settings components
+- feat: add pending changes guard to prevent data loss on navigation
+- feat: enhance PayPal payment integration with routing and application handling #42
+- feat: make more interactive finder page (now ppl can add to favourite, apply and click in trips)
+- feat: add comming soon and countdown
+- feat: add B level admin stats into admin dashboards
+- feat: make validations in finder filter component vissible and available in both english and spanish
+- feat: make finder filters persist in the database and add some extra validations
+- feat: implement auth guard to redirect unauthenticated users to login (the old one was kind of a stub)
+- feat: implement PayPal payment integration with UI and logic #42
+- feat: add initial PayPal configuration #42
+- feat: add translations for finder and finder settings
+- feat: show finder result limit notice
+- feat: add finder cache and result limit preferences to settings
+- feat: cache finder results in local storage
+- feat: persist finder state in local storage
+- feat: validate date range in finder filters
+- feat: implement basic trip finder page
+
+## Tests
+- test: add application eligibility checks based on trip start date in TripCardComponent
+- test: add validation for stage prices in TripFormComponent and ensure invalid prices do not emit
+- test: add validation tests for startDate and endDate in TripFormComponent
+- test: add TripCreateComponent tests with additional scenarios and router integration
+- test: add trip display, search and apply e2e test
+- test: update page objects for e2e testing
+- test: add e2e trip edition tests
+- test: create initial version of trip features page objects
+- test: add e2e login test
+- test: add some page objects for e2e testing
+- test: prepare e2e test environment
+
+## Documentation
+- docs: update README.md to prepare it for final derivable
+- docs: mark properly as DONE remaining tasks in docs\individual_derivables_tasks\ACME-Explorer-Derivable-Requirements.md
+- docs: mark functional testing suite items as complete in requirements document
+- docs: update training and derivable tasks to mark as complete e2e testing related tasks
+- docs: add testing commands to README.md
+- docs: update payments credentials
+- docs: update L03-S02. Edition (II) - Training to mark it as done
+- docs: update training requirements
+- docs: mark as completed all B level requirements
+- docs: add some additional documentation
+- docs: mark as DONE payment task
+- docs: enhance CI/CD A+ task description
+- docs: add payment credentials
+- docs: Add GNU GPL v3 license
+- docs: mark as DONE requisite 27
+- docs: update A+ tasks to include the one done for D03
+- docs: add docker pull command to README.md
+
+## Fixes
+- fix: add missing ***DONE*** in docs\individual_derivables_tasks\ACME-Explorer-Derivable-Requirements.md
+- fix: add wait time because e2e tests may fail when running them the first time (not sure why)
+- fix: add missing mock method deleteApplicationsByTripId
+- fix: add missing mocks in trip card tests
+- fix: fix navigateTo method name misspelling
+- fix: fix problem with paypal integration (new SDK added that broke the system)
+- fix: add sorting to application datatable, differenciate soldout color from available seats and disable apply button if trip starts today
+- fix: make results in finder be organized by startDate
+- fix: add missing i18n logic in application management
+- fix: add i18n to pending changes guard
+- fix: handle optional chaining for prefers-color-scheme media query
+- fix: add togle dark theme icon to header component
+- fix: mke finder preferences only available for explorers
+- fix: add missing i18n in weather forecast integration
+- fix: make settings.component persist the finder value and load them
+- fix: fix 403 bug where logged in received 403 after reloading pages
+- fix: persist and load finder preferences from local storage
+- fix: use singular/plural labels for finder preferences
+- fix: preserve finder preferences when resetting filters
+- fix: fix price filters (empty values and invalid range)
+
+## Continuous integration (CI)
+No CI changes.
+## Other changes
+- Merge branch 'master' of https://github.com/Dangalcan/acme-explorer
+- Merge pull request #53 from Dangalcan/feature/unit-test-suite
+- chore: fix ~~ location in docs\individual_derivables_tasks\ACME-Explorer-Derivable-Requirements.md
+- chore: add CSS tags for trip display e2e tests
+- chore: add tags for cy e2e tests in trip html components
+- chore: update cypress version
+- chore: add missing i18n messages
+- Merge branch 'master' of https://github.com/Dangalcan/acme-explorer
+- Merge pull request #48 from Dangalcan/feature/pending-changes-guard
+- Merge pull request #46 from Dangalcan/feature/paypal-payment-integration
+- Merge branch 'master' into feature/paypal-payment-integration
+- chore: make trip.model export difficulty levels to be used by the finder instead of redefine them
+- Merge pull request #43 from Dangalcan/feat/finder
+
+## Full commit history
+
+For full commit history, see [here](https://github.com/Dangalcan/acme-explorer/compare/v1.0.0...v2.0.0).
+
 # Release v1.0.0
 
 ## Features
