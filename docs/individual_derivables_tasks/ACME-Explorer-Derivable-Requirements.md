@@ -33,11 +33,11 @@ Requirements for levels C, B, and A
 - ~~Item 1. An Angular project that implements all the requirements for Acme Explorer, including the models, services, components, guards, and so on. The project must be fully functional.~~ ***DONE***
 
 - Item 2. A functional testing suite for the following use cases:
-    a. Create a trip with valid data.
-    b. Create a trip with invalid dates (it should fail).
-    c. Create a trip with invalid prices in any of its stages (it should fail).
-    d. Apply for a trip whose starting date has not yet passed.
-    e. Apply for a trip whose starting data has already passed (it should fail).
+    ~~a. Create a trip with valid data.~~
+    ~~b. Create a trip with invalid dates (it should fail).~~
+    ~~c. Create a trip with invalid prices in any of its stages (it should fail).~~
+    ~~d. Apply for a trip whose starting date has not yet passed.~~
+    ~~e. Apply for a trip whose starting data has already passed (it should fail).~~
 
 - ~~Item 3. An e2e testing suite for the following use case.
     a. Browse the list of trips, search for one of them using a keyword, display the details of the resulting trip and apply for it.~~ ***DONE***
