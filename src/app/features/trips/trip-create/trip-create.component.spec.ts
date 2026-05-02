@@ -153,6 +153,19 @@ describe('TripCreateComponent', () => {
     expect(typeof arg.stages[0].id).toBe('string');
   });
 
+  it('passes stages with invalid prices as provided', async () => {
+    const stages = [
+      { title: 'Stage 1', description: 'Desc 1', price: -10 },
+      { title: 'Stage 2', description: 'Desc 2', price: -1 },
+    ];
+
+    await component.onCreate(makeFormValue({ stages }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { stages: Array<{ price: number }> };
+    expect(arg.stages[0].price).toBe(-10);
+    expect(arg.stages[1].price).toBe(-1);
+  });
+
   it('passes location when city or country is provided', async () => {
     await component.onCreate(makeFormValue({ location: { city: 'Paris', country: '' } }));
 
