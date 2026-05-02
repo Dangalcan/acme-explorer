@@ -10,7 +10,7 @@ Requirements for levels C, B, and A
 
 Requirements for levels C, B, and A
 
-• ~~An Angular project that implements the listing and display requirements for Acme Explorer, including models, services, components, guards, and so on. The project must be fully functional.~~
+• ~~An Angular project that implements the listing and display requirements for Acme Explorer, including models, services, components, guards, and so on. The project must be fully functional.~~ ***DONE***
 
 • The resulting application must implement, at least, the following display and listing
 functional requirements:
