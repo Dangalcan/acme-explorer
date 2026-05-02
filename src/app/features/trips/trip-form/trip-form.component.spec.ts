@@ -202,6 +202,30 @@ describe('TripFormComponent', () => {
       component.tripForm.get('endDate')!.setValue('2026-08-10');
       expect(component.tripForm.hasError('endBeforeStart')).toBe(false);
     });
+
+    it('group has no endBeforeStart error when end date equals start date', () => {
+      component.tripForm.get('startDate')!.setValue('2026-08-01');
+      component.tripForm.get('endDate')!.setValue('2026-08-01');
+      expect(component.tripForm.hasError('endBeforeStart')).toBe(false);
+    });
+
+    it('startDate has startDateNotInFuture error when date is today', () => {
+      const today = new Date().toISOString().substring(0, 10);
+      component.tripForm.get('startDate')!.setValue(today);
+      component.tripForm.get('startDate')!.markAsTouched();
+      expect(component.tripForm.hasError('startDateNotInFuture')).toBe(true);
+    });
+
+    it('startDate has startDateNotInFuture error when date is in the past', () => {
+      component.tripForm.get('startDate')!.setValue('2020-01-01');
+      component.tripForm.get('startDate')!.markAsTouched();
+      expect(component.tripForm.hasError('startDateNotInFuture')).toBe(true);
+    });
+
+    it('startDate is valid when date is in the future', () => {
+      component.tripForm.get('startDate')!.setValue('2099-12-31');
+      expect(component.tripForm.hasError('startDateNotInFuture')).toBe(false);
+    });
   });
 
   // -------------------------------------------------------------------------

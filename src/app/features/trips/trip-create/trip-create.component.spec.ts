@@ -175,6 +175,56 @@ describe('TripCreateComponent', () => {
     expect(arg.location).toBeUndefined();
   });
 
+  it('passes invalid dates as provided', async () => {
+    const startDate = new Date('2026-08-10');
+    const endDate = new Date('2026-08-01');
+
+    await component.onCreate(makeFormValue({ startDate, endDate }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { startDate: Date; endDate: Date };
+    expect(arg.startDate).toBe(startDate);
+    expect(arg.endDate).toBe(endDate);
+  });
+
+  it('passes startDate when it is today', async () => {
+    const today = new Date();
+    const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    await component.onCreate(makeFormValue({ startDate }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { startDate: Date };
+    expect(arg.startDate).toBe(startDate);
+  });
+
+  it('passes startDate when it is in the past', async () => {
+    const startDate = new Date('2020-01-01');
+
+    await component.onCreate(makeFormValue({ startDate }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { startDate: Date };
+    expect(arg.startDate).toBe(startDate);
+  });
+
+  it('passes startDate when it is in the future', async () => {
+    const startDate = new Date('2099-12-31');
+
+    await component.onCreate(makeFormValue({ startDate }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { startDate: Date };
+    expect(arg.startDate).toBe(startDate);
+  });
+
+  it('passes endDate when it equals startDate', async () => {
+    const startDate = new Date('2026-08-01');
+    const endDate = new Date('2026-08-01');
+
+    await component.onCreate(makeFormValue({ startDate, endDate }));
+
+    const arg = createTripSpy.mock.calls[0][0] as { startDate: Date; endDate: Date };
+    expect(arg.startDate).toBe(startDate);
+    expect(arg.endDate).toBe(endDate);
+  });
+
   it('sets isLoading to true while waiting, then false after', async () => {
     let capturedDuringCall = false;
     createTripSpy.mockImplementation(() => {
