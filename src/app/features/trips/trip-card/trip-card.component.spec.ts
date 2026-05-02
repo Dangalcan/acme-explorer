@@ -154,6 +154,38 @@ describe('TripCardComponent', () => {
     expect(component.getTotalPrice(mockTrip)).toBe(350);
   });
 
+  it('allows apply when trip start date has not yet passed', () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    component.trip = {
+      ...mockTrip,
+      startDate: tomorrow,
+      cancellation: undefined,
+      availablePlaces: 1,
+    };
+
+    applicationServiceMock.canApplyForTrip.mockReturnValue(true);
+
+    expect(component.isApplyDisabled()).toBe(false);
+  });
+
+  it('disables apply when trip start date is today or in the past', () => {
+    const today = new Date();
+    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    component.trip = {
+      ...mockTrip,
+      startDate: todayStart,
+      cancellation: undefined,
+      availablePlaces: 1,
+    };
+
+    applicationServiceMock.canApplyForTrip.mockReturnValue(true);
+
+    expect(component.isApplyDisabled()).toBe(true);
+  });
+
   it('shows the favourite button only for explorer when controls are enabled', () => {
     authServiceMock.currentRole.set('explorer');
     component.enableFavouriteControls = true;
